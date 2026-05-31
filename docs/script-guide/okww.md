@@ -15,7 +15,7 @@ AUTO-MAS 通过专项适配，支持自动拉起 ok-ww 执行任务、监控日�
 **详情信息请查阅**：
 
 <Box :items="[
-{ name: 'OK-WW GitHub', link: 'https://github.com/ok-script/ok-ww', image: { light: '/icons/github.svg', dark: '/icons/github-dark.svg', }, },]"/>
+{ name: 'OK-WW GitHub', link: 'https://github.com/ok-oldking/ok-wuthering-waves', image: { light: '/icons/github.svg', dark: '/icons/github-dark.svg', }, },]"/>
 
 ## 工作原理
 
@@ -39,7 +39,7 @@ AUTO-MAS 接管 ok-ww 的完整运行流程：
 
 ## 前置准备
 
-1. 下载 [OK-WW](https://github.com/ok-script/ok-ww) 脚本，解压至任意目录。
+1. 下载 [OK-WW](https://github.com/ok-oldking/ok-wuthering-waves) 脚本，解压至任意目录。
 2. 确认 `ok-ww.exe` 可以正常启动并在 ok-ww 本体中完成过一次基础设置。
 3. AUTO-MAS ≥ v5.3.0-beta.2。
 
