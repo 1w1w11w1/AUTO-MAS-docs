@@ -19,7 +19,8 @@ export default defineConfig({
                 text: "开发", items: [
                     { text: "本体开发", link: "/developer/getting-start" },
                     { text: "插件开发", link: "/plugin/start/start" }
-                ]
+                ],
+                activeMatch: "^/developer/"
             },
             { text: "下载", link: "/download/auto-mas" },
             { text: "公示", link: "/disclosure" },
@@ -79,25 +80,28 @@ export default defineConfig({
                 }
             ],
             //开发者指南
-            '/developer/': [
-                {
-                    text: "MAS主程序开发者指南",
-                    link: "/developer/",
-                    items: [
-                        { text: "开发起步", link: "/developer/getting-start" },
-                        { text: "开发规范", link: "/developer/development-specifications" },
-                        { text: "仓库与 Agent 规范", link: "/developer/agent-and-repository-rules" },
-                        { text: "构筑与发布", link: "/developer/build-and-publish" },
-                        {
-                            text: "开发文档", items: [
-                                { text: "API 开发", link: "/developer/API" },
-                                { text: "配置管理", link: "/developer/config" },
-                                { text: "专项适配", link: "/developer/script_task" },
-                            ]
-                        },
-                    ],
-                },
-            ],
+            '/developer/': {
+                base: "/developer/",
+                items: [
+                    {
+                        text: "MAS主程序开发者指南",
+                        link: "",
+                        items: [
+                            { text: "开发起步", link: "getting-start" },
+                            { text: "开发规范", link: "development-specifications" },
+                            { text: "仓库与 Agent 规范", link: "agent-and-repository-rules" },
+                            { text: "构筑与发布", link: "build-and-publish" },
+                            {
+                                text: "开发文档", items: [
+                                    { text: "API 开发", link: "API" },
+                                    { text: "配置管理", link: "config" },
+                                    { text: "专项适配", link: "script_task" },
+                                ]
+                            },
+                        ],
+                    },
+                ],
+            },
             //下载渠道
             '/download/': [
                 {

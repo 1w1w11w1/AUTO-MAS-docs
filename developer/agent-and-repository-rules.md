@@ -6,7 +6,7 @@ AUTO-MAS 将应用主体、开发文档与 Agent Skill 分开维护。分仓是�
 
 | 仓库 | 职责 | 权威内容 |
 |------|------|----------|
-| `AUTO-MAS-Project/AUTO-MAS` | 主程序、构建配置、Issue/PR 模板、最小 Agent 入口 | 应用代码与仓内入口 |
+| `AUTO-MAS-Project/AUTO-MAS` | 主程序、构建配置、最小 Agent 入口 | 应用代码与仓内入口 |
 | `AUTO-MAS-Project/AUTO-MAS-docs` | 用户文档、开发文档、贡献流程 | 分支、提交、版本记录、Issue/PR 正文规范 |
 | `AUTO-MAS-Project/skills` | Agent Skill 与工程规则 | `mas-*` Skill、专项适配路由、Agent 执行清单 |
 
