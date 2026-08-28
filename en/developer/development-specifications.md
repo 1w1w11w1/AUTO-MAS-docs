@@ -108,7 +108,7 @@ This project records version information in `res/version.json`:
 
 - Version update information and announcements are generated from this file. To ensure your changes are recorded correctly, update and commit this file after finishing a task.
 - If the version corresponding to `version` has already been released, do not add `change entries` directly under that version. Add the next version entry in `version_info`, then add your `change entries` under the new version.
-- Each PR adds exactly one changelog entry: condense all of the PR's changes into a single `change entry` under the best-matching category, instead of splitting them into multiple stacked entries.
+- Each PR adds exactly one changelog entry, written as one concise sentence summarizing the PR's significance: condense all changes into that sentence under the best-matching category, avoiding verbose or stacked entries.
 
 ## Backend Comments
 
