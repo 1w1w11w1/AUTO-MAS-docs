@@ -1,7 +1,7 @@
 # M9A Configuration Guide
 
 ::: tip Tip
-M9A support is still under development, so bugs are possible. Keep your existing general script configuration around while you try the dedicated script.
+M9A is now one kind of [MFW script](/en/docs/script-guide/maafw): pick the M9A directory and AUTO-MAS recognises it and treats it as M9A. The script page, user page, updates and the embedded copy all work like any other MFW project; this page only covers what is specific to M9A.
 :::
 
 ## What is M9A?
@@ -18,132 +18,87 @@ It is powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework) image re
 
 ## Install M9A
 
-1. Download the archive from <Pill name="M9A Repository" :image="{ light: '/icons/github.svg', dark: '/icons/github-dark.svg', }" link="https://github.com/MAA1999/M9A/releases/latest"/> or <Pill name="MirrorChyan" image="https://mirrorchyan.com/favicon.ico" link="https://mirrorchyan.com/zh/projects?rid=M9A&scouce=AUTO-MAS-Web"/>.
-2. Extract the M9A archive to any folder. A path such as `D:\M9A` is recommended.
+1. Download the **Windows release package** (`M9A-win-x86_64-vX.Y.Z-MFAA.zip` or `-MXU.zip`, either works) from <Pill name="M9A Repository" :image="{ light: '/icons/github.svg', dark: '/icons/github-dark.svg', }" link="https://github.com/MAA1999/M9A/releases/latest"/> or <Pill name="MirrorChyan" image="https://mirrorchyan.com/favicon.ico" link="https://mirrorchyan.com/en/projects?rid=M9A&scouce=AUTO-MAS-Web"/>.
+2. Extract it to any folder (e.g. `D:\M9A`). You should see `interface.json` directly inside the extracted directory.
 
 ::: warning Note
-
-- Make sure [VCRedist x64](https://aka.ms/vs/17/release/vc_redist.x64.exe) is installed.
-- Make sure [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) is installed.
+You **do not** need to open M9A once by hand first, nor install the .NET runtime — AUTO-MAS never starts M9A's own UI; it prepares the MaaFramework runtime and the Agent's Python environment itself.
 :::
 
-## Configure the Script
+## Configure the script
 
-1. Go to **Script Management**, click **New Script**, and select **M9A Script** to add a script instance management page.
-2. In the script configuration that opens, click **Select folder** for **M9A path** and open the directory M9A is in.
-3. In **Emulator Management**, select the emulator and the emulator instance.
+1. Go to **Scripts**, click **New script** and choose **MFW script** (choosing **M9A script** does the same; the two only differ in the default name).
+2. Under **Project directory**, click **Pick a local directory** and select the extracted M9A directory. AUTO-MAS imports it as its own copy, recognises it as M9A, and the script type becomes **M9A** automatically.
+3. Pick the server under **Game resource** (official / Bilibili / global…), and choose the emulator and instance under **Emulators**.
+4. Everything else — run configuration, project update (GitHub / MirrorChyan, auto update before / after run) — is described in the [MFW Project Configuration Guide](/en/docs/script-guide/maafw).
 
-> If no emulator appears here, complete **Emulator Management** configuration first.
-
-### Runtime Configuration
-
-| Configuration | Description | Default |
-|---------------|-------------|---------|
-| Proxy count limit | Maximum automation runs per user per day. `0` means unlimited | 0 |
-| Run count limit | How many times a failed task is retried | 3 |
-| Runtime limit | Maximum minutes for a single task. It is forced to stop on timeout | 10 |
-| Auto update after queue ends | After the queue finishes, update M9A resources if a new version is detected | Disabled |
-
-::: warning Auto update needs an update channel enabled inside M9A first
-**Auto update after queue ends** relies on M9A's own update feature. Open M9A by hand and **enable a resource update channel** in its settings, either MirrorChyan or GitHub. Without that, this switch does nothing.
+::: tip The server is per script
+M9A's `interface.json` declares servers as "resources", so in AUTO-MAS the server is chosen on the **script**, and every user under one script is on the same server. To run both the official server and Bilibili, create two scripts pointing at the same directory (each gets its own copy; they don't interfere).
 :::
 
-## Required Before the First Run
+## Configure users
 
-Before you use M9A from AUTO-MAS the first time, you **must open M9A by hand once** so it can initialize itself:
+1. Click **Add a user** in the script's row under **Scripts**.
+2. Fill in a name and a note. The **Account** field is only used on the official server (see automatic account switching below); on other servers it is just a note.
+3. You can add several users; AUTO-MAS runs each user's task queue in list order.
 
-1. Launch `M9A.exe`.
-2. Wait for initialization to finish. The log shows "AgentServer started", then wait for "all tasks completed".
-3. In M9A settings, configure the **resource download source** (MirrorChyan or GitHub) and the matching **CDK / Token**.
-4. While you are there, decide whether to enable M9A's own **auto update**. That is up to you.
-5. Close M9A.
+### Task queue
 
-Back in AUTO-MAS, click **Save Configuration** and you are ready to go.
+The task list is exactly the tasks declared in M9A's `interface.json`, whatever version you have. Select tasks to add them to the queue and drag to reorder; M9A's own **presets** (e.g. "Daily") add a whole set in one click. Each task's **Task options** are the options from M9A's own UI, with the same defaults.
 
-## Configure Users
-
-1. In the script table under **Script Management**, click **Add user** to add a user.
-2. Fill in the user information following the hints on the settings card.
-3. You can add several users. AUTO-MAS runs each user's task queue in the order they appear in the list.
-
-### Task Queue Configuration
-
-M9A supports the following tasks, depending on the version you have:
-
-| Task | Description |
-| ---- | ----------- |
-| Collect Wilderness | Collect Wilderness resources |
-| Daily Psychube, Insight Analysis | Automatically complete insight analysis |
-| Regular Battle | Daily stage battles |
-| Event Farming | Automatically farm event stages |
-| Auto Artificial Somnambulism | Automatically complete Artificial Somnambulism challenges |
-| Auto Anecdote | Automatically complete Anecdote |
-| Bank Shopping | Automatically shop in the bank |
-| Claim Rewards | Automatically claim various rewards |
-
-On the user configuration page, pick the tasks you want from the task list, add them to the task queue, and adjust the execution order.
-
-### Preset Template
-
-Do not feel like adding tasks one at a time? While the task queue is empty, a **Daily - Idle** template appears. One click adds the common tasks: Collect Wilderness, Daily Psychube (Insight Analysis), Regular Battle, Auto Artificial Somnambulism, Auto Anecdote, Bank Shopping, Claim Rewards, and Use Redemption Code. It suits ordinary days with no event running, or when you have already cleared the event shop.
-
-You can still add, remove, and reorder tasks afterwards. Any task in the template that your M9A version does not have is skipped automatically.
-
-### Automatic Account Switching
-
-**Only the official server supports this.** Other servers cannot, because of an M9A limitation.
-
-Fill in the target account under **Account information** on the user configuration page and you are done. AUTO-MAS then inserts a **Switch account** task at the front of the queue, after Start game and before your own tasks. Leave it empty if you do not need to switch accounts.
-
-### What Is Supported
-
-| | Status |
-|---|---|
-| Official server | Supported, and the only server where accounts switch automatically |
-| Bilibili and other servers | Supported, but no automatic account switching (an M9A limitation) |
-| MuMu emulator / LDPlayer | Supported |
-| Other emulators | Untested, may have problems |
-| MXU GUI | Not supported. Only MFAAvalonia is supported |
-
-## Will Your M9A Configuration Get Wrecked?
-
-No. Before running, AUTO-MAS backs up M9A's whole `config` directory. While running, it touches exactly one file, the instance configuration at `config/instances/default.json`. Your global `config.json` is never modified. When the run ends, the original configuration is put back.
-
-If you want to compare configurations afterwards, every run's actual configuration is kept at `data/script_id/test*.json`, with the last 5 retained.
-
-### How the Task Queue Is Built
-
-The tasks you arrange in the UI are not handed to M9A as-is. AUTO-MAS fills in both ends:
+**You don't add Start game or Close game yourself.** At run time AUTO-MAS completes the head and tail automatically:
 
 ```text
-Start game -> [Switch account] -> your tasks -> Close game
+Start game → [Switch account] → your tasks → Close game
 ```
 
-So two things are not your problem:
+Tasks already in the queue are not added twice, and anything you placed elsewhere is left where it is.
 
-- **Do not add Start game and Close game yourself.** They are added for you. If you add them manually, they get filtered out, so nothing runs twice.
-- **Do not add Switch account either.** It is inserted automatically on the official server when account information is filled in.
+### Automatic account switching
 
-## How Auto Update Works
+**Official server only** — other servers can't do it due to an M9A limitation.
 
-With **Auto update after queue ends** enabled, the sequence goes like this. While the first user runs, AUTO-MAS glances at the M9A log for a new-version notice. If there is one, it waits until every user has finished, then does one separate update run, with no emulator connected, purely to update resources. When that is done, it sends you a notification with the result.
+When the script's game resource is the official server and the user's **Account** is filled in, AUTO-MAS inserts a **Switch account** task right after Start game and fills the account in; leave it empty if you don't need to switch. On other servers the account is just a note and no switch is inserted.
 
-- M9A restarts itself during the update. That is normal.
-- The update waits at most 10 minutes.
-- Do not enable this on a flaky connection. A failure does not affect your next run, but you waited for nothing. The reason is written to the `data/script_id/` directory and included in the notification.
+### Once a day / once a month
+
+**Skip once done today** / **Skip once done this month** under **Run configuration** on the script page replace the old M9A script's "Psychube once a day" and "Limbo once a month" switches: add **每日心相（意志解析）** to the daily list and **自动深眠**, **自动醒梦** to the monthly list, and they are skipped automatically after succeeding once that day / month. Any other task can be added as well.
+
+## Upgrading from the old M9A script
+
+The **M9A script** in older versions of AUTO-MAS was a separate adapter. It is migrated to the setup above automatically the first time the upgraded AUTO-MAS starts; you do not need to rebuild anything:
+
+- Scripts, users, emulator, notification settings and run counters are kept as they were; each user's task queue is converted to the new format and task options are matched by name.
+- The old "server" was per user, the new one is per script: the script takes the server used by most of its enabled users; users on a different server are **disabled** with the reason written in their note — move them to another script (or change the script's resource) and re-enable them.
+- "Auto update after the queue" becomes **Project update → After run**; if it was off it becomes **Off**. The update source is decided like this: the MirrorChyan CDK configured in the M9A directory if there was one, otherwise the CDK from AUTO-MAS's own update settings, otherwise GitHub.
+- The old "run time limit" was a log-stall threshold; the new one is a hard limit on the whole run, so it is set to 120 minutes across the board.
+- The configuration is backed up before migrating as `config/ScriptConfig.json.m9a-legacy-<timestamp>.bak` (the last three are kept); a notification listing the results pops up after start-up.
+- Config backups made by the old adapter (`data/<script ID>/M9ABackups/`) are left in place and no longer shown under Config restore.
+
+::: warning The first run after migration
+imports a copy from the original M9A directory (ten-odd seconds to a minute). After that it runs on the copy, the original directory is never modified again, and you may delete it.
+:::
 
 ## FAQ
 
-### Can I add multiple users under one script?
+### I created a generic MFW script — why did it turn into M9A?
 
-Yes. AUTO-MAS runs each user's task queue in list order. Automatic account switching needs a newer M9A version, the kind that supports switching to a specified account, and works only on the official server.
+The project decides the type: if the `interface.json` in the directory is M9A's (MirrorChyan rid `M9A`, or GitHub pointing at `MAA1999/M9A`), the script is recognised as M9A and gets automatic start / close game and account switching. The other way round, an M9A script pointed at a different project's directory becomes a generic MFW script again. Users and settings are kept.
 
-### A task failed. How do I investigate?
+### A task failed — how do I look into it?
 
-In order: check whether the emulator is connected, then look through the log for the error, and if that is still unclear, open `data/script_id/` and compare the configuration this run actually used against the last successful one.
+Check that the emulator connected → read the run-page log (every task's start / success / failure and the last node it stopped at are there) → a screenshot is taken automatically on failure and shown in the history → if still unclear, look at that run's `.maafw.log` under `history/<date>/<user name>/`.
 
-### Why isn't the proxy count going up?
+### Why doesn't the run count go up?
 
-**The count uses dates in the UTC+4 timezone**, so it can be several hours off from your computer's date. The rollover point is not your local midnight.
+**The day boundary is computed in UTC+4**, which may be a few hours off from your computer's date; the day does not roll over at local midnight. Once the day's count reaches **Runs per day for this user**, the remaining users are skipped.
 
-Also, once the day's count reaches the **proxy count limit**, later users are skipped outright. The counter resets on the day's first automation run.
+### Support matrix
+
+| | Status |
+|---|---|
+| Official server | Supported, and the only server with automatic account switching |
+| Bilibili / other servers | Supported, without automatic account switching (M9A limitation) |
+| MFAAvalonia package / MXU package | Both supported (AUTO-MAS never starts the UI; only `interface.json` is used) |
+| MuMu / LDPlayer | Supported |
+| Other emulators | Untested, may have issues |

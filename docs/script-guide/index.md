@@ -30,7 +30,17 @@
 
 - 支持日常代理、活动刷取、自动深眠等
 - 支持 MuMu 与 雷电模拟器
-- 仅支持 MFAAvalonia 界面
+- 作为 MFW 脚本接入：选中目录自动识别，自动补启动 / 关闭游戏与官服切号
+
+---
+
+### [MFW 项目](/docs/script-guide/maafw)
+
+任何带 `interface.json` 的 MaaFramework 项目
+
+- 不启动项目自己的界面，直接按 interface 跑任务队列
+- 在 AUTO-MAS 自己的副本上运行，原目录一个字节不动、导入后可删；同一项目可开多个脚本同时跑
+- 项目更新走 GitHub 或 Mirror 酱，可配成运行前 / 运行后自动更新
 
 ---
 
@@ -90,6 +100,7 @@
 - **新手推荐**：从 [MAA 账号指南](/docs/script-guide/maa) 开始（如果玩明日方舟）
 - **鸣潮玩家**：查看 [OK-WW 配置方法](/docs/script-guide/okww) 快速上手
 - **1999 玩家**：查看 [M9A 配置方法](/docs/script-guide/m9a) 快速上手
+- **其他 MaaFramework 项目**：查看 [MFW 项目配置方法](/docs/script-guide/maafw)
 - **星穹铁道玩家**：查看 [HSR 配置方法](/docs/script-guide/hsr) 快速上手
 - **原神玩家**：查看 [BetterGI 配置方法](/docs/script-guide/bettergi) 快速上手
 - **其他游戏**：查看 [通用调度](/docs/script-guide/general) 并使用现成模板

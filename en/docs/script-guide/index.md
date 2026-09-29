@@ -30,7 +30,17 @@ Reverse: 1999 - M9A
 
 - Supports daily automation, event farming, automatic Artificial Somnambulism, and more
 - Supports MuMu and LDPlayer emulators
-- Supports only the MFAAvalonia UI
+- Added as an MFW script: the directory is recognised automatically, start / close game and official-server account switching are inserted for you
+
+---
+
+### [MFW Projects](/en/docs/script-guide/maafw)
+
+Any MaaFramework project that ships an `interface.json`
+
+- Runs the task queue straight from the interface without starting the project's own UI
+- Runs on AUTO-MAS's own copy: the original directory is never touched and can be deleted after import; one project can back several scripts running at the same time
+- Project updates from GitHub or MirrorChyan, automatically before or after a run
 
 ---
 
@@ -90,6 +100,7 @@ Honkai: Star Rail - March7thAssistant
 - **New users**: start with the [MAA guide](/en/docs/script-guide/maa) if you play Arknights
 - **Wuthering Waves players**: read the [OK-WW guide](/en/docs/script-guide/okww)
 - **Reverse: 1999 players**: read the [M9A guide](/en/docs/script-guide/m9a)
+- **Other MaaFramework projects**: read the [MFW project guide](/en/docs/script-guide/maafw)
 - **Honkai: Star Rail players**: read the [HSR guide](/en/docs/script-guide/hsr)
 - **Genshin Impact players**: read the [BetterGI guide](/en/docs/script-guide/bettergi)
 - **Other games**: read [General Scheduling](/en/docs/script-guide/general) and use an existing template
