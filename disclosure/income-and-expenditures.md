@@ -52,6 +52,7 @@ const records = [
   { name: '主站服务器开支', description: '2027年度', amount: -99.00, date: '2026年9月7日' },
   { name: 'PackyCode 赞助', description: '首月 150元 AI API 额度', amount: 0.00, date: '2026年9月7日' },
   { name: '开发者开发工具订阅报销', description: '个人申报全额报销', amount: -50, date: '2026年9月7日' },
+  { name: 'Mirror酱分成', description: '9月份结算', amount: 110.24, date: '2026年10月1日' },
 ]
 
 const totalAmount = computed(() => {

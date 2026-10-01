@@ -52,6 +52,7 @@ const records = [
   { name: 'Main site server expense', description: '2027 annual expense', amount: -99.00, date: 'September 7, 2026' },
   { name: 'PackyCode sponsorship', description: 'First month: ¥150 in AI API credits', amount: 0.00, date: 'September 7, 2026' },
   { name: 'Developer tool subscription reimbursement', description: 'Fully reimbursed by personal claim', amount: -50, date: 'September 7, 2026' },
+  { name: 'MirrorChyan revenue share', description: 'September settlement', amount: 110.24, date: 'October 1, 2026' },
 ]
 
 const totalAmount = computed(() => {
