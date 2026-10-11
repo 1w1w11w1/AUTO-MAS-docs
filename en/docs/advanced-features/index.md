@@ -4,6 +4,7 @@ Once the basics are working, these features make life easier:
 
 - [Emulator Management](./emulator) - register your emulator once and AUTO-MAS fills in the emulator settings for every script. Set this up first if you use an emulator.
 - [Push Notifications](./notification) - sends a message to your email or phone when automation finishes.
+- [Failure Replays](./failure-replay) - set up the OBS Replay Buffer and view videos from failed automatic runs in History.
 - [Game Check-in](./game-sign) - takes care of the daily check-ins on each game's community site while it is at it.
 - [MCP Service](./mcp) - lets an AI operate AUTO-MAS for you.
 
