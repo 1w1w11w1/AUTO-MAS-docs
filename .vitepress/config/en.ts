@@ -46,6 +46,7 @@ export const enThemeConfig: DefaultTheme.Config = {
                             { text: "Game Check-in", link: "/en/docs/advanced-features/game-sign" },
                             { text: "Emulator Management", link: "/en/docs/advanced-features/emulator" },
                             { text: "Notifications", link: "/en/docs/advanced-features/notification" },
+                            { text: "Failure Replays", link: "/en/docs/advanced-features/failure-replay" },
                             { text: "MCP Service", link: "/en/docs/advanced-features/mcp" },
                         ],
                     },
