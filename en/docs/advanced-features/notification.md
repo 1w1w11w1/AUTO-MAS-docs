@@ -20,36 +20,17 @@ Once a per-user notification is set, the global notification still goes to you, 
 
 To receive notifications by email you need three things: an **SMTP server address**, a **sending address**, and an **authorization code**. Here is how to get each one.
 
-::: tip **AUTO-MAS private-domain email is available**
-
-1. What is AUTO-MAS private-domain email?
-
-- AUTO-MAS private-domain email uses the `auto-mas.top` domain through Alibaba Cloud Enterprise Mail.
-
-2. What are its benefits?
-
-- The domain looks more recognizable and professional.
-
-3. How do I use AUTO-MAS private-domain email?
-
-- The login page is [Alibaba Mail Enterprise Edition](https://qiye.aliyun.com), the SMTP server is `smtp.qiye.aliyun.com`, and the authorization code is the `login password`. Other usage is the same as normal email.
-
-4. How do I apply for an AUTO-MAS private-domain email account?
-
-- Send an application email to `DLmaster_361@auto-mas.top`. The email must include: `email name (English letters only)`, `security phone number`, and `application reason`. After the mailbox is created, a reply containing the `initial password` will be sent.
-:::
-
 ### SMTP Server Address
 
 Find the provider of your sending address and copy the matching row.
 
-| Email service provider | SMTP server address |
-| ---------------------- | ------------------- |
-| **QQ Mail** | smtp.qq.com |
-| **163 Mail** | smtp.163.com |
-| **Gmail** | smtp.gmail.com |
-| **Outlook/Hotmail** | smtp-mail.outlook.com |
-| **Yahoo Mail** | smtp.mail.yahoo.com |
+| Email service provider | SMTP server address   |
+| ---------------------- | --------------------- |
+| **QQ Mail**            | smtp.qq.com           |
+| **163 Mail**           | smtp.163.com          |
+| **Gmail**              | smtp.gmail.com        |
+| **Outlook/Hotmail**    | smtp-mail.outlook.com |
+| **Yahoo Mail**         | smtp.mail.yahoo.com   |
 
 If your email service is not listed, search its help center for "SMTP server address".
 
@@ -105,7 +86,7 @@ The sending address and the recipient address can be the same. Mailing yourself 
 - Do not share it with anyone, and rotate it now and then.
 - Some providers show it **only once**, so save it as soon as you get it. Some expire, and notifications silently stop when they do, so replace it before then.
 - It is stored encrypted on your machine, tied to your Windows account. **After changing computers or reinstalling Windows, you have to enter it again.**
-:::
+  :::
 
 ## ServerChan (Push to Your Phone)
 
@@ -136,20 +117,21 @@ The SendKey is how ServerChan identifies you, and messages have nowhere to go wi
 
 To push messages to WeChat, DingTalk, and similar destinations, enter the matching numeric code. **SC3 users skip this** — SC3 only has app push.
 
-| Channel | Code |
-| ------- | ---- |
-| Official Android app beta | 98 |
-| WeCom app message | 66 |
-| WeCom group bot | 1 |
-| DingTalk group bot | 2 |
-| Feishu group bot | 3 |
-| Bark iOS | 8 |
-| Test account | 0 |
-| Custom | 88 |
-| PushDeer | 18 |
-| Fangtang service account | 9 |
+| Channel                   | Code |
+| ------------------------- | ---- |
+| Official Android app beta | 98   |
+| WeCom app message         | 66   |
+| WeCom group bot           | 1    |
+| DingTalk group bot        | 2    |
+| Feishu group bot          | 3    |
+| Bark iOS                  | 8    |
+| Test account              | 0    |
+| Custom                    | 88   |
+| PushDeer                  | 18   |
+| Fangtang service account  | 9    |
 
 ::: tip No Spaces When You List Several Channels
+
 - Correct: `1|0|9`
 - Incorrect: `1 | 0 | 9`
 
@@ -161,6 +143,7 @@ A wrong format does not raise an error. It silently falls back to the **default 
 Tags label your push messages so you can sort them in the app. **SCT users skip this.**
 
 ::: tip No Spaces Here Either
+
 - Correct: `AUTO-MAS|Status`
 - Incorrect: `AUTO-MAS | Status`
 
@@ -178,6 +161,7 @@ You do have to register WeCom, but that is a one-time step just to obtain a bot 
 2. **Create a group and add a bot**: open the group chat, click the **...** menu in the upper-right corner, and select **Add group bot**. Name and avatar are up to you. This works on desktop and mobile alike.
 
 3. **Get the Webhook URL**:
+
    - Desktop: right-click the bot in the group chat and select **View profile**.
    - Mobile: group chat, **...** menu in the upper-right corner, **Group bot**, then tap the bot.
 
