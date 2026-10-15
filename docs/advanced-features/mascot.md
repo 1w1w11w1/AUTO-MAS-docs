@@ -1,12 +1,14 @@
 # 桌宠包制作与导入
 
-桌宠包是一个 ZIP 文件，包含角色图片、可选的动画图集和配置文件。你可以从一张透明图片开始，再逐步加入待机、工作、鼠标视线、成功和失败动画。
+桌宠包是一个 ZIP 文件，包含角色图片、可选的动画图集和配置文件。你可以从一张透明图片开始，再逐步加入待机、工作、鼠标视线、成功、失败与拖拽动画。
 
 桌宠以独立悬浮窗口显示，可拖到桌面其他位置；主窗口最小化后仍可显示，退出 AUTO-MAS 时关闭。主题包可以附带桌宠，也可以单独制作和导入桌宠包。主题的配色、背景等配置见[自定义外观包](./appearance)。
 
 ::: info 适用客户端
 本教程适用于已有「设置 → 界面设置 → 外观配置 → 导入桌宠」入口的客户端。旧版本如果没有独立桌宠入口，需要先使用支持该功能的客户端。
 :::
+
+专属拖拽图集还需要客户端支持 `mascot.animation.dragPath`。仅支持较早桌宠格式的客户端请省略该字段和对应图片，继续使用通用拖动效果。
 
 ## 导入与切换
 
@@ -96,6 +98,7 @@ ZIP 内必须使用 `/` 分隔路径。遇到「Windows 路径」或反斜杠相
 | `animation.png` | 两行，列数由 `columns` 决定 | 第一行待机，第二行工作         |
 | `look.png`      | 固定三行三列                | 鼠标方向对应的九张静态视线图   |
 | `results.png`   | 两行，列数与主动画一致      | 第一行失败，第二行成功         |
+| `drag.png`      | 一行，列数与主动画一致      | 拖动时循环播放的专属姿态       |
 
 ### 待机与工作动画
 
@@ -149,7 +152,8 @@ my-mascot/
     ├── mascot.png
     ├── animation.png
     ├── look.png
-    └── results.png
+    ├── results.png
+    └── drag.png
 ```
 
 下面的例子要求主动画与结果动画都是每行 8 帧：
@@ -159,7 +163,7 @@ my-mascot/
   "formatVersion": 1,
   "id": "my-mascot",
   "name": "我的桌宠",
-  "description": "包含待机、工作、静态视线、成功和失败动作。",
+  "description": "包含待机、工作、静态视线、成功、失败和拖拽动作。",
   "mascot": {
     "path": "assets/mascot.png",
     "width": 192,
@@ -171,18 +175,33 @@ my-mascot/
       "idleFps": 6,
       "workingFps": 10,
       "lookPath": "assets/look.png",
-      "resultPath": "assets/results.png"
+      "resultPath": "assets/results.png",
+      "dragPath": "assets/drag.png"
     }
   },
   "preview": "assets/mascot.png"
 }
 ```
 
-如果只做待机和工作，删除 `lookPath`、`resultPath`，并从 ZIP 中移除相应图片。如果完全不做动画，删除整个 `animation` 对象，只保留最简配置。
+如果只做待机和工作，删除 `lookPath`、`resultPath`、`dragPath`，并从 ZIP 中移除相应图片。如果完全不做动画，删除整个 `animation` 对象，只保留最简配置。
 
-### 拖拽与手动停止的当前支持范围
+### 专属拖拽动画
 
-拖拽移动、通用摇晃和手动停止后的疑惑效果由客户端提供，不需要额外素材。当前格式没有专属拖拽动画和专属停止动画字段；不要添加 `dragPath`、`stoppedPath` 或混入未引用的备用图片。
+需要在拖动时切换成被提起、悬空或挣扎等姿态，可以准备 `drag.png`，并在 `mascot.animation.dragPath` 中引用。
+
+拖拽图集只有一行，列数与 `columns` 一致。例如主动画为 8 列、每格 256×256 像素时，拖拽图集为 2048×256 像素：
+
+```text
+拖拽0  拖拽1  拖拽2  拖拽3  拖拽4  拖拽5  拖拽6  拖拽7
+```
+
+建议保持每格画布尺寸、人物比例和基准位置与主动画一致。拖动期间，客户端优先播放这张图集，使用 `workingFps`，不再叠加通用摇晃；松开后恢复当前待机、工作或尚未结束的任务结果状态。拖拽期间不切换鼠标视线。
+
+没有配置 `dragPath` 时，继续使用客户端原有的通用拖动效果，不需要额外素材。暂停动画、低性能模式或系统减少动态效果生效时，拖拽图集显示第一帧，不继续播放。主题附带和独立桌宠使用相同配置。
+
+### 手动停止的当前支持范围
+
+手动停止后的疑惑效果由客户端提供，不需要额外素材。当前格式没有专属停止动画字段，不要添加 `stoppedPath` 或混入未引用的备用图片。
 
 手动停止任务后的疑惑反馈，与右键「暂停动画」不同：前者表示任务被人为中止，后者控制桌宠是否继续播放。
 
@@ -212,14 +231,15 @@ my-mascot/
 
 ### 动画
 
-| 字段                          | 默认值             | 说明                                 |
-| ----------------------------- | ------------------ | ------------------------------------ |
-| `mascot.animation.path`       | 无，配置动画时必填 | 两行主动画 PNG 的路径                |
-| `mascot.animation.columns`    | 无，配置动画时必填 | 每行帧数，2 到 16 的整数             |
-| `mascot.animation.idleFps`    | `4`                | 待机每秒帧数，范围 1 到 24           |
-| `mascot.animation.workingFps` | `8`                | 工作和结果动画每秒帧数，范围 1 到 24 |
-| `mascot.animation.lookPath`   | 不启用视线跟随     | 静态 3×3 视线 PNG 路径               |
-| `mascot.animation.resultPath` | 不使用专属结果图   | 两行结果动画 PNG 路径，先失败后成功  |
+| 字段                          | 默认值             | 说明                                                   |
+| ----------------------------- | ------------------ | ------------------------------------------------------ |
+| `mascot.animation.path`       | 无，配置动画时必填 | 两行主动画 PNG 的路径                                  |
+| `mascot.animation.columns`    | 无，配置动画时必填 | 每行帧数，2 到 16 的整数                               |
+| `mascot.animation.idleFps`    | `4`                | 待机每秒帧数，范围 1 到 24                             |
+| `mascot.animation.workingFps` | `8`                | 工作、结果和拖拽动画每秒帧数，范围 1 到 24             |
+| `mascot.animation.lookPath`   | 不启用视线跟随     | 静态 3×3 视线 PNG 路径                                 |
+| `mascot.animation.resultPath` | 不使用专属结果图   | 两行结果动画 PNG 路径，先失败后成功                    |
+| `mascot.animation.dragPath`   | 使用通用拖动效果   | 单行拖拽 PNG 路径，列数与主动画一致，使用 `workingFps` |
 
 以上动画图片都必须放在 `assets/` 下，扩展名为 `.png`。`lookPath` 和 `resultPath` 都写在 `animation` 内，并配合主动画使用。
 
@@ -255,6 +275,7 @@ my-mascot/
 | `mascot.json` 大小   | 256 KiB                                                            |
 | ZIP 内路径长度       | 240 个字符                                                         |
 | 主动画和结果图集宽高 | 每个方向不超过 8192 像素；宽度能被 `columns` 整除，高度能被 2 整除 |
+| 拖拽图集宽高         | 每个方向不超过 8192 像素；只有一行，宽度能被 `columns` 整除        |
 | 文件内容             | 每张图片都必须被配置引用；不能有空文件、多余文件或伪装格式的文件   |
 
 PNG、JPEG、WebP 是图片的真实编码格式，不是随便改一个文件扩展名就能转换。ZIP 里也不要混入 `Thumbs.db`、`desktop.ini`、`.DS_Store`、说明文档或备用素材。
@@ -293,14 +314,15 @@ id：<小写字母、数字、下划线、短横线，以字母或数字开头�
 - 主动画：<assets/animation.png 或 无>，<每行帧数>列、2行，先待机后工作
 - 视线图：<assets/look.png 或 无>，固定3×3
 - 结果图：<assets/results.png 或 无>，列数与主动画一致，先失败后成功
+- 拖拽图：<assets/drag.png 或 无>，单行，列数与主动画一致
 显示宽度：<例如192>
 
 要求：formatVersion 为1；name 最多80字符；有 description 时最多300字符。
 mascot.path 必填；animation.path 和 columns 在配置动画时必填。
 columns 为2至16的整数；idleFps、workingFps 为1至24，建议先用6和10。
 所有角色与动画素材路径以 assets/ 开头，动画素材必须是 PNG。
-有主动画时，才在 animation 中填写实际存在的 lookPath、resultPath。
-没有的素材整段省略；不生成主题配色或背景字段，不添加 dragPath、stoppedPath。
+有主动画时，才在 animation 中填写实际存在的 lookPath、resultPath、dragPath。
+没有的素材整段省略；不生成主题配色或背景字段，不添加 stoppedPath。
 preview 复用 assets/mascot.png。不要编造素材、注释或额外字段。
 ```
 
@@ -331,6 +353,7 @@ preview 复用 assets/mascot.png。不要编造素材、注释或额外字段。
 - [ ] 主动画循环自然，待机和工作各在正确的一行。
 - [ ] 九方向视线排布正确，静止后能恢复待机。
 - [ ] 结果动画先失败后成功，帧数与主动画一致。
+- [ ] 配置了拖拽图集时，拖动切换姿态，松开后恢复；未配置时通用拖动效果正常。
 - [ ] ZIP 只含已引用文件，没有额外目录层或备用素材。
 
 主题包附带桌宠时，配色和背景等字段继续使用[自定义外观包](./appearance)的格式；单独分享桌宠时使用本教程的 `mascot.json` 格式。
