@@ -27,6 +27,7 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 └── assets/                 # 背景、装饰图、菜单图标、光标都放这里
     ├── background.jpg
     ├── mascot.png
+    ├── menu-default.png
     ├── menu-home.png
     └── cursor-pointer.png
 ```
@@ -43,9 +44,13 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 | 角落装饰 | 宽 300–600 像素 | 透明 PNG / WebP | 显示宽度由 `mascot.width` 决定，图片宽度取它的 2 倍左右更清晰 |
 | 菜单图标 | 48×48 或 96×96 | 透明 PNG | 侧栏按 24px 显示，线条要粗、轮廓要简单 |
 | 光标 | 32×32 | 透明 PNG | **必须** 1–64 像素见方以内；要记下指针尖端的像素坐标 |
-| 预览图 | 960×540 | PNG / JPEG | 只在导入后的预览弹窗里显示，可以直接用应用后的截图 |
+| 预览图 | 建议 16:10，例如 1280×800 | PNG / JPEG / WebP | 用于导入预览，也可作为资源商店封面；比例和尺寸不是导入的硬性要求 |
 
 单张图片不能超过 8 MB，背景图优先用 JPEG 或 WebP 压缩。
+
+首次上传到资源商店时，可以使用包内的预览图作为封面，也可以另选一张图片；包内没有预览图时，需要自选封面。上传新版本时，如果有可沿用的封面，默认选择「沿用当前封面」，也可以改用包内预览图或自选图片；既没有可沿用的封面、包内也没有预览图时，才必须自选。
+
+封面支持 PNG、JPEG、WebP，不超过 8 MB，建议使用 16:10。资源商店列表和上传窗口按 16:10 居中裁切显示封面，其他比例可能裁掉边缘，重要文字和角色主体应放在画面中间。
 
 ### 3. 写 theme.json
 
@@ -84,8 +89,8 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
   },
   "preview": "preview.png",
   "menuIcons": {
-    "home": "assets/menu-home.png",
-    "settings": "assets/menu-home.png"
+    "default": "assets/menu-default.png",
+    "home": "assets/menu-home.png"
   },
   "cursors": {
     "pointer": {
@@ -181,7 +186,7 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 | 字段 | 默认值 | 说明 |
 | --- | --- | --- |
 | `path` | — | 必填，必须在 `assets/` 下 |
-| `width` | `144` | 显示宽度（像素），16 到 1024；实际最多占窗口宽度的 35%、高度的 30% |
+| `width` | `144` | 显示宽度（像素），16 到 1024；桌面悬浮桌宠的实际宽高还会受当前显示器工作区限制，宽不超过工作区的 35%，高不超过 30% |
 | `opacity` | `1` | 0 到 1 |
 | `position` | `bottom-right` | `top-left`、`top-right`、`bottom-left`、`bottom-right` |
 
@@ -189,10 +194,13 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 
 ### 菜单图标 `menuIcons`
 
-每个值指向 `assets/` 下的图片，没写的键保留内置图标，同一张图片可以给多个键复用。
+每个值指向 `assets/` 下的图片，同一张图片可以给多个键复用。菜单优先使用对应键的图标；没有单独配置时使用 `menuIcons.default`；两者都没有配置时保留内置图标。
+
+只想统一替换所有菜单图标时，配置一个 `default` 即可；需要独立图标的菜单再填写对应键。例如上面的配置会让主页使用 `menu-home.png`，其他菜单使用 `menu-default.png`。这里的 `menuIcons.default` 是默认菜单图标，与普通鼠标指针 `cursors.default` 不同。
 
 | 键 | 菜单 |
 | --- | --- |
+| `default` | 未单独配置图标的所有菜单 |
 | `home` | 主页 |
 | `scripts` | 托管管理 |
 | `plans` | 计划管理 |
@@ -202,9 +210,12 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 | `gameSign` | 游戏社区 |
 | `history` | 历史记录 |
 | `tools` | 工具 |
+| `themeStore` | 资源商店 |
 | `settings` | 设置 |
 
 开发版另有 `testRouter`、`ocrDev`、`overlayMaskDev`、`updateDownloadDev` 四个开发菜单键。
+
+`menuIcons.default` 需要客户端支持；旧版客户端若提示未知菜单键 `default`，请移除此键，改为逐个菜单配置图标。
 
 ### 光标 `cursors`
 
@@ -264,7 +275,7 @@ ZIP 里的每个文件都必须被 `theme.json` 引用，不能有多余文件�
 - 背景：<assets/background.jpg，图片偏亮 / 偏暗，主体在右下角>
 - 角落装饰：<assets/mascot.png，没有就写“无”>
 - 预览图：<preview.png，没有就写“无”>
-- 菜单图标：<例如 home → assets/menu-home.png，settings → assets/menu-settings.png；没有就写“无”>
+- 菜单图标：<例如 default → assets/menu-default.png，home → assets/menu-home.png；没有就写“无”>
 - 光标：<例如 default → assets/cursor-default.png，32×32，尖端在 (0,0)；没有就写“无”>
 
 格式要求：
@@ -274,7 +285,7 @@ ZIP 里的每个文件都必须被 `theme.json` 引用，不能有多余文件�
 4. tokens 只能包含 colorPrimary（必填）、colorBgLayout、colorBgContainer、colorBgElevated、colorText、colorTextSecondary、colorBorder、colorBorderSecondary、borderRadius。颜色一律写 #rrggbb 六位十六进制；borderRadius 是 0 到 32 的数字。正文文字与背景色的对比度至少 4.5:1。
 5. background：path 必须以 assets/ 开头；opacity、surfaceOpacity 为 0 到 1（surfaceOpacity 是卡片表面不透明度，背景图越花越要调高，建议 0.6 到 0.85）；position 写 "left"、"center" 或 "right"，可再跟空格和 "top"、"center" 或 "bottom"；size 为 "cover"、"contain" 或 "auto"。
 6. mascot：path 以 assets/ 开头；width 为 16 到 1024；opacity 为 0 到 1；position 为 "top-left"、"top-right"、"bottom-left"、"bottom-right" 之一。
-7. menuIcons 的键只能是 home、scripts、plans、emulators、queue、scheduler、gameSign、history、tools、settings。
+7. menuIcons 可用 default 设置未单独配置菜单的默认图标，也可用 home、scripts、plans、emulators、queue、scheduler、gameSign、history、tools、themeStore（资源商店）、settings 设置普通菜单的专属图标。菜单专属图标优先于 default；两者都未配置时保留内置图标。只填写我提供了图片的键。
 8. cursors 的键只能是 default、pointer、text；path 必须是 assets/ 下的 .png；hotspotX、hotspotY 为 0 到 63 的整数，并且在图片尺寸以内。
 9. 只引用我列出的文件，我写了“无”的字段整段省略，不要编造任何路径或字段。
 ```
@@ -298,10 +309,12 @@ ZIP 里的每个文件都必须被 `theme.json` 引用，不能有多余文件�
 **菜单图标**
 
 ```text
-一套 10 个风格统一的软件侧栏图标，分别表示：主页、托管管理、计划管理、模拟器管理、调度队列、调度中心、游戏社区、历史记录、工具、设置。<风格>，<主色>配色，透明背景，每个图标单独居中、大小一致，轮廓简单、线条粗，缩小到 24 像素仍能辨认。不要文字。
+一套 11 个风格统一的软件侧栏图标，分别表示：主页、托管管理、计划管理、模拟器管理、调度队列、调度中心、游戏社区、历史记录、工具、资源商店、设置。<风格>，<主色>配色，透明背景，每个图标单独居中、大小一致，轮廓简单、线条粗，缩小到 24 像素仍能辨认。不要文字。
 ```
 
 生成的通常是一整张拼图，需要逐个裁成单独的 PNG，再在 `menuIcons` 里对应到各个键。
+
+如果只需要所有菜单统一使用一个图标，也可以只生成一张通用图，配置到 `menuIcons.default`，不必为每个菜单分别准备素材。
 
 **光标**
 
