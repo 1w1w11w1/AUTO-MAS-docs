@@ -76,12 +76,35 @@ Set-Location frontend
 yarn e2e:real --grep '@real'
 ```
 
-**默认零配置**：入口读当前检出的 `config/ScriptConfig.json`，取第一个「用户已启用」的脚本与用户，并在启动日志打印选中目标。想指定账号时才需要 `AUTO_MAS_E2E_SCRIPT_ID`、`AUTO_MAS_E2E_USER_ID`、`AUTO_MAS_E2E_ACCOUNT_NAME`；目标不存在会直接报错并列出现有候选，不会静默换成别的账号。
+**默认零配置**：入口读当前检出的 `config/ScriptConfig.json`，取第一个「用户已启用」的脚本与用户，并在启动日志打印选中目标。仓库里只有代码和用例，不提供游戏资源、脚本安装包或测试账号——真实运行用的是你本机已装的脚本和 MAS 里已配好的用户。想指定账号时才需要 `AUTO_MAS_E2E_SCRIPT_ID`、`AUTO_MAS_E2E_USER_ID`、`AUTO_MAS_E2E_ACCOUNT_NAME`；目标不存在会直接报错并列出现有候选，不会静默换成别的账号。
 
 - 真实运行同样使用隔离运行根：只把被选中的脚本、用户与计划复制进去，并剥掉用户配置里的通知字段，所以不会推真实通知；对队列、设置、历史和数据库的改动随运行根删除。
 - 机器级原子锁在 `%SystemRoot%\Temp\AUTO-MAS`，同一台电脑同时只允许一个真实运行。强杀进程后残留的锁文件，确认没有测试在跑再手动删除。
 - 脚本安装目录与模拟器仍指向本机真实环境，配置注入和恢复可能改变游戏状态或消耗资源，选合适的脚本与用户再跑。
 - 它验证 MAS 公开上报的任务终态与用户结果，不等于游戏内结果全部成功；失败不可重放，报告和终端输出可能含本机信息，分享前人工检查，不要上传整个结果目录。
+
+### 批量跑全部专项
+
+```powershell
+yarn e2e:real:all --list                       # 只列本机有哪些已启用专项，不跑
+yarn e2e:real:all                              # 逐个串行跑全部专项
+yarn e2e:real:all --only MaaConfig,SrcConfig   # 只跑指定专项
+```
+
+每个专项各起一套隔离运行根、各自加锁、一份结果写到 `test-results/real-batch/<序号>-<专项>-<账号>/`，某个失败不中断其余。固定开销是每个目标重启一套服务，约 20-30 秒；不支持 `--in-place`，模拟器由各目标自己的脚本绑定决定。
+
+## 让 AI 助手跑测试
+
+助手按下面的说法执行即可，不要绕过 `run.mjs` 与 `real-batch.mjs` 直接调用 `playwright test`。
+
+| 你说 | 助手执行 |
+| --- | --- |
+| 改完 UI，看有没有跑坏 | `yarn e2e --grep '@smoke\|@<相关标签>'` |
+| 改过入口或种子规则 | `yarn e2e:check` |
+| 改到调度、任务或某个专项 | `yarn e2e:real`，或 `yarn e2e:real:all --only <专项>` |
+| 只想看本机有哪些真实目标 | `yarn e2e:real:all --list` |
+
+**PR 开出来到等 review 之间，助手必须主动把这张表交出来**：按改动路径列出相关命令、每条产出什么（截图、HTML 报告、`real-e2e-summary.json`）、然后问「要我现在跑哪条」。非真实命令助手可以直接跑；`@real` 只能作者本机跑，助手不得代为声称结果。约定见主仓 `.agents/skills/mas-e2e/SKILL.md` 与 `.agents/skills/pr/SKILL.md`。
 
 ## PR 正文怎么写验证
 
@@ -109,3 +132,4 @@ yarn e2e:real --grep '@real'
 - 主仓 `docs/testing/e2e.md`：覆盖目标、用例清单、三道合并门槛与故障排查。
 - 主仓 `.agents/skills/mas-e2e/SKILL.md`：给 AI 助手的 E2E 约定。
 - 主仓 `frontend/e2e/run.mjs` 与 `frontend/e2e/fixtures.ts`：启动器与用例公共夹具。
+- 主仓 `frontend/e2e/real-batch.mjs`：批量逐个跑各专项的真实运行入口。

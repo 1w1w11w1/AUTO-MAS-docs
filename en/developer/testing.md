@@ -76,12 +76,35 @@ Set-Location frontend
 yarn e2e:real --grep '@real'
 ```
 
-**Zero configuration by default**: the launcher reads `config/ScriptConfig.json` from the current checkout, picks the first script and user whose user is enabled, and prints the selected target at startup. Only set `AUTO_MAS_E2E_SCRIPT_ID`, `AUTO_MAS_E2E_USER_ID`, and `AUTO_MAS_E2E_ACCOUNT_NAME` when you want a specific account; a target that does not exist fails loudly with the current candidates instead of silently switching to another account.
+**Zero configuration by default**: the launcher reads `config/ScriptConfig.json` from the current checkout, picks the first script and user whose user is enabled, and prints the selected target at startup. The repository contains only code and tests: it ships no game resources, script installs, or test accounts, so a real run uses the scripts already installed on your machine and the users already configured in MAS. Only set `AUTO_MAS_E2E_SCRIPT_ID`, `AUTO_MAS_E2E_USER_ID`, and `AUTO_MAS_E2E_ACCOUNT_NAME` when you want a specific account; a target that does not exist fails loudly with the current candidates instead of silently switching to another account.
 
 - Real runs also use an isolated run root: only the selected script, user, and plans are copied in, and notification fields are stripped from the copied user, so no real notifications are sent; changes to queues, settings, history, and the database are deleted with the run root.
 - A machine-wide atomic lock lives in `%SystemRoot%\Temp\AUTO-MAS`, so only one real run per machine at a time. If a forced kill leaves a lock file, confirm nothing is running before deleting it manually.
 - Script installs and emulators still point at the real local environment; config injection and recovery can change game state or consume resources, so pick a suitable script and user.
 - It verifies the task terminal state and user result that MAS publicly reports, not every in-game step. Failures are not replayable, and reports or terminal output may contain local information; review before sharing and never upload the whole result directory.
+
+### Batch runs across every adapter
+
+```powershell
+yarn e2e:real:all --list                        # list local enabled adapters, run nothing
+yarn e2e:real:all                               # all adapters, one at a time
+yarn e2e:real:all --only MaaConfig,SrcConfig    # only the named adapters
+```
+
+Each target gets its own isolated run root and lock and writes one result under `test-results/real-batch/<n>-<adapter>-<account>/`; one failure does not stop the rest. Expect 20-30 seconds of fixed overhead per target because every target restarts the service pair. `--in-place` is rejected, and the emulator comes from each target's own script binding.
+
+## Letting an AI assistant run the tests
+
+The assistant can act on the requests below; it must not bypass `run.mjs` and `real-batch.mjs` to call `playwright test` directly.
+
+| You say | The assistant runs |
+| --- | --- |
+| UI is changed, did I break anything? | `yarn e2e --grep '@smoke\|@<related tag>'` |
+| The launcher or seed rules changed | `yarn e2e:check` |
+| Scheduling, a task, or an adapter changed | `yarn e2e:real`, or `yarn e2e:real:all --only <adapter>` |
+| Which real targets does this machine have? | `yarn e2e:real:all --list` |
+
+**Between opening a PR and the review, the assistant must hand you this table**: the commands relevant to the changed path, what each one produces (screenshots, HTML report, `real-e2e-summary.json`), and a question about which one to run now. It may run the non-real commands itself; `@real` is author-local only and the assistant must never claim a real result it did not observe. The conventions live in `.agents/skills/mas-e2e/SKILL.md` and `.agents/skills/pr/SKILL.md` in the main repository.
 
 ## What to put in a PR
 
@@ -109,3 +132,4 @@ A single passing E2E or real run only shows that scenario passes on that commit;
 - `docs/testing/e2e.md` in the main repository: coverage goals, test inventory, the three merge gates, and troubleshooting.
 - `.agents/skills/mas-e2e/SKILL.md` in the main repository: E2E conventions for AI assistants.
 - `frontend/e2e/run.mjs` and `frontend/e2e/fixtures.ts`: the launcher and the shared test fixtures.
+- `frontend/e2e/real-batch.mjs`: the entry point that runs every adapter's real flow one after another.
