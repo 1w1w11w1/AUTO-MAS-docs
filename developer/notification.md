@@ -14,12 +14,12 @@ dispatch() ← NotifyTarget / ChannelTarget（配置、能力、投递策略）
     │ 逐目标调用 render_for_target()
     ▼
 RenderedNotification（已选定的格式与内容）
-    │ NotifyChannel.send() → _SENDERS
+    │ Notify.send_channel() → NotifyChannel.send()
     ▼
-渠道适配 → Notification 服务 → SMTP / HTTP / WebSocket / 系统接口
+渠道适配 → 渠道 Sender → SMTP / HTTP / WebSocket / 系统接口
 ```
 
-这里的“中间层” `malware`包括内容渲染器和分发器
+这里的“中间层”包括内容渲染器和分发器。
 
 | 层次 | 负责 | 不负责 |
 | --- | --- | --- |
@@ -30,7 +30,7 @@ RenderedNotification（已选定的格式与内容）
 | 内容适配 | 选择格式、组合标题与签名、处理图片引用和降级 | 获取远程资源、上传图床 |
 | 渠道与服务 | 协议编码、请求组装、发送和结果判断 | 重新决定业务通知时机 |
 
-渠道适配目前分布在渠道模块与服务模块中，未来可能会改一个渠道基类(咕咕咕)
+渠道声明与传输实现位于 `app/notification_channels/<id>/`，宿主负责发现、装配与编排。
 
 ## 2. 维护位置
 
@@ -39,17 +39,21 @@ RenderedNotification（已选定的格式与内容）
 | 位置 | 用途 |
 | --- | --- |
 | `app/models/notification.py` | 内部消息、图片、能力、渲染结果与 Webhook 快照类型 |
+| `app/models/notification_channel.py` | 渠道声明、配置视图、目标与传输依赖契约 |
 | `app/core/notify.py` | 目标组装、分发、重试、任务报告与社区摘要投递状态 |
 | `app/core/notify_render.py` | 按目标能力渲染内容 |
-| `app/core/notify_channels.py` | 渠道描述表、目标构造器、能力声明与发送入口 |
-| `app/services/notification.py` | 邮件、Webhook、Koishi、系统通知等发送实现 |
+| `app/core/notify_channels.py` | 宿主渠道目录、配置视图与传输依赖装配 |
+| `app/notification_channels/` | 内置渠道清单、发现、注册与发送器绑定 |
+| `app/notification_channels/<id>/__init__.py` | 渠道设置元数据、目标构造器与单次发送适配器 |
+| `app/notification_channels/<id>/transport.py` | 渠道协议编码、发送和结果判断 |
+| `app/services/notification.py` | 持有已装配发送器，提供统一发送及系统提示、Webhook 测试的直接入口 |
 | `app/services/openclaw_qq.py` | Claw QQ 官方机器人的绑定及具体发送能力 |
 | `app/task/notify_core.py` | 专项代理结果通知的公共入口 |
 | `app/task/<专项>/tools/notify.py` | 专项通知正文与发送时机；部分专项使用子目录组织 |
 | `app/tools/community_notify.py` | 社区结果的正文、HTML、图片与摘要组合 |
 | `res/html/` | HTML 通知模板 |
 
-内部消息类型放在 `models`，供 `core` 和 `services` 共用。不允许服务反向导入通知编排，不允许把内部消息模型加入Schema。
+内部消息类型放在 `models`，供编排、渠道和服务共用。不允许渠道或服务反向导入通知编排，不允许把内部消息模型加入公开 API Schema。
 
 ## 3. 消息与图片模型
 
@@ -69,7 +73,7 @@ RenderedNotification（已选定的格式与内容）
 
 `markdown` 和 `html` 的空字符串与 `None` 不同：当前格式选择以是否为 `None` 判断，空字符串仍视为已提供该格式。
 
-通知发送者，只需要给出通知内容和参数 `serverchan_text`、`koishi_text`、`webhook_image_base64`。
+业务只提供 `NotifyPayload` 中的通用正文、摘要与图片，不传渠道专用正文或预编码图片。
 
 ### NotificationSummary
 
@@ -194,7 +198,7 @@ def build_image_notification(image_bytes: bytes) -> NotifyPayload:
 | 类型 | 可选值 | 说明 |
 | --- | --- | --- |
 | `NotificationFormat` | `"text"`、`"markdown"`、`"html"` | 正文格式；元组顺序表示选择优先级 |
-| `ImagePresentation` | `"html"`、`"markdown"`、`"base64"` | HTML 图片引用、Markdown URL 图片、由渠道编码的图片槽位 |
+| `ImagePresentation` | `"html"`、`"markdown"`、`"base64"`、`"rich_media"` | HTML 图片引用、Markdown URL 图片、由渠道编码的图片槽位、独立富媒体图片 |
 | `BodyTitlePolicy` | `"never"`、`"always"`、`"when_title_missing"` | 不补正文标题、按需补标题、模板没有标题位置且消息提供 `body_title` 时补标题 |
 
 `body_title_policy` 当前作用于非 HTML 正文；`always` 会跳过已经以 `【消息标题】` 开头的正文。HTML 的标题由模板及渠道适配处理。
@@ -215,7 +219,7 @@ def build_image_notification(image_bytes: bytes) -> NotifyPayload:
 | `cmcc` | 中国移动新消息 | 纯文本，正文带标题 |
 | `webhook` | 自定义 Webhook | 根据具体模板及地址解析格式与图片槽位 |
 | `koishi` | Koishi | HTML/文本；完整邮件文档另做适配，见下文 |
-| `openclaw_qq` | Claw QQ 官方机器人 | 纯文本，经 `openclaw_qq_manager.send()` 发送 |
+| `openclaw_qq` | Claw QQ 官方机器人 | 纯文本与独立图片，经 `openclaw_qq_manager.send()` 发送 |
 
 这张表描述当前适配实现，不代表第三方平台的全部能力。格式和图片声明不能随意组合，新增组合必须有实际发送路径。
 
@@ -251,14 +255,16 @@ def build_image_notification(image_bytes: bytes) -> NotifyPayload:
 
 ## 7. 扩展渠道
 
-1. 在 `notify_channels.py` 的渠道描述表增加设置元数据、作用域和启用字段。描述表不携带密钥值。
-2. 在 `_TARGET_BUILDERS` 注册目标构造器，生成稳定 ID、收件配置和实际支持的能力。
-3. 在 `_SENDERS` 注册发送适配器，接收 `RenderedNotification`，将结果交给服务层。
-4. 在服务层实现协议编码、发送和服务端业务结果判断；需要新发送方法时同步 `Notifier` 协议。
+1. 在 `app/notification_channels/<id>/` 新建 `manifest.json`，声明接口版本、渠道 ID、注册入口与必需依赖。清单格式见主仓 `app/notification_channels/README.md`；只加载随应用交付的可信内置渠道。
+2. 在 `__init__.py` 提供 `register() -> NotifyChannel`，声明设置元数据、作用域、启用字段，并绑定 `target_builder`、`send_adapter` 和 `sender_factory`。描述不携带密钥值；发现、注册或构造发送器时不得发送、联网或启动任务。
+3. 目标构造器只读取宿主提供的 `ChannelConfig`，按显式启用配置生成稳定 ID、收件配置与 `ChannelTarget.capabilities`。能力只保存在具体目标上，重试复用同一份目标快照。
+4. 在 `transport.py` 的发送器中实现协议编码、发送和业务结果判断，通过 `ChannelDependencies` 使用宿主注入的传输能力。发送适配器接收 `RenderedNotification`，只执行一次发送；新增发送方法时同步测试注入使用的 `Notifier` 协议。
 5. 若增加持久配置或公开 API 字段，按[配置管理](/developer/config)和 [API 开发](/developer/API)完成全链路接入，不手改生成的前端 API 文件。
 6. 验证全局/用户作用域、启用开关、空收件人、失败统计与既有渠道输出。
 
 仅新增渠道时，已有业务消息通常无需修改。确有新内容需求时，先定义与渠道无关的内容语义；不要提前增加没有消费方的能力开关或通用插件框架。
+
+业务通知使用 `dispatch()` 及相关编排入口。`Notify.push_plyer()` 和 `Notify.WebhookPush()` 仅保留系统提示与 Webhook 测试的直接发送入口，不需要再向 `Notification` 添加逐渠道转发方法。
 
 ## 8. 结果、重试与验证
 
