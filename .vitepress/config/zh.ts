@@ -92,6 +92,7 @@ export const zhThemeConfig: DefaultTheme.Config = {
                     items: [
                         { text: "开发起步", link: "getting-start" },
                         { text: "开发规范", link: "development-specifications" },
+                        { text: "测试与验证", link: "testing" },
                         { text: "仓库与 Agent 规范", link: "agent-and-repository-rules" },
                         { text: "构筑与发布", link: "build-and-publish" },
                         {
