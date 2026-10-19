@@ -152,38 +152,34 @@ def add_numbers(a: int, b: int) -> int:
 
 ### 配置类注释
 
-`ConfigBase` 的子类为 **配置类**。配置类需要为 **每一个ConfigItem** 添加解释，并根据 `Group` 做好分类。
+配置对象继承 `ConfigEntry`，按语义分组的字段块继承 `ConfigGroup`。类型注解定义字段类型，`Field` 描述默认值、约束和中文说明；分组、列表等通过 `default_factory` 为各实例独立创建。
 
+```python
+from typing import Literal
+
+from pydantic import Field
+
+from app.config import ConfigEntry, ConfigGroup
+
+
+class GlobalConfig(ConfigEntry):
+    """全局配置的声明示例。"""
+
+    class FunctionFields(ConfigGroup):
+        HistoryRetentionTime: Literal[7, 15, 30, 60, 90, 180, 365, 0] = Field(
+            default=0, description="历史记录保留天数，0 表示不清理"
+        )
+        IfAllowSleep: bool = Field(default=False, description="是否允许睡眠")
+        IfSilence: bool = Field(default=False, description="是否启用静默模式")
+
+    class NotifyFields(ConfigGroup):
+        IfSendStatistic: bool = Field(default=False, description="是否发送运行结果")
+
+    Function: FunctionFields = Field(default_factory=FunctionFields)
+    Notify: NotifyFields = Field(default_factory=NotifyFields)
 ```
-class GlobalConfig(ConfigBase):
-    """全局配置"""
-	
-	## Function ------------------------------------------------------------
-	## 历史记录保留时间
-    Function_HistoryRetentionTime = ConfigItem(
-        "Function",
-        "HistoryRetentionTime",
-        0,
-        OptionsValidator([7, 15, 30, 60, 90, 180, 365, 0]),
-    )
-	## 是否允许睡眠
-    Function_IfAllowSleep = ConfigItem(
-        "Function", "IfAllowSleep", False, BoolValidator()
-    )
-    ## 是否启用静默模式
-    Function_IfSilence = ConfigItem("Function", "IfSilence", False, BoolValidator())
-    ## 是否启用bilibili自动
-    Function_IfAgreeBilibili = ConfigItem(
-        "Function", "IfAgreeBilibili", False, BoolValidator()
-    )
-    
-    ## notify --------------------------------------------------------------
-    ## 是否发送运行结果
-    Notify_IfSendStatistic = ConfigItem(
-        "Notify", "IfSendStatistic", False, BoolValidator()
-    )
-    ......
-```
+
+配置字段及其校验规则只在配置模型声明一份，接口输入、输出契约从模型派生。运行时私有状态不作为持久化字段。完整定义方式、标准字段类型与调用约定见[配置管理](./config.md)。
 
 
 

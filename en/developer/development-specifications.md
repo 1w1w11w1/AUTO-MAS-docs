@@ -149,37 +149,41 @@ def add_numbers(a: int, b: int) -> int:
 
 ### Configuration Class Comments
 
-Subclasses of `ConfigBase` are **configuration classes**. Each **ConfigItem** in a configuration class needs an explanation and should be grouped by `Group`.
+Configuration objects inherit from `ConfigEntry`, and semantic field blocks
+inherit from `ConfigGroup`. Type annotations define field types, while
+`Field` describes defaults, constraints, and Chinese descriptions. Use
+`default_factory` so groups and lists are independent for each instance.
 
 ```python
-class GlobalConfig(ConfigBase):
-    """Global configuration."""
+from typing import Literal
 
-    ## Function ------------------------------------------------------------
-    ## History retention time
-    Function_HistoryRetentionTime = ConfigItem(
-        "Function",
-        "HistoryRetentionTime",
-        0,
-        OptionsValidator([7, 15, 30, 60, 90, 180, 365, 0]),
-    )
-    ## Whether sleep is allowed
-    Function_IfAllowSleep = ConfigItem(
-        "Function", "IfAllowSleep", False, BoolValidator()
-    )
-    ## Whether silent mode is enabled
-    Function_IfSilence = ConfigItem("Function", "IfSilence", False, BoolValidator())
-    ## Whether Bilibili automation is enabled
-    Function_IfAgreeBilibili = ConfigItem(
-        "Function", "IfAgreeBilibili", False, BoolValidator()
-    )
+from pydantic import Field
 
-    ## notify --------------------------------------------------------------
-    ## Whether to send runtime result
-    Notify_IfSendStatistic = ConfigItem(
-        "Notify", "IfSendStatistic", False, BoolValidator()
-    )
+from app.config import ConfigEntry, ConfigGroup
+
+
+class GlobalConfig(ConfigEntry):
+    """Example declaration of global configuration."""
+
+    class FunctionFields(ConfigGroup):
+        HistoryRetentionTime: Literal[7, 15, 30, 60, 90, 180, 365, 0] = Field(
+            default=0, description="History retention in days; 0 means no cleanup"
+        )
+        IfAllowSleep: bool = Field(default=False, description="Whether sleep is allowed")
+        IfSilence: bool = Field(default=False, description="Whether silent mode is enabled")
+
+    class NotifyFields(ConfigGroup):
+        IfSendStatistic: bool = Field(default=False, description="Whether to send runtime results")
+
+    Function: FunctionFields = Field(default_factory=FunctionFields)
+    Notify: NotifyFields = Field(default_factory=NotifyFields)
 ```
+
+Configuration fields and their validation rules are declared once in the
+configuration model. API input and output contracts are derived from that
+model. Runtime private state is not persisted. See
+[Configuration Management](./config.md) for field types and calling
+conventions.
 
 ## Backend Function Calls
 
