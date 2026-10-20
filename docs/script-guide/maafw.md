@@ -29,14 +29,20 @@ MaaFramework 生态里的项目都长一个样：一份 `interface.json` 声明�
 若你的脚本打开是以上三种之一的样式那大概率就属于maafw了
 
 </details>
+
 AUTO-MAS 的 MFW 脚本直接读 `interface.json`，使用项目资源与可用的运行环境，按你排好的任务队列运行。它提供通用接入方式；能否顺利运行，还取决于项目的发行包、控制器和 Agent 是否适合当前电脑。
 
-比如 MaaEnd、识宝、M9A、MPA 等，都是 MFW 生态里的项目。下图还能找到更多例子。
+比如 MaaEnd、识宝、M9A、MPA 等，都是 [MFW 生态](https://github.com/MaaXYZ/MaaFramework#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)[里的项目](https://maafw.com/community/projects#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)
 
-因为 M9A 过于权威，因此下面用它走一遍配置流程。页面会随开发调整，具体以你使用的版本为准。
+<details>
+<summary style="color:#3b82f6">MaaFramework 生态项目列表</summary>
 
-![MaaFramework 生态项目列表之一](../img/script-guide/maafw/Pasted%20image%2020260929154219.png)
-![MaaFramework 生态项目列表之二](../img/script-guide/maafw/Pasted%20image%2020260929154309.png)
+   此图更新于2026年10月20日21:39:36
+![MaaFramework 生态项目列表](../img/script-guide/maafw/社区项目长图.png)
+
+</details>
+
+由于 [M9A](https://github.com/MAA1999/M9A) 的权威性，因此下面用它走一遍配置流程。页面会随开发调整，**文档更新可能不及时，具体请以使用的版本为准**
 
 ## 配置项目
 
