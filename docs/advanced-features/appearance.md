@@ -150,6 +150,7 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 | 字段 | 必填 | 作用 |
 | --- | --- | --- |
 | `colorPrimary` | 是 | 主色：按钮、选中项、链接 |
+| `colorPageTitle` | 否 | 页面大标题的独立颜色，如托管管理、计划管理和模拟器管理；不影响按钮、菜单、正文或卡片标题 |
 | `colorBgLayout` | 否 | 页面底色 |
 | `colorBgContainer` | 否 | 卡片、输入框等容器底色 |
 | `colorBgElevated` | 否 | 标题栏、侧栏、弹窗、下拉菜单的底色 |
@@ -159,7 +160,26 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 | `colorBorderSecondary` | 否 | 分割线等浅边框 |
 | `borderRadius` | 否 | 圆角，0 到 32 的数字 |
 
-省略的颜色按 `mode` 和 `colorPrimary` 自动推算。
+除 `colorPageTitle` 外，省略的颜色按 `mode` 和 `colorPrimary` 自动推算。
+
+#### 单独设置页面大标题色
+
+浅色主题色叠加背景图时，大标题可能不够醒目。可以保留原来的按钮配色，另外给页面大标题选择更清晰的颜色：
+
+```json
+"tokens": {
+  "colorPrimary": "#548466",
+  "colorPageTitle": "#244a38"
+}
+```
+
+`colorPageTitle` 只影响页面顶部的大标题，不会修改首页问候语、窗口标题或卡片标题。省略这个字段时，各页保留原来的效果：原本使用主题色渐变的页面继续使用渐变，原本使用文字色的页面继续使用文字色。旧主题无需补字段；删除该字段即可恢复原样。
+
+::: tip 客户端兼容
+独立标题色需要使用支持 `colorPageTitle` 的客户端。较旧客户端会忽略这个字段，其他配色和图片仍可使用；经旧客户端导入、再导出主题包时，此字段不会被保留。
+:::
+
+使用 [MAS 主题工坊](https://github.com/jinghero/AUTO-MAS-Theme-Studio) 时，在「配色与背景」勾选「单独设置页面标题色」，选好颜色后点击「预览页面标题」。取消勾选会移除该字段；切换模式或配色灵感会保留独立标题色，恢复 MAS 默认配色会清除。操作示例见工坊的[图文指南](https://github.com/jinghero/AUTO-MAS-Theme-Studio/blob/main/guide.md)。
 
 ### 背景 `background`
 
@@ -174,6 +194,8 @@ my-appearance/              ← 这一层只是你的工作目录，不进 ZIP
 | `size` | `cover` | `cover` 铺满（会裁切）、`contain` 完整显示（会留边）、`auto` 原始尺寸 |
 
 文字、图标、按钮和输入框不会跟着变透明；弹窗、抽屉和下拉菜单保持不透明。只有提供了背景图片才启用透明表面，纯配色的外观包沿用正常背景。
+
+模拟器管理、资源商店和账号编辑页也遵循这套表面不透明度规则：页面外层透出背景，内容卡片按 `surfaceOpacity` 显示；卡片内的内容面板避免重复叠加底色。未设置背景图时保留原有底色。
 
 ### 角落装饰 `mascot`
 
@@ -282,7 +304,7 @@ ZIP 里的每个文件都必须被 `theme.json` 引用，不能有多余文件�
 1. formatVersion 固定为 1。
 2. id 只用小写字母、数字、下划线、短横线，以字母或数字开头，64 字以内；name 80 字以内；description 300 字以内。
 3. mode 为 "light" 或 "dark"，必须和背景图的明暗一致。
-4. tokens 只能包含 colorPrimary（必填）、colorBgLayout、colorBgContainer、colorBgElevated、colorText、colorTextSecondary、colorBorder、colorBorderSecondary、borderRadius。颜色一律写 #rrggbb 六位十六进制；borderRadius 是 0 到 32 的数字。正文文字与背景色的对比度至少 4.5:1。
+4. tokens 只能包含 colorPrimary（必填）、colorPageTitle、colorBgLayout、colorBgContainer、colorBgElevated、colorText、colorTextSecondary、colorBorder、colorBorderSecondary、borderRadius。颜色一律写 #rrggbb 六位十六进制；borderRadius 是 0 到 32 的数字。正文文字与背景色的对比度至少 4.5:1。仅在明确要求独立页面标题色时填写 colorPageTitle，否则省略以保留原来的渐变或文字色；它不影响按钮、菜单和卡片标题，需搭配支持该字段的客户端。
 5. background：path 必须以 assets/ 开头；opacity、surfaceOpacity 为 0 到 1（surfaceOpacity 是卡片表面不透明度，背景图越花越要调高，建议 0.6 到 0.85）；position 写 "left"、"center" 或 "right"，可再跟空格和 "top"、"center" 或 "bottom"；size 为 "cover"、"contain" 或 "auto"。
 6. mascot：path 以 assets/ 开头；width 为 16 到 1024；opacity 为 0 到 1；position 为 "top-left"、"top-right"、"bottom-left"、"bottom-right" 之一。
 7. menuIcons 可用 default 设置未单独配置菜单的默认图标，也可用 home、scripts、plans、emulators、queue、scheduler、gameSign、history、tools、themeStore（资源商店）、settings 设置普通菜单的专属图标。菜单专属图标优先于 default；两者都未配置时保留内置图标。只填写我提供了图片的键。
