@@ -16,15 +16,15 @@ MaaFramework 生态里的项目都长一个样：一份 `interface.json` 声明�
    打开软件后若呈现的是以下几款UI那该脚本大概率是MaaFramework的
    [MFAAvalonia：](https://github.com/MaaXYZ/MFAAvalonia)
 
-   ![阿瓦隆](../img/script-guide\maafw\maafw_UI\MFAAvalonia.png)
+   ![阿瓦隆](../img/script-guide/maafw/maafw_UI/MFAAvalonia.png)
 
    [MFW-PyQt6：](https://github.com/overflow65537/MFW-PyQt6)
 
-   ![CFA](../img/script-guide\maafw\maafw_UI\CFA.png)
+   ![CFA](../img/script-guide/maafw/maafw_UI/CFA.png)
 
    [MXU：](https://github.com/MistEO/MXU)
 
-   ![Maa_end](../img/script-guide\maafw\maafw_UI\MXU.png)
+   ![Maa_end](../img/script-guide/maafw/maafw_UI/MXU.png)
 
 若你的脚本打开是以上三种之一的样式那大概率就属于maafw了
 
