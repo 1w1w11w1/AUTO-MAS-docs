@@ -54,7 +54,7 @@ AUTO-MAS 的 MFW 脚本直接读 `interface.json`，使用项目资源与可用�
 3. 看好用来选进 AUTO-MAS 的那一级目录，应当直接包含 `interface.json`，而不是再套一层文件夹，一般就在项目安装目录里，未被其他文件夹包裹
 以 M9A 为例，在项目目录里看到 `interface.json` 就找对了：
 
-![M9A 项目目录中的 interface.json](../img/script-guide/maafw/856c4fd2ef2f34a511c37ff1a8965cf3.png)
+![M9A 项目目录中的 interface.json](../img/script-guide/maafw/M9A目录中的interface示例.png)
 
 ::: warning 注意
 通常不需要先打开项目自己的界面；已经打开过也没有问题。
@@ -66,35 +66,35 @@ AUTO-MAS 的 MFW 脚本直接读 `interface.json`，使用项目资源与可用�
 
 1. 进入 **脚本管理**，单击 **新建脚本**，选择 **MFW 脚本**。这里选通用 MFW 是为了演示自动识别；直接选择 **M9A 脚本**也对。
 
-   ![在新建脚本窗口选择 MFW 脚本](../img/script-guide/maafw/QQ_1790689642784.png)
+   ![在新建脚本窗口选择 MFW 脚本](../img/script-guide/maafw/在新建脚本窗口选择%20MFW%20脚本.png)
 
 2. 选择项目来源：第一次使用这个项目就选 **新建一个别的项目**；之前导入过，则可以在下面复用。复用时沿用已管理的项目文件，更节约空间，用户和运行设置仍是新脚本自己的。
 
-   ![选择新项目或复用已导入的项目](../img/script-guide/maafw/Pasted%20image%2020260929154825.png)
+   ![选择新项目或复用已导入的项目](../img/script-guide/maafw/选择新项目或复用已导入项目.png)
 
 3. 新建项目时，在 **项目目录** 处单击 **选择本地目录**，选中刚才那个包含 `interface.json` 的目录。
 
-   ![选择包含 interface.json 的项目目录](../img/script-guide/maafw/QQ_1790689818247.png)
+   ![选择包含 interface.json 的项目目录](../img/script-guide/maafw/选择包含%20interface%20的项目目录.png)
 
    目录选到含有 `interface.json` 的这一级：
 
-   ![M9A 项目目录示例](../img/script-guide/maafw/Pasted%20image%2020260929154809.png)
+   ![M9A 项目目录示例](../img/script-guide/maafw/M9A项目目录示例.png)
 
 4. 等待导入完成，再检查项目概览和 **运行环境** 面板。首次准备可能需要几分钟：先扫描项目文件，再复制运行需要的内容。
 
    **扫描项目目录：**
 
-   ![正在扫描项目目录](../img/script-guide/maafw/Screenshot%202026-09-29%20155039.png)
+   ![正在扫描项目目录](../img/script-guide/maafw/正在扫描项目目录.png)
 
    **复制项目文件：**
 
-   ![项目文件复制完成](../img/script-guide/maafw/Screenshot%202026-09-29%20155044.png)
+   ![项目文件复制完成](../img/script-guide/maafw/项目文件复制完成.png)
 
 因为导入的是 M9A，脚本会自动识别成 M9A 类型；其他未被风味专项认领的项目会继续显示为通用 MFW。页面随后显示的是 MAS 内部的项目目录，运行也从这里读取项目文件。
 
 **所以你可以同时运行 MAS 里的 M9A 和原来的 M9A；确认导入成功、试跑正常后，也可以删掉原目录节约空间。**需要重新导入或重建副本时，仍要有来源目录。
 
-![M9A 导入后自动识别类型与运行环境](../img/script-guide/maafw/Pasted%20image%2020260929155105.png)
+![M9A 导入后自动识别类型与运行环境](../img/script-guide/maafw/M9A导入后识别类型与运行环境.png)
 
 ### 控制方式、更新与运行配置
 
@@ -102,19 +102,19 @@ AUTO-MAS 的 MFW 脚本直接读 `interface.json`，使用项目资源与可用�
 
 **ADB 与模拟器：**
 
-![ADB 控制与模拟器配置示例](../img/script-guide/maafw/Pasted%20image%2020260929155303.png)
+![ADB 控制与模拟器配置示例](../img/script-guide/maafw/ADB控制与模拟器配置示例.png)
 
 **Win32 与 PC 游戏：**
 
-![Win32 控制与 PC 游戏启动配置示例](../img/script-guide/maafw/Pasted%20image%2020260929155322.png)
+![Win32 控制与 PC 游戏启动配置示例](../img/script-guide/maafw/Win32控制与PC游戏启动配置示例.png)
 
 PS：**尝试修改 Unity 类游戏分辨率**会在 MAS 启动游戏前临时修改游戏的注册表设置，结束后还原。提供了两种常用分辨率；分辨率较低时，对电脑性能的要求也较低。
 
-![Unity 游戏分辨率选项](../img/script-guide/maafw/Pasted%20image%2020260929155434.png)
+![Unity 游戏分辨率选项](../img/script-guide/maafw/Unity游戏分辨率选项.png)
 
 项目更新这一步可选择是否自动更新、更新源和更新通道。众所周知的原因，GitHub 更新速度可能较慢；若设为运行前自动更新，就要给下载留足时间。大项目如 MaaFGO，解压和盘点也会花些时间，请耐心等待，有问题及时反馈。
 
-![项目更新设置与检查更新入口](../img/script-guide/maafw/Pasted%20image%2020260929155532.png)
+![项目更新设置与检查更新入口](../img/script-guide/maafw/项目更新设置与检查更新入口.png)
 
 最后看一下运行配置。这里的**单次运行时间限制是硬超时**：MFW 项目直接运行在 MAS 上，运行异常时 MAS 能感知到；硬超时用于防止任务一直循环。
 
@@ -122,11 +122,11 @@ PS：**尝试修改 Unity 类游戏分辨率**会在 MAS 启动游戏前临时�
 
 **导入已有配置：**
 
-![导入项目已有配置为用户](../img/script-guide/maafw/Pasted%20image%2020260929155702.png)
+![导入项目已有配置为用户](../img/script-guide/maafw/导入已有配置为用户.png)
 
 **从空用户开始：**
 
-![不导入已有配置并创建用户](../img/script-guide/maafw/Pasted%20image%2020260929155828.png)
+![不导入已有配置并创建用户](../img/script-guide/maafw/不导入已有配置并创建用户.png)
 
 ### 配置第一个用户
 
@@ -136,23 +136,23 @@ PS：**尝试修改 Unity 类游戏分辨率**会在 MAS 启动游戏前临时�
 
 以 M9A 为例，风味专项会比通用 MFW 多一些适配：在官服资源下填写 **账号**，运行时会自动加入“切换账号”任务；其他资源不一定支持。**密码仅供本地记录，不会传给脚本。**
 
-![M9A 用户信息、账号与任务队列](../img/script-guide/maafw/QQ_1790690364524.png)
+![M9A 用户信息、账号与任务队列](../img/script-guide/maafw/M9A用户信息账号与任务队列.png)
 
 任务可以逐个添加，也可以应用项目资源里的预设模板快速填入。接下来逐项调整任务选项即可，修改会实时保存。
 
-![任务队列与任务选项](../img/script-guide/maafw/Pasted%20image%2020260929160218.png)
+![任务队列与任务选项](../img/script-guide/maafw/任务队列与任务选项.png)
 
 有些项目还会在任务说明中附图：
 
-![任务中的项目说明图片](../img/script-guide/maafw/Pasted%20image%2020260929160245.png)
+![任务中的项目说明图片](../img/script-guide/maafw/任务中的项目说明图片.png)
 
 任务说明里的图片**支持点击放大**
 
 ::: tip 彩蛋
 我们还藏了一些彩蛋，比如识宝导入后的脚本名称和 tag～
 
-![识宝项目引导中的名称](../img/script-guide/maafw/Pasted%20image%2020260929160538.png)
-![识宝脚本列表中的名称和 tag](../img/script-guide/maafw/Pasted%20image%2020260929160548.png)
+![识宝项目引导中的名称](../img/script-guide/maafw/识宝项目引导中的名称.png)
+![识宝脚本列表中的名称和 tag](../img/script-guide/maafw/识宝脚本列表中的名称和tag.png)
 
 至于头像和卫星，下次一定.jpg
 :::
