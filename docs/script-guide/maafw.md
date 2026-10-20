@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 -->
 # MFW 项目配置方法
 
 ::: tip 提示
@@ -8,6 +9,26 @@
 
 MaaFramework 生态里的项目都长一个样：一份 `interface.json` 声明控制器、资源和任务，一个 `resource/` 目录放识别用的图片与流程，有的还带一个 Agent（Python 脚本或可执行文件）处理复杂逻辑，外面再套一层界面程序。
 
+<details>
+
+<summary style="color:#3b82f6">快速根据UI辨认(纯懒小白向)</summary>
+
+   打开软件后若呈现的是以下几款UI那该脚本大概率是MaaFramework的
+   [MFAAvalonia：](https://github.com/MaaXYZ/MFAAvalonia)
+
+   ![阿瓦隆](../img/script-guide\maafw\maafw_UI\MFAAvalonia.png)
+
+   [MFW-PyQt6：](https://github.com/overflow65537/MFW-PyQt6)
+
+   ![CFA](../img/script-guide\maafw\maafw_UI\CFA.png)
+
+   [MXU：](https://github.com/MistEO/MXU)
+
+   ![Maa_end](../img/script-guide\maafw\maafw_UI\MXU.png)
+
+若你的脚本打开是以上三种之一的样式那大概率就属于maafw了
+
+</details>
 AUTO-MAS 的 MFW 脚本直接读 `interface.json`，使用项目资源与可用的运行环境，按你排好的任务队列运行。它提供通用接入方式；能否顺利运行，还取决于项目的发行包、控制器和 Agent 是否适合当前电脑。
 
 比如 MaaEnd、识宝、M9A、MPA 等，都是 MFW 生态里的项目。下图还能找到更多例子。
