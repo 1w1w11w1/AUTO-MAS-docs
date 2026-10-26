@@ -210,20 +210,18 @@ yarn dev
 ```powershell [PowerShell]
 cd frontend
 $env:AUTO_MAS_RUNTIME_MODE = "off"
-uv run --locked pwsh -NoProfile -Command "yarn dev:fullstack"
+yarn dev:fullstack
 ```
 
 ```bash [Bash]
 cd frontend
 export AUTO_MAS_RUNTIME_MODE=off
-uv run --locked bash -c "yarn dev:fullstack"
+yarn dev:fullstack
 ```
 
 :::
 
-该命令会运行本地 `main.py`、Vite 开发服务器和 Electron 开发窗口，并在 `36164` 上的后端就绪后打开窗口。uv 会从 `frontend` 找到上一级的 Python 项目，让子进程使用仓库的 `.venv`；再通过对应的 Shell 调用 Yarn，以兼容 Corepack 安装的 Yarn 启动脚本。
-
-`dev:fullstack` 中的后端脚本仍调用 `python`，因此请保留外层 `uv run`，以免使用系统 Python。
+该命令会运行本地 `main.py`、Vite 开发服务器和 Electron 开发窗口，并在 `36164` 上的后端就绪后打开窗口。`dev:fullstack` 会通过 `uv run --project .. --locked` 启动后端，自动使用仓库的 `.venv`，无需在外层再运行 uv。
 
 
 ##  项目结构

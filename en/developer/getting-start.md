@@ -208,20 +208,18 @@ Open a terminal at the repository root and run:
 ```powershell [PowerShell]
 cd frontend
 $env:AUTO_MAS_RUNTIME_MODE = "off"
-uv run --locked pwsh -NoProfile -Command "yarn dev:fullstack"
+yarn dev:fullstack
 ```
 
 ```bash [Bash]
 cd frontend
 export AUTO_MAS_RUNTIME_MODE=off
-uv run --locked bash -c "yarn dev:fullstack"
+yarn dev:fullstack
 ```
 
 :::
 
-This runs local `main.py`, the Vite dev server, and the Electron development window, opening the window after the backend on port `36164` is ready. uv discovers the Python project in the parent of `frontend` and makes the repository's `.venv` available to child processes. Invoking Yarn through the corresponding shell supports the Yarn launcher scripts installed by Corepack.
-
-The backend script inside `dev:fullstack` still calls `python`, so keep the outer `uv run` command to ensure it uses the project environment.
+This runs local `main.py`, the Vite dev server, and the Electron development window, opening the window after the backend on port `36164` is ready. `dev:fullstack` starts the backend with `uv run --project .. --locked`, which uses the repository's `.venv`; no outer uv command is needed.
 
 ## Project Structure
 
