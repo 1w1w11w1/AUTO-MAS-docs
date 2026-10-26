@@ -36,16 +36,39 @@ async def my_endpoint(request: MyRequest):
 
 1. **Start the backend**
 
-```bash
-python main.py
+Complete [backend environment setup](./getting-start.md#_2-backend-environment-setup) first: create the root `.env` marker and run `uv sync --locked`. From the repository root, run:
+
+::: code-group
+
+```powershell [PowerShell]
+uv run --locked python main.py
 ```
+
+```bash [Bash]
+uv run --locked python main.py
+```
+
+:::
+
+Keep the backend running. Development defaults to port `36164`; `yarn openapi` reads the API definition from `http://127.0.0.1:36164/openapi.json`.
 
 2. **Generate frontend code with openapi-generator-typescript**
 
-```bash
+Open another terminal at the repository root:
+
+::: code-group
+
+```powershell [PowerShell]
 cd frontend
 yarn openapi
 ```
+
+```bash [Bash]
+cd frontend
+yarn openapi
+```
+
+:::
 
 If there is no output, generation has completed. If an error occurs, read the error message.
 
@@ -54,9 +77,7 @@ If there is no output, generation has completed. If an error occurs, read the er
 :::
 
 ::: warning Note
-If you are reading this while developing a new API, remember that when you run `yarn dev` directly, the frontend actually uses backend code from the GitHub `dev` branch, not your current local backend.
-
-To test your API from the frontend, start the local backend first, then run the frontend. See [using a local backend](/en/developer/getting-start).
+When debugging a new API, connect to the local backend running from your current checkout. Running `yarn dev` alone does not execute the uv sync or local backend startup commands above. Follow [Start Backend and Frontend Separately](./getting-start.md#_4-1-start-backend-and-frontend-separately), or use the combined startup command on that page.
 :::
 
 ## 4. Call the API from the Frontend

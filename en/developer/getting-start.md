@@ -7,7 +7,8 @@ Welcome to AUTO-MAS development. This document helps you quickly set up the deve
 ### Backend
 
 - **Python**: 3.12.x
-- **Web framework**: FastAPI 0.116.1
+- **Environment and dependency management**: uv (`pyproject.toml` + `uv.lock`)
+- **Web framework**: FastAPI
 - **Realtime communication**: WebSockets 15.0.1
 - **Logging**: Loguru 0.7.3
 - **Image processing**: OpenCV, Pillow, PyAutoGUI
@@ -17,8 +18,8 @@ Welcome to AUTO-MAS development. This document helps you quickly set up the deve
 
 - **Framework**: Vue 3 + TypeScript
 - **UI component library**: Ant Design Vue 4.x
-- **Desktop**: Electron 37.x
-- **Build tool**: Vite 7.x
+- **Desktop**: Electron
+- **Build tool**: Vite Plus (Vite)
 - **Routing**: Vue Router 4
 - **State management**: Pinia 3.x
 
@@ -26,12 +27,12 @@ Welcome to AUTO-MAS development. This document helps you quickly set up the deve
 
 ### Required Software
 
-1. **Python 3.12.x**
-   - Download: https://www.python.org/downloads/
-   - Make sure **Add Python to PATH** is selected.
-2. **Node.js 18+**
+1. **uv**
+   - Follow the [official uv installation guide](https://docs.astral.sh/uv/getting-started/installation/). On Windows, run `winget install --id=astral-sh.uv -e`, then reopen your terminal.
+   - The root `.python-version` file selects the Python version (currently 3.12.13). uv downloads it if it is missing, so a separate Python installation is not required.
+2. **Node.js 22.18+**
    - Download: https://nodejs.org/
-   - LTS is recommended.
+   - Node.js 24 LTS is recommended, matching the current frontend checks.
 3. **Yarn** (recommended)
    - The project uses Yarn 4. Enable it through Corepack: `corepack enable`
    - After entering `frontend`, you can directly use the Yarn version declared by the repository.
@@ -42,12 +43,25 @@ Welcome to AUTO-MAS development. This document helps you quickly set up the deve
 
 ## Quick Start
 
+Commands below are provided for both PowerShell and Bash. Select the tab matching your terminal. Run commands from the repository root unless a step explicitly enters `frontend`.
+
 ### 1. Clone the Project
 
-```bash
-git clone https://github.com/AUTO-MAS-Project/AUTO-MAS.git
+::: code-group
+
+```powershell [PowerShell]
+git clone --branch dev https://github.com/AUTO-MAS-Project/AUTO-MAS.git
 cd AUTO-MAS
 ```
+
+```bash [Bash]
+git clone --branch dev https://github.com/AUTO-MAS-Project/AUTO-MAS.git
+cd AUTO-MAS
+```
+
+:::
+
+Before making changes, create a development branch from the latest upstream `dev` as described in the [development specifications](./development-specifications.md).
 
 ::: tip Agent Development Prerequisite
 
@@ -57,34 +71,77 @@ If an AI assistant participates in development, first confirm that the main repo
 
 ### 2. Backend Environment Setup
 
-1. **Create a virtual environment (recommended)**
+1. **Create the local development marker**
 
-```powershell
-# Windows PowerShell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+::: code-group
+
+```powershell [PowerShell]
+if (-not (Test-Path -LiteralPath .env)) {
+    Copy-Item -LiteralPath .env.example -Destination .env
+}
 ```
 
-2. **Install Python dependencies**
-
-```bash
-pip install -r requirements.txt
+```bash [Bash]
+if [ ! -e .env ]; then
+    cp .env.example .env
+fi
 ```
+
+:::
+
+`.env` is not tracked by Git. It marks the checkout as a development environment: the backend defaults to port `36164`, does not send errors or performance data to Sentry, and does not request administrator privileges automatically. Do not skip this step, or a backend started directly from source will use production behavior.
+
+2. **Sync the Python environment and dependencies**
+
+::: code-group
+
+```powershell [PowerShell]
+uv --version
+uv sync --locked
+```
+
+```bash [Bash]
+uv --version
+uv sync --locked
+```
+
+:::
+
+uv selects Python from `.python-version`, creates or reuses `.venv` in the repository root, and installs dependencies from `uv.lock`. The development dependency group, including Ruff and pytest, is installed by default. `--locked` checks that the lockfile matches `pyproject.toml` without rewriting it.
+
+Use `pyproject.toml` and `uv.lock` for development. You do not need to create or activate a virtual environment manually or run `pip install -r requirements.txt`. Select `.venv\Scripts\python.exe` as your IDE's Python interpreter. Run `uv sync --locked` again after pulling code to sync dependencies.
 
 ### 3. Frontend Environment Setup
 
 **Enter the frontend directory and install dependencies**
 
-```bash
+::: code-group
+
+```powershell [PowerShell]
 cd frontend
 yarn install
 ```
 
+```bash [Bash]
+cd frontend
+yarn install
+```
+
+:::
+
 If the Electron binary download is slow or fails, use npmmirror for a one-shot install:
 
-```bash
+::: code-group
+
+```powershell [PowerShell]
 yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
 ```
+
+```bash [Bash]
+yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
+```
+
+:::
 
 This command sets the download source only for this `yarn install` run and does not change global configuration.
 
@@ -92,60 +149,79 @@ This command sets the download source only for this `yarn install` run and does 
 
 ::: tip Administrator Privileges
 
-Both the AUTO-MAS backend and frontend need to run with administrator privileges. Without administrator privileges, the app will ask to restart.
+Run your terminal or IDE as administrator when debugging features that require elevated access, such as game or emulator control. A local backend with the `.env` marker will not elevate itself.
 
 If you use a JetBrains IDE or VS Code, start the IDE as administrator so terminals opened inside it also have administrator privileges.
 
-You can also use `sudo` where available.
+:::
+
+Both options below run backend code from your current local checkout. Choose one.
+
+#### 4.1 Start Backend and Frontend Separately
+
+1. **Start the backend service from the repository root**
+
+::: code-group
+
+```powershell [PowerShell]
+uv run --locked python main.py
+```
+
+```bash [Bash]
+uv run --locked python main.py
+```
 
 :::
 
-#### 4.1 Use Remote Backend Code
-
-**Enter the frontend directory and start the development server**
-
-```bash
-cd frontend
-yarn dev
-```
-
-The frontend dev server starts at `http://localhost:5173`, and the Electron window opens automatically.
-
-The frontend automatically initializes the backend. The backend comes from the GitHub **dev** branch, and local backend files are under `frontend/node_modules/electron/dist`.
-
-#### 4.2 Use Local Backend Code
-
-Method 1: start backend and frontend separately.
-
-1. **Start the backend service**
-
-```bash
-python main.py
-```
-
-The backend starts at `http://localhost:36163`. Visit `http://localhost:36163/docs` to view API documentation.
+With `.env` in place, the backend defaults to `http://127.0.0.1:36164`. Visit `http://127.0.0.1:36164/docs` for API documentation. Keep this terminal running. Installed releases default to port `36163`, so both instances can run at the same time.
 
 2. **Start the frontend service**
 
-Open a new terminal window for the frontend service:
+Open a new terminal at the repository root:
 
-```bash
+::: code-group
+
+```powershell [PowerShell]
 cd frontend
+$env:AUTO_MAS_RUNTIME_MODE = "off"
 yarn dev
 ```
 
-3. **Skip backend startup**
-
-Because you already opened a backend for development, frontend initialization will fail at the `Start backend` step. Select `Skip backend startup` to enter the application normally. The frontend will use the backend service started in your earlier terminal window.
-
-Method 2: use the frontend script to start local backend and frontend together.
-
-```bash
+```bash [Bash]
 cd frontend
-yarn dev:fullstack
+export AUTO_MAS_RUNTIME_MODE=off
+yarn dev
 ```
 
-This command runs local `main.py`, the Vite dev server, and the Electron development window. It is suitable when you need to debug frontend-backend interaction.
+:::
+
+The frontend dev server starts at `http://localhost:5173`, and the Electron window opens automatically. The frontend reuses the running development backend when its version matches. Setting the Runtime launch mode to `off` leaves the local backend under terminal control; this environment variable affects only the current terminal and its child processes.
+
+Running `yarn dev` alone does not execute the uv sync or local backend startup commands above. Confirm that the backend has started successfully instead of following the old flow of waiting for startup to fail and then skipping it.
+
+#### 4.2 Start Backend and Frontend Together
+
+Open a terminal at the repository root and run:
+
+::: code-group
+
+```powershell [PowerShell]
+cd frontend
+$env:AUTO_MAS_RUNTIME_MODE = "off"
+uv run --locked pwsh -NoProfile -Command "yarn dev:fullstack"
+```
+
+```bash [Bash]
+cd frontend
+export AUTO_MAS_RUNTIME_MODE=off
+uv run --locked bash -c "yarn dev:fullstack"
+```
+
+:::
+
+This runs local `main.py`, the Vite dev server, and the Electron development window, opening the window after the backend on port `36164` is ready. uv discovers the Python project in the parent of `frontend` and makes the repository's `.venv` available to child processes. Invoking Yarn through the corresponding shell supports the Yarn launcher scripts installed by Corepack.
+
+The backend script inside `dev:fullstack` still calls `python`, so keep the outer `uv run` command to ensure it uses the project environment.
 
 ## Project Structure
 
@@ -208,26 +284,34 @@ AUTO-MAS/
 │   └── sounds/                   # Sound effects
 │
 ├── main.py                       # Backend entry point
-├── requirements.txt              # Python dependencies
+├── .env.example                  # Local development marker template
+├── .python-version               # Python version used by uv
+├── pyproject.toml                # Python project and dependency declarations
+├── uv.lock                       # Python dependency lockfile
+├── requirements.txt              # Dependencies for the legacy install path
 └── README.md                     # Project description
 ```
 
 ## FAQ
 
-### Q: Python virtual environment activation fails
+### Q: Do I still need to activate the Python virtual environment?
 
-**A**: If PowerShell reports an execution policy error:
+**A**: No. Start the backend in the project environment with `uv run --locked python main.py`. Select `.venv\Scripts\python.exe` as your IDE's interpreter.
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
+### Q: The uv command cannot be found
+
+**A**: Reopen your terminal after installing uv, then run `uv --version`. If it is still unavailable, check that its installation directory is on PATH using the [official uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+### Q: uv sync --locked says the lockfile needs updating
+
+**A**: First confirm that `pyproject.toml`, `uv.lock`, and `.python-version` come from the same checkout. If you intentionally changed dependency declarations, run `uv lock` from the repository root, then verify with `uv sync --locked`. Commit the dependency declarations and lockfile together. Do not delete `uv.lock` to bypass the error.
 
 ### Q: yarn install fails
 
 **A**: Try:
 
 1. Clear cache: `yarn cache clean`
-2. Delete `node_modules` and `yarn.lock`
+2. Delete `node_modules`, keeping the repository's `yarn.lock`
 3. Install again: `yarn install`
 4. If the Electron binary download is slow or fails, install once through the mirror:
    `yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install`
@@ -236,7 +320,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **A**: AUTO-MAS requires administrator privileges. Run as administrator:
 
-- Right-click CMD/PowerShell and select **Run as administrator**
+- Open PowerShell or Git Bash as administrator
 - Or start VS Code as administrator
 
 ### Q: Electron window cannot open
@@ -244,7 +328,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **A**: Check:
 
 1. Whether the frontend dev server is running normally at `http://localhost:5173`
-2. Whether the backend service is running normally at `http://localhost:36163`
+2. Whether the backend is available at `http://127.0.0.1:36164/docs` and `.env` exists in the repository root
 3. Error output in the terminal
 
 ## License

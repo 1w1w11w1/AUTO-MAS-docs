@@ -7,7 +7,8 @@
 
 ### 后端
 - **Python**: 3.12.x
-- **Web 框架**: FastAPI 0.116.1
+- **环境与依赖管理**: uv（`pyproject.toml` + `uv.lock`）
+- **Web 框架**: FastAPI
 - **实时通信**: WebSockets 15.0.1
 - **日志系统**: Loguru 0.7.3
 - **图像处理**: OpenCV, Pillow, PyAutoGUI
@@ -16,8 +17,8 @@
 ### 前端
 - **框架**: Vue 3 + TypeScript
 - **UI 组件库**: Ant Design Vue 4.x
-- **桌面端**: Electron 37.x
-- **构建工具**: Vite 7.x
+- **桌面端**: Electron
+- **构建工具**: Vite Plus（Vite）
 - **路由**: Vue Router 4
 - **状态管理**: Pinia 3.x
 
@@ -26,12 +27,12 @@
 
 ### 必需软件
 
-1. **Python 3.12.x**
-   - 下载地址: https://www.python.org/downloads/
-   - 确保勾选 "Add Python to PATH"
-2. **Node.js 18+**
+1. **uv**
+   - 安装方式见 [uv 官方安装文档](https://docs.astral.sh/uv/getting-started/installation/)。Windows 可运行 `winget install --id=astral-sh.uv -e`，安装后重新打开终端。
+   - Python 版本由仓库根目录的 `.python-version` 指定（当前为 3.12.13），uv 会在本机缺少该版本时自动下载，无需先手动安装 Python。
+2. **Node.js 22.18+**
    - 下载地址: https://nodejs.org/
-   - 推荐使用 LTS 版本
+   - 推荐使用 Node.js 24 LTS，与当前前端检查环境一致。
 3. **Yarn**(推荐)
    - 项目使用 Yarn 4，推荐通过 Corepack 启用：`corepack enable`
    - 进入 `frontend` 后可直接使用仓库声明的 Yarn 版本
@@ -43,12 +44,25 @@
 
 ##  快速开始
 
+下文提供 PowerShell 和 Bash 两套命令，按使用的终端选择对应标签。除明确进入 `frontend` 的步骤外，均在仓库根目录执行。
+
 ### 1. 克隆项目
 
-```bash
-git clone https://github.com/AUTO-MAS-Project/AUTO-MAS.git
+::: code-group
+
+```powershell [PowerShell]
+git clone --branch dev https://github.com/AUTO-MAS-Project/AUTO-MAS.git
 cd AUTO-MAS
 ```
+
+```bash [Bash]
+git clone --branch dev https://github.com/AUTO-MAS-Project/AUTO-MAS.git
+cd AUTO-MAS
+```
+
+:::
+
+开始修改前，按 [开发规范](./development-specifications.md) 从最新的上游 `dev` 创建开发分支。
 
 ::: tip Agent 开发前置要求
 
@@ -58,34 +72,77 @@ cd AUTO-MAS
 
 ### 2. 后端环境搭建
 
-1. **创建虚拟环境 (推荐)**
+1. **创建本地开发标记**
 
-```powershell
-# Windows PowerShell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+::: code-group
+
+```powershell [PowerShell]
+if (-not (Test-Path -LiteralPath .env)) {
+    Copy-Item -LiteralPath .env.example -Destination .env
+}
 ```
 
-2. **安装 Python 依赖**
-
-```bash
-pip install -r requirements.txt
+```bash [Bash]
+if [ ! -e .env ]; then
+    cp .env.example .env
+fi
 ```
+
+:::
+
+`.env` 不纳入版本库。它用于标记本地开发环境：后端默认监听 `36164`，不会向 Sentry 上报错误与性能数据，也不会自行申请管理员权限。不要省略这一步，否则直接启动源码后端会按生产环境处理。
+
+2. **同步 Python 环境与依赖**
+
+::: code-group
+
+```powershell [PowerShell]
+uv --version
+uv sync --locked
+```
+
+```bash [Bash]
+uv --version
+uv sync --locked
+```
+
+:::
+
+uv 会按 `.python-version` 选择 Python，在仓库根目录创建或复用 `.venv`，并按 `uv.lock` 安装依赖。开发依赖组默认一并安装，包含 Ruff、pytest 等工具。`--locked` 会检查锁文件与 `pyproject.toml` 是否一致，不会自动改写锁文件。
+
+日常开发以 `pyproject.toml` 和 `uv.lock` 为准，无需再手动创建、激活虚拟环境或运行 `pip install -r requirements.txt`。IDE 的 Python 解释器请选择仓库中的 `.venv\Scripts\python.exe`。拉取代码后重新执行 `uv sync --locked`，即可同步依赖。
 
 ### 3. 前端环境搭建
 
 **进入前端目录并安装依赖**
 
-```bash
+::: code-group
+
+```powershell [PowerShell]
 cd frontend
 yarn install
 ```
 
+```bash [Bash]
+cd frontend
+yarn install
+```
+
+:::
+
 如果 Electron 二进制下载缓慢或失败，可以使用 npmmirror 镜像执行一次性安装：
 
-```bash
+::: code-group
+
+```powershell [PowerShell]
 yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
 ```
+
+```bash [Bash]
+yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
+```
+
+:::
 
 该命令只为本次 `yarn install` 设置下载源，不会修改全局配置。
 
@@ -94,60 +151,79 @@ yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn in
 
 ::: tip 管理员权限
 
-AUTO-MAS 前后端都需要以管理员权限运行。如果没有管理员权限，程序会提示重新启动。
+调试游戏控制、模拟器等需要管理员权限的功能时，请以管理员身份运行终端或 IDE；已有 `.env` 标记的本地后端不会自行提权。
 
 如果你使用 jetbrains IDE 或 VScode，你可以直接以管理员权限启动 IDE，这样打开的命令行程序也具有管理员权限。
 
-您也可以使用 `sudo` 命令以管理员权限运行。
+:::
+
+以下两种方式都运行当前检出的本地后端代码，任选一种即可。
+
+#### 4.1 分别启动后端与前端
+
+1. **在仓库根目录启动后端服务**
+
+::: code-group
+
+```powershell [PowerShell]
+uv run --locked python main.py
+```
+
+```bash [Bash]
+uv run --locked python main.py
+```
 
 :::
 
-#### 4.1 使用来自远端的后端代码
-
-**进入前端目录并启动开发服务器**
-
-```bash
-cd frontend
-yarn dev
-```
-
-前端开发服务器将在 `http://localhost:5173` 启动，Electron 窗口会自动打开。
-
-前端将自动完成后端初始化，后端来自 Github 的 **dev** 分支，后端本地文件位于 `frontend/node_modules/electron/dist` 下。
-
-#### 4.2 使用本地的后端代码
-
-方式一：分别启动后端与前端。
-
-1. **启动后端服务**
-
-```bash
-python main.py
-```
-
-后端服务将在 `http://localhost:36163` 启动，可以访问 `http://localhost:36163/docs` 查看接口文档。
+完成 `.env` 配置后，后端默认在 `http://127.0.0.1:36164` 启动，可以访问 `http://127.0.0.1:36164/docs` 查看接口文档。保持该终端运行；正式版默认使用 `36163`，两者可同时运行。
 
 2. **启动前端服务**
 
-您需要开启一个新的终端窗口用于运行前端服务。
+开启一个新的终端，在仓库根目录执行：
 
-```bash
+::: code-group
+
+```powershell [PowerShell]
 cd frontend
+$env:AUTO_MAS_RUNTIME_MODE = "off"
 yarn dev
 ```
 
-3. **跳过启动后端**
-
-由于您已经打开用于开发的后端，前端初始化时将在 `启动后端` 步骤失败，此时直接选择 `跳过启动后端` 即可正常进入应用主界面，此时前端所使用的后端服务将是您之前终端窗口中启动的后端。
-
-方式二：使用前端脚本同时启动本地后端与前端。
-
-```bash
+```bash [Bash]
 cd frontend
-yarn dev:fullstack
+export AUTO_MAS_RUNTIME_MODE=off
+yarn dev
 ```
 
-该命令会运行本地 `main.py`、Vite 开发服务器和 Electron 开发窗口，适合需要同时调试前后端联动的场景。
+:::
+
+前端开发服务器将在 `http://localhost:5173` 启动，Electron 窗口会自动打开，并复用已启动、版本一致的开发后端。这里将 Runtime 启动方式设为 `off`，由终端管理本地后端；该环境变量只影响当前终端及其子进程。
+
+仅运行 `yarn dev` 不会执行前面的 uv 环境同步和本地后端启动命令。请先确认后端终端启动成功，不要依赖旧教程中“等待启动失败后跳过”的流程。
+
+#### 4.2 一次启动后端与前端
+
+在仓库根目录打开终端并执行：
+
+::: code-group
+
+```powershell [PowerShell]
+cd frontend
+$env:AUTO_MAS_RUNTIME_MODE = "off"
+uv run --locked pwsh -NoProfile -Command "yarn dev:fullstack"
+```
+
+```bash [Bash]
+cd frontend
+export AUTO_MAS_RUNTIME_MODE=off
+uv run --locked bash -c "yarn dev:fullstack"
+```
+
+:::
+
+该命令会运行本地 `main.py`、Vite 开发服务器和 Electron 开发窗口，并在 `36164` 上的后端就绪后打开窗口。uv 会从 `frontend` 找到上一级的 Python 项目，让子进程使用仓库的 `.venv`；再通过对应的 Shell 调用 Yarn，以兼容 Corepack 安装的 Yarn 启动脚本。
+
+`dev:fullstack` 中的后端脚本仍调用 `python`，因此请保留外层 `uv run`，以免使用系统 Python。
 
 
 ##  项目结构
@@ -211,27 +287,35 @@ AUTO-MAS/
 │   └── sounds/                  # 音效
 │
 ├── main.py                       # 后端入口
-├── requirements.txt              # Python 依赖
+├── .env.example                  # 本地开发标记模板
+├── .python-version               # uv 使用的 Python 版本
+├── pyproject.toml                # Python 项目与依赖声明
+├── uv.lock                       # Python 依赖锁文件
+├── requirements.txt              # 旧安装链路的依赖清单
 └── README.md                    # 项目说明
 ```
 
 
 ##  常见问题
 
-### Q: Python 虚拟环境激活失败
+### Q: 还需要手动激活 Python 虚拟环境吗
 
-**A**: 如果在 PowerShell 中遇到执行策略错误:
+**A**: 不需要。使用 `uv run --locked python main.py` 即可在项目环境中启动后端；IDE 请选择 `.venv\Scripts\python.exe`。
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
+### Q: 提示找不到 uv 命令
+
+**A**: 安装 uv 后重新打开终端，并运行 `uv --version` 检查。如果仍找不到命令，按 [uv 官方安装文档](https://docs.astral.sh/uv/getting-started/installation/) 检查安装路径是否已加入 PATH。
+
+### Q: uv sync --locked 提示锁文件需要更新
+
+**A**: 先确认 `pyproject.toml`、`uv.lock` 和 `.python-version` 来自同一份代码。如果是自己有意修改了依赖声明，在仓库根目录运行 `uv lock` 更新锁文件，再运行 `uv sync --locked` 验证，并将依赖声明与锁文件一起提交。不要为绕过报错删除 `uv.lock`。
 
 ### Q: yarn install 失败
 
 **A**: 尝试以下方法:
 
 1. 清理缓存: `yarn cache clean`
-2. 删除 `node_modules` 和 `yarn.lock`
+2. 删除 `node_modules`，保留仓库中的 `yarn.lock`
 3. 重新安装: `yarn install`
 4. Electron 二进制下载缓慢或失败时，使用镜像执行一次性安装:
    `yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install`
@@ -240,7 +324,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 **A**: AUTO-MAS 需要管理员权限运行。请以管理员身份运行:
 
-- 右键点击 CMD/PowerShell，选择"以管理员身份运行"
+- 以管理员身份打开 PowerShell 或 Git Bash
 - 或在 VS Code 中以管理员身份启动
 
 ### Q: Electron 窗口无法打开
@@ -248,7 +332,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **A**: 检查:
 
 1. 前端开发服务器是否正常运行（`http://localhost:5173`）
-2. 后端服务是否正常启动（`http://localhost:36163`）
+2. 后端服务是否正常启动（`http://127.0.0.1:36164/docs`），仓库根目录是否已有 `.env`
 3. 查看终端输出的错误信息
 
 

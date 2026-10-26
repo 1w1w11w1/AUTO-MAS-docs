@@ -37,15 +37,39 @@ async def my_endpoint(request: MyRequest):
 
 1. **启动后端**
 
-```bash
-python main.py
+先完成 [后端环境搭建](./getting-start.md#_2-后端环境搭建)，确保仓库根目录已有 `.env`，并已执行 `uv sync --locked`。在仓库根目录运行：
+
+::: code-group
+
+```powershell [PowerShell]
+uv run --locked python main.py
 ```
+
+```bash [Bash]
+uv run --locked python main.py
+```
+
+:::
+
+保持后端运行。开发环境默认使用 `36164` 端口，`yarn openapi` 从 `http://127.0.0.1:36164/openapi.json` 读取接口定义。
+
 2. **使用 openapi-generator-typescript 生成前端代码**
 
-```bash
+另开一个终端，在仓库根目录执行：
+
+::: code-group
+
+```powershell [PowerShell]
 cd frontend
 yarn openapi
 ```
+
+```bash [Bash]
+cd frontend
+yarn openapi
+```
+
+:::
 如果没有输出，代表已经生成完成了；如果报错了，请自行查阅报错内容。
 
 ::: warning 注意
@@ -53,9 +77,7 @@ yarn openapi
 :::
 
 ::: warning 注意
-当你阅读至此，说明你正在开发一个新的 API，请你牢记，你直接使用 `yarn dev` 时，后端实际上使用的是 GitHub 上 `dev` 分支中的后端代码，而非你当前开发的后端。
-
-因此，为了在前端测试你的 API，你必须先在本地启动后端，再运行前端，您可以参考 [使用来自本地的后端](/developer/getting-start#_4-2-使用本地的后端代码)。
+调试新 API 时，应连接当前检出代码启动的本地后端。仅运行 `yarn dev` 不会执行上述 uv 环境同步和本地后端启动命令。请按 [分别启动后端与前端](./getting-start.md#_4-1-分别启动后端与前端) 操作，或使用该页的一次启动方式。
 :::
 
 ##  4. 在前端调用 API
