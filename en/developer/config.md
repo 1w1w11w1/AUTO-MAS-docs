@@ -371,20 +371,53 @@ autosave, and reference existence checks run during hot activation. Request
 validation uses cold or contract models and is separate from activation.
 
 `build(payload=...)` retains the raw payload for activation, while ordinary
-reads expose current cold values. `model_validate({...})` immediately fills
-provided model fields and is suitable for validated cold update objects.
+reads expose current cold values. During normal file startup, collection
+members are rebuilt from that payload during activation; old cold members are
+not published as the hot result. `model_validate({...})` immediately fills
+provided model fields and is suitable for validated cold update objects. It is
+a cold patch input for `update()`, not an already activated collection member.
 
 `await node.activate()` selects an explicit payload, the associated file, or
-current cold values; enters `INITIALIZING`; applies fields and members in
-isolated Init operations; activates nested collections and reference
+current cold values; enters `INITIALIZING`; applies fields and members;
+dispatches Init events; activates nested collections and reference
 subscriptions; and finally becomes `ACTIVE`. Activation is one-shot and
 repeated activation raises. Hot assignments stage changes and require
 `await commit()`.
 
-Initialization keeps successful fields and members, aggregates failures, and
-raises `ConfigAggregateError`. A root activation commits successful work to
-live before raising. When activation is inside a parent transaction, successful
-Init work joins that parent and can be rolled back with it.
+The default initialization path gives each field or member its own local
+rollback boundary. Successful fields can remain applied, and failures are
+aggregated into `ConfigAggregateError`. A root activation commits successful
+work to live before raising. When activation is inside a parent transaction,
+successful Init work joins that parent and can be rolled back with it.
+
+Startup may opt into `activate(fast_init=True)`. This adds one local boundary
+around the current Entry's complete field loop to avoid rebuilding and merging
+a workspace for every field:
+
+1. Fields still assign, validate, and dispatch immediate Init events in order.
+2. A field validation error, direct Init callback failure, or managed
+   association failure rolls the entire fast attempt back.
+3. After rollback, the original per-field path runs again from the first field;
+   successful values from the fast attempt are not reused.
+4. Init receivers and third-party services may therefore run twice. The
+   configuration framework does not deduplicate callbacks or roll back
+   external side effects.
+
+Nested Entries choose their own field boundary, and collection member add,
+reload, and replace operations retain their member boundaries. A parent
+transaction can still roll back all successful work. `fast_init` is not a
+global initialization mode and does not change ordinary runtime `commit()`;
+omitting it keeps the per-field path.
+
+The activation marker and a node's `NodeState` are separate. A marker is
+inherited from the direct parent at construction, so `build()` and recursive
+`activate()` do not need another marker argument; an independent root creates
+one. While the tree is initializing, hot lifecycle operations such as locks,
+triggers, public instance subscriptions, remove guards, and file/name
+registration are restricted only for nodes in that activation tree. Stable
+external nodes keep their normal behavior, while cold field work and internal
+reference subscriptions remain available. `ACTIVE` is published as stable to
+other executors only after the owning root transaction completes.
 
 `file=` belongs on root nodes and accepts `.yaml` and `.yml`; `payload` and
 `file` are mutually exclusive. Startup registers reference targets, activates
@@ -408,6 +441,13 @@ operation was applied to the workspace. An exception escaping the outermost
 transaction rolls back all associated configuration changes. Notifications,
 device actions, database writes, and external file changes are external side
 effects and are not rolled back.
+
+Initialization and ordinary runtime changes use the same transaction context.
+The context records boundaries, the parent chain, the real executor, and
+participating nodes; configuration workspaces remain owned by node instances,
+while signal workspaces remain owned by node classes. A successful child
+boundary only merges into its parent. Only the root transaction publishes live
+state, advances modification generations, and registers persistence work.
 
 Workspace reads require both the lifecycle and the real executor identity.
 Having the same `ContextVar` is not enough. Reads prefer a valid Init
