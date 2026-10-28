@@ -84,6 +84,7 @@ export const enThemeConfig: DefaultTheme.Config = {
                     items: [
                         { text: "Getting Started", link: "getting-start" },
                         { text: "Development Standards", link: "development-specifications" },
+                        { text: "Testing and Verification", link: "testing" },
                         { text: "Repository and Agent Rules", link: "agent-and-repository-rules" },
                         { text: "Build and Release", link: "build-and-publish" },
                         {

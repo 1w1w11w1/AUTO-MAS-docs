@@ -5,6 +5,7 @@ Welcome to AUTO-MAS development. Before contributing, you must understand the fo
 ## Development and Collaboration Rules
 
 - [Development Standards](/en/developer/development-specifications): branches, commit messages, test submission and maintenance, version records, backend comments, and function-call style.
+- [Testing and Verification](/en/developer/testing): how pytest regression, browser E2E, and author-local real runs divide the work, plus commands, debug switches, and PR evidence.
 - [Repository Division and Agent Rules](/en/developer/agent-and-repository-rules): responsibilities of the main repository, documentation site, and skills repository, plus rules for AI assistants writing Issue and PR bodies.
 
 ## AUTO-MAS Developer Community Authorization Agreement
