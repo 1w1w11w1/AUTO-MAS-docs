@@ -31,7 +31,7 @@ AI 助手在 AUTO-MAS 相关仓库工作时：
 
 - 先读当前仓库的 `AGENTS.md` 最小入口。
 - 必须确认存在并加载 `.agents/skills/mas-skills/SKILL.md`。若缺少该文件，应明确提示用户缺少项目附属 Skills，并拒绝开工。
-- 开发规范、分支、提交、版本记录以本文档站为准。
+- 开发规范、分支、提交、测试提交与维护、版本记录以本文档站为准；测试规则见[「测试提交与维护规范」](/developer/development-specifications#测试提交与维护规范)。
 - 工程细则、代码风格、模块边界、专项适配以主仓 `.agents/skills` 中的 `mas-*` Skill 为准。
 - 先加载 `mas-skills`，再按任务选择最小必要 Skill；不要把所有 Skill 套到每个任务上。
 - `frontend` 指主仓前端目录和前端任务；涉及 `frontend`、Vue、UI、组件、路由或前端 API 时，按 `.agents/skills` 中的前端 Skill 执行。

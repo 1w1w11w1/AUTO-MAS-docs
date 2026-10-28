@@ -4,7 +4,7 @@
 
 ## 开发与协作规范
 
-- [开发规范](/developer/development-specifications)：分支、提交信息、版本记录、后端注释与函数调用风格。
+- [开发规范](/developer/development-specifications)：分支、提交信息、测试提交与维护、版本记录、后端注释与函数调用风格。
 - [仓库分工与 Agent 规范](/developer/agent-and-repository-rules)：主仓、文档站、skills 仓库的职责边界，以及 AI 助手撰写 Issue / PR 正文的规则。
 
 ## AUTO-MAS 开发者社区授权协议

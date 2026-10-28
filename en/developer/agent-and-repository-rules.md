@@ -31,7 +31,7 @@ When an AI assistant works in AUTO-MAS repositories:
 
 - Read the current repository's minimal entry point, `AGENTS.md`, first.
 - Confirm and load `.agents/skills/mas-skills/SKILL.md`. If the file is missing, tell the user that project-owned Skills are missing and refuse to start work.
-- Development standards, branches, commits, and version records are governed by this documentation site.
+- Development standards, branches, commits, test submission and maintenance, and version records are governed by this documentation site. See [Test Submission and Maintenance](/en/developer/development-specifications#test-submission-and-maintenance).
 - Engineering details, code style, module boundaries, and specialized adaptation are governed by `mas-*` Skills in the main repository's `.agents/skills`.
 - Load `mas-skills` first, then select the minimal necessary Skill for the task. Do not apply all Skills to every task.
 - `frontend` refers to the main repository frontend directory and frontend tasks. When work involves `frontend`, Vue, UI, components, routing, or frontend APIs, follow the frontend Skill in `.agents/skills`.

@@ -284,11 +284,11 @@ def build_image_notification(image_bytes: bytes) -> NotifyPayload:
 - 单目标渲染失败、发送重试、零目标与社区摘要部分送达。
 - 正文字节预算、紧凑摘要与超限备用文字的差异。
 
-在主仓运行与改动相关的最小测试，例如：
+在主仓根目录安装锁定的开发依赖，再运行与改动相关的最小测试，例如：
 
-```bash
-python -m pytest tests/core/test_notify.py -q
-python -m pytest tests --collect-only -q
+```powershell
+uv sync --locked --group dev
+uv run --no-sync python -m pytest tests/core/test_notify.py -q
 ```
 
 测试入口与临时验证产物的提交规则以主仓 `tests/AGENTS.md` 和[开发规范](/developer/development-specifications)为准。测试通过仅说明已覆盖场景通过，不替代重构前后实际内容的兼容性核对。

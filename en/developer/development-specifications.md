@@ -92,6 +92,40 @@ feat(core): improve database connection module
 - Fix a possible connection leak
 ```
 
+## Test Submission and Maintenance
+
+Automated tests are reviewable evidence for code changes. Deterministic, isolated tests that protect user-visible behavior or public contracts should live in the same repository and pull request as the change, and remain maintained with the product code.
+
+### Test Categories
+
+- **Long-lived automated tests:** Put deterministic, isolated, repeatable unit, contract, and regression tests in the appropriate test directory or near the code under test, and submit them with the implementation they cover. Prefer assertions on user-visible behavior or public contracts over private call order and internal data layout.
+- **Author-local real flows:** Run flows that require real accounts, games, script installations, or emulators in the author's environment, following `docs/testing/e2e.md` in the main repository. Include the command and reviewed, sanitized evidence in the PR. Do not submit credentials, account data, game assets, or machine-specific configuration.
+- **Temporary diagnostics:** Keep one-off probes and scripts local or in an ignored `.dev/` directory. Add a diagnostic tool to `scripts/` only when it has clear repeated-use value.
+
+### PR Verification Record
+
+- Record the test command, pass/fail result, tested commit SHA, environment, and uncovered areas. For real flows, also record required preconditions and selected evidence.
+- When a bug has a stable reproduction, its regression test should fail before the fix, pass after the fix, and remain in the PR. If it cannot be reproduced reliably or automated, explain why and provide alternative verification; a pass count from an unsubmitted test is not enough.
+- When no automated test is added or changed, explain why and provide alternative verification. Documentation, CI, and test-maintenance changes may mark testing as not applicable.
+
+### Revising, Removing, and Quarantining Tests
+
+- Update relevant expectations when behavior or a public contract changes. When deleting a test, explain whether the behavior was removed, stronger coverage replaces it, the test was redundant, or its reliability cannot be maintained at reasonable cost; describe replacement coverage where applicable.
+- Track flaky tests with an issue, an owner, and a review date, then quarantine them temporarily. They must later be fixed, replaced, or removed. Do not use automatic retries to hide failures or leave quarantines and `xfail` markers without ownership and review dates.
+- Maintain tests using failure rate, diagnosis cost, and runtime. Test line count, file count, and the ratio of test code to product code are not quality gates; investigate slow tests and shared setup when runtime grows.
+
+### Local and CI Commands
+
+pytest is a main-repository development dependency. Run tests in the locked environment:
+
+```powershell
+uv sync --locked --group dev
+uv run --no-sync python -m pytest tests/<path> -q
+uv run --no-sync python -m pytest tests -q
+```
+
+PRs targeting `dev` run the full pytest suite on Windows and Ubuntu. A full run includes test collection, so a separate `--collect-only` merge gate is unnecessary. Real game, account, and emulator flows continue to follow the author-local E2E policy and stay out of pytest CI.
+
 ## Version Records
 
 This project records version information in `res/version.json`:

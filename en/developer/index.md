@@ -4,7 +4,7 @@ Welcome to AUTO-MAS development. Before contributing, you must understand the fo
 
 ## Development and Collaboration Rules
 
-- [Development Standards](/en/developer/development-specifications): branches, commit messages, version records, backend comments, and function-call style.
+- [Development Standards](/en/developer/development-specifications): branches, commit messages, test submission and maintenance, version records, backend comments, and function-call style.
 - [Repository Division and Agent Rules](/en/developer/agent-and-repository-rules): responsibilities of the main repository, documentation site, and skills repository, plus rules for AI assistants writing Issue and PR bodies.
 
 ## AUTO-MAS Developer Community Authorization Agreement
