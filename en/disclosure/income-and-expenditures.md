@@ -54,6 +54,10 @@ const records = [
   { name: 'Developer tool subscription reimbursement', description: 'Fully reimbursed by personal claim', amount: -50, date: 'September 7, 2026' },
   { name: 'MirrorChyan revenue share', description: 'September settlement', amount: 110.24, date: 'October 1, 2026' },
   { name: 'PackyCode sponsorship', description: '¥200 in AI API credits', amount: 0.00, date: 'October 11, 2026' },
+  { name: 'Open Source Security Reward Program prize share', description: 'Share of the national first-prize award in the original open-source software category', amount: 10000, date: 'November 1, 2026' },
+  { name: 'MirrorChyan revenue share', description: 'October settlement', amount: 206.12, date: 'November 1, 2026' },
+  { name: 'PackyCode sponsorship', description: '¥200 in AI API credits', amount: 0.00, date: 'November 1, 2026' },
+  { name: 'Developer tool subscription reimbursement', description: 'Half reimbursed by the project team', amount: -1357.14, date: 'November 1, 2026' },
 ]
 
 const totalAmount = computed(() => {

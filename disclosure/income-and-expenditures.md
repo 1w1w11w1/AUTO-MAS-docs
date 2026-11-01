@@ -54,6 +54,10 @@ const records = [
   { name: '开发者开发工具订阅报销', description: '个人申报全额报销', amount: -50, date: '2026年9月7日' },
   { name: 'Mirror酱分成', description: '9月份结算', amount: 110.24, date: '2026年10月1日' },
   { name: 'PackyCode 赞助', description: '200元 AI API 额度', amount: 0.00, date: '2026年10月11日' },
+  { name: '开源安全奖励计划奖金分成', description: '原创开源软件赛道国家级一等奖奖金比例分成', amount: 10000, date: '2026年11月1日' },
+  { name: 'Mirror酱分成', description: '10月份结算', amount: 206.12, date: '2026年11月1日' },
+  { name: 'PackyCode 赞助', description: '200元 AI API 额度', amount: 0.00, date: '2026年11月1日' },
+  { name: '开发者开发工具订阅报销', description: '项目组统一半额报销', amount: -1357.14, date: '2026年11月1日' },
 ]
 
 const totalAmount = computed(() => {
