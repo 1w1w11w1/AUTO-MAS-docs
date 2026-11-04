@@ -10,19 +10,46 @@ A **scheduling queue** is a to-do list: you put the scripts you want to run into
 **A queue can have several scheduled times, but those times don't belong to individual scripts.** At each scheduled time, the whole queue runs from the top. They are not "run script A at this time, script B at that time".
 :::
 
-![scheduler](/docs/img/advanced-features/scheduler.png)
+::: info Version and credits
+This section's instructions and screenshots were produced by **Codex**, using **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface. The example configures a queue without running game tasks.
+:::
 
-### Usage
+### 1. Create a queue and choose its startup behavior
 
-1. Click **New Queue** in the upper-right corner.
-2. Turn on **Run on startup** or **Scheduled run** as needed.
-3. Click **Add schedule** and set the time. **Remember to switch the scheduled run status to Enabled**, or it won't fire.
-4. Click **Add task** and add scripts you have already configured to the queue. If there's nothing to choose from here, you haven't configured any scripts yet. Start with [Script Configuration](/en/docs/script-guide/).
+Open **Queue** (调度队列) and click **New queue** (新建队列). Use the pencil beside the title to rename it, then press Enter.
 
-::: tip Three common setups
-- **Run everything at boot**: set AUTO-MAS to start with Windows and enable **Run on startup** on the queue. It finishes the batch after boot with nothing from you.
-- **Run at set times**: if your computer stays on, use **Scheduled run** to pick a few times for it to run on its own.
-- **Pair with MAA custom infrastructure**: schedule MAA to start shortly before an infrastructure layout takes effect, so MAA swaps the shift over while it's there.
+**Run at startup** (启动时运行) is a dropdown:
+
+- **Run every time** (每次都运行): run the queue whenever the app starts.
+- **Never** (从不): do not trigger it at app startup. Scheduled and manual runs remain available.
+- **First startup each day** (每日首次启动时): trigger this queue at app startup at most once per day.
+
+[![Three startup options in the Chinese interface](/docs/img/codex-20261104/queue-startup.png)](/docs/img/codex-20261104/queue-startup.png)
+
+### 2. Schedule the whole queue
+
+Keep **Queue type** (队列类型) set to **Timed queue** (定时队列), then set **Scheduled run** (定时运行) to **Yes** (是).
+
+[![Queue type, startup behavior, and the scheduled-run setting](/docs/img/codex-20261104/queue-config.png)](/docs/img/codex-20261104/queue-config.png)
+
+In **Schedule list** (定时列表), click **Add schedule** (添加定时). Choose the weekdays and time, then set the row's **Status** (状态) to **Enabled** (启用). The example uses `06:30`; choose your own time.
+
+[![Schedule status, weekdays, and execution time](/docs/img/codex-20261104/queue-timer.png)](/docs/img/codex-20261104/queue-timer.png)
+
+::: tip Enable both settings
+The queue's scheduled-run setting must be Yes and the individual schedule row must be Enabled. Changes save immediately; reload the page to check them.
+:::
+
+A cycle queue (循环队列) repeats according to each task's cycle settings. Choose it when you need repeated task cycles rather than scheduled runs of the whole queue.
+
+### 3. Add configured scripts
+
+Click **Add task** (添加任务) and select a configured script. If there are no scripts to select, complete [Script Configuration](/en/docs/script-guide/) first.
+
+::: tip Common setups
+- To run after boot, start AUTO-MAS with Windows and select Run every time or First startup each day.
+- To run at specific times, keep the app running and enable both scheduled-run settings.
+- For MAA infrastructure changes, schedule MAA shortly before the new layout should take effect.
 :::
 
 ## Run order in auto-proxy mode

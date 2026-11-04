@@ -1,0 +1,42 @@
+{
+  "producer": "OpenAI Codex",
+  "date": "2026-11-04",
+  "source_repository": "https://github.com/AUTO-MAS-Project/AUTO-MAS",
+  "source_tag": "v5.8.0-beta.3",
+  "source_commit": "d5e33e5f45f8330b1cd9ab09431e9ca299fe557d",
+  "renderer": "production build",
+  "runtime": "Chromium with the existing browser Electron bridge and an isolated real backend",
+  "locale": "zh-CN",
+  "viewport": {
+    "width": 1600,
+    "height": 1060
+  },
+  "verified": [
+    "weekly plan values after reload",
+    "account plan selection after reload",
+    "queue startup mode and 06:30 schedule after reload",
+    "account email recipient after reload",
+    "no development menu"
+  ],
+  "not_exercised": [
+    "Electron native dialogs",
+    "real game or external script execution",
+    "external notification delivery"
+  ],
+  "capture_adjustments": [
+    "numbered DOM outlines",
+    "disabled animations and input caret",
+    "temporary message toasts hidden"
+  ],
+  "images": [
+    "plan-create.png",
+    "plan-weekly.png",
+    "plan-bind.png",
+    "queue-startup.png",
+    "queue-config.png",
+    "queue-timer.png",
+    "notification-channels.png",
+    "notification-email.png",
+    "notification-user.png"
+  ]
+}
