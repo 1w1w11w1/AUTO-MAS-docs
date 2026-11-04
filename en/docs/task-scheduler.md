@@ -40,6 +40,10 @@ In **Schedule list** (定时列表), click **Add schedule** (添加定时). Choo
 The queue's scheduled-run setting must be Yes and the individual schedule row must be Enabled. Changes save immediately; reload the page to check them.
 :::
 
+::: warning Startup and schedules trigger separately
+**Run at startup** and **Scheduled run** can both take effect. **First startup each day** limits startup triggers; it does not limit the queue to one run for the whole day. If startup coincides with a scheduled time, the same queue may be triggered twice. To run only at scheduled times, set **Run at startup** to **Never**.
+:::
+
 A cycle queue (循环队列) repeats according to each task's cycle settings. Choose it when you need repeated task cycles rather than scheduled runs of the whole queue.
 
 ### 3. Add configured scripts
