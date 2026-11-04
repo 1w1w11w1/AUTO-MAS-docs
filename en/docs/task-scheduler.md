@@ -10,8 +10,8 @@ A **scheduling queue** is a to-do list: you put the scripts you want to run into
 **A queue can have several scheduled times, but those times don't belong to individual scripts.** At each scheduled time, the whole queue runs from the top. They are not "run script A at this time, script B at that time".
 :::
 
-::: info Version and credits
-This section's instructions and screenshots were produced by **Codex**, using **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface. The example configures a queue without running game tasks.
+::: info Example version and scope
+This section uses **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface. The example configures a queue without running game tasks.
 :::
 
 ### 1. Create a queue and choose its startup behavior
@@ -24,17 +24,17 @@ Open **Queue** (调度队列) and click **New queue** (新建队列). Use the pe
 - **Never** (从不): do not trigger it at app startup. Scheduled and manual runs remain available.
 - **First startup each day** (每日首次启动时): trigger this queue at app startup at most once per day.
 
-[![Three startup options in the Chinese interface](/docs/img/codex-20261104/queue-startup.png)](/docs/img/codex-20261104/queue-startup.png)
+[![Three startup options in the Chinese interface](/docs/img/tutorial-20261104/queue-startup.png)](/docs/img/tutorial-20261104/queue-startup.png)
 
 ### 2. Schedule the whole queue
 
 Keep **Queue type** (队列类型) set to **Timed queue** (定时队列), then set **Scheduled run** (定时运行) to **Yes** (是).
 
-[![Queue type, startup behavior, and the scheduled-run setting](/docs/img/codex-20261104/queue-config.png)](/docs/img/codex-20261104/queue-config.png)
+[![Queue type, startup behavior, and the scheduled-run setting](/docs/img/tutorial-20261104/queue-config.png)](/docs/img/tutorial-20261104/queue-config.png)
 
 In **Schedule list** (定时列表), click **Add schedule** (添加定时). Choose the weekdays and time, then set the row's **Status** (状态) to **Enabled** (启用). The example uses `06:30`; choose your own time.
 
-[![Schedule status, weekdays, and execution time](/docs/img/codex-20261104/queue-timer.png)](/docs/img/codex-20261104/queue-timer.png)
+[![Schedule status, weekdays, and execution time](/docs/img/tutorial-20261104/queue-timer.png)](/docs/img/tutorial-20261104/queue-timer.png)
 
 ::: tip Enable both settings
 The queue's scheduled-run setting must be Yes and the individual schedule row must be Enabled. Changes save immediately; reload the page to check them.

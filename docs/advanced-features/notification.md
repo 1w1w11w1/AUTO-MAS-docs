@@ -4,8 +4,8 @@
 
 ## 两级通知：全局和账号
 
-::: info 示例版本与制作说明
-本节界面说明与截图由 **Codex** 制作，基于 **AUTO-MAS v5.8.0-beta.3**。示例账号和收件地址用于演示，未向外部发送通知。
+::: info 示例版本与演示范围
+本节界面基于 **AUTO-MAS v5.8.0-beta.3**。示例账号和收件地址用于演示，未向外部发送通知。
 :::
 
 ### 全局通知：先打开渠道，再填写配置
@@ -14,11 +14,11 @@
 
 要接收任务结果，还需在 **通知内容 > 推送任务结果时机** 中选择需要的时机。截图中的 **不推送** 不会发送任务结果通知。
 
-[![从通知设置中打开邮件渠道](/docs/img/codex-20261104/notification-channels.png)](/docs/img/codex-20261104/notification-channels.png)
+[![从通知设置中打开邮件渠道](/docs/img/tutorial-20261104/notification-channels.png)](/docs/img/tutorial-20261104/notification-channels.png)
 
 以邮件为例，在弹窗中填写 SMTP 服务器地址、发信邮箱、收件人和授权码，再开启渠道。修改会即时保存，完成后点击右上角 **关闭** 返回渠道列表。
 
-[![邮件渠道的配置弹窗](/docs/img/codex-20261104/notification-email.png)](/docs/img/codex-20261104/notification-email.png)
+[![邮件渠道的配置弹窗](/docs/img/tutorial-20261104/notification-email.png)](/docs/img/tutorial-20261104/notification-email.png)
 
 可以在通知设置页发送测试通知，核对接收端是否实际收到。不要把“配置已保存”当作“消息已经送达”。
 
@@ -26,7 +26,7 @@
 
 在 **托管管理** 中打开账号配置，找到 **通知配置**。先打开 **启用通知**，再开启需要的渠道；例如开启 **邮件通知**，填写该账号的收件人。
 
-[![账号通知中的邮件开关和示例收件人](/docs/img/codex-20261104/notification-user.png)](/docs/img/codex-20261104/notification-user.png)
+[![账号通知中的邮件开关和示例收件人](/docs/img/tutorial-20261104/notification-user.png)](/docs/img/tutorial-20261104/notification-user.png)
 
 ::: tip 账号通知是额外多发一份
 全局通知仍按全局设置发送，账号通知额外发送该账号的结果。账号收件人不会替代全局的发信邮箱与授权码；使用邮件渠道前，仍需完成全局邮件配置。

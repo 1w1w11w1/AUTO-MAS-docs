@@ -4,8 +4,8 @@ Get told when a run finishes or an account fails. AUTO-MAS can send that news ov
 
 ## Two Levels: Global and Per-User
 
-::: info Version and credits
-This section's interface instructions and screenshots were produced by **Codex**, using **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface and demonstration data. No external notification was sent.
+::: info Example version and scope
+This section uses **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface and demonstration data. No external notification was sent.
 :::
 
 ### Global notifications: open a channel to configure it
@@ -14,11 +14,11 @@ Open **Settings > Notifications** (设置 > 通知设置). Channels are shown as
 
 To receive task results, also choose when to send them under **Notification content > Task result timing** (通知内容 > 推送任务结果时机). The **Do not send** (不推送) value shown in the screenshot disables task-result notifications.
 
-[![Open the email channel from notification settings](/docs/img/codex-20261104/notification-channels.png)](/docs/img/codex-20261104/notification-channels.png)
+[![Open the email channel from notification settings](/docs/img/tutorial-20261104/notification-channels.png)](/docs/img/tutorial-20261104/notification-channels.png)
 
 For email, enter the SMTP server, sender, recipient, and authorization code, then enable the channel. Changes save immediately. Use **Close** (关闭) in the upper-right corner to return to the list.
 
-[![Email channel configuration dialog](/docs/img/codex-20261104/notification-email.png)](/docs/img/codex-20261104/notification-email.png)
+[![Email channel configuration dialog](/docs/img/tutorial-20261104/notification-email.png)](/docs/img/tutorial-20261104/notification-email.png)
 
 Use the test-notification action and check the receiving service. Saving configuration does not prove delivery.
 
@@ -26,7 +26,7 @@ Use the test-notification action and check the receiving service. Saving configu
 
 Open the account under script management (托管管理), then find **Notification settings** (通知配置). Turn on **Enable notifications** (启用通知) and the required channel. For email, turn on **Email notification** (邮件通知) and enter that account's recipient.
 
-[![Per-user email notification switch and example recipient](/docs/img/codex-20261104/notification-user.png)](/docs/img/codex-20261104/notification-user.png)
+[![Per-user email notification switch and example recipient](/docs/img/tutorial-20261104/notification-user.png)](/docs/img/tutorial-20261104/notification-user.png)
 
 ::: tip An account notification adds a copy
 Global notifications still use the global settings. Per-user notifications send that account's results separately. An account recipient does not replace the global sender and authorization code; configure global email settings first.

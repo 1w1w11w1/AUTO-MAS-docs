@@ -10,8 +10,8 @@
 **一个队列可以设多个定时时间，但这些时间不是分配给单个脚本的。** 每到一个时间点，整个队列都会从头跑一遍，而不是"这个点跑脚本 A，那个点跑脚本 B"。
 :::
 
-::: info 示例版本与制作说明
-本节图文由 **Codex** 制作，界面基于 **AUTO-MAS v5.8.0-beta.3**。示例只演示配置，不执行游戏任务。
+::: info 示例版本与演示范围
+本节界面基于 **AUTO-MAS v5.8.0-beta.3**。示例只演示配置，不执行游戏任务。
 :::
 
 ### 1. 创建队列并选择启动方式
@@ -24,17 +24,17 @@
 - **从不**：不因软件启动而运行；仍可设置定时或手动运行。
 - **每日首次启动时**：同一队列当天只因软件启动自动触发一次。
 
-[![启动时运行的三种选项](/docs/img/codex-20261104/queue-startup.png)](/docs/img/codex-20261104/queue-startup.png)
+[![启动时运行的三种选项](/docs/img/tutorial-20261104/queue-startup.png)](/docs/img/tutorial-20261104/queue-startup.png)
 
 ### 2. 配置整队列的定时
 
 要在指定时间运行整个队列，保持 **队列类型** 为 **定时队列**，把 **定时运行** 设为 **是**。
 
-[![定时队列的启动方式和定时总开关](/docs/img/codex-20261104/queue-config.png)](/docs/img/codex-20261104/queue-config.png)
+[![定时队列的启动方式和定时总开关](/docs/img/tutorial-20261104/queue-config.png)](/docs/img/tutorial-20261104/queue-config.png)
 
 在 **定时列表** 点击 **添加定时**，选择执行周期和执行时间，并将该行 **状态** 设为 **启用**。示例时间为 `06:30`，请自行调整。
 
-[![定时列表中的状态、执行周期和时间](/docs/img/codex-20261104/queue-timer.png)](/docs/img/codex-20261104/queue-timer.png)
+[![定时列表中的状态、执行周期和时间](/docs/img/tutorial-20261104/queue-timer.png)](/docs/img/tutorial-20261104/queue-timer.png)
 
 ::: tip 两处都要启用
 队列的 **定时运行 = 是**，且定时列表中的那一行 **状态 = 启用**，该定时项才会触发。配置会即时保存，刷新页面可核对。

@@ -95,8 +95,8 @@ If you queued two tasks of the same type in MAA, for example two **Use sanity** 
 
 ## Weekly Plans: Farm Different Stages Each Day
 
-::: info Version and credits
-This section's instructions and screenshots were produced by **Codex**, using **AUTO-MAS v5.8.0-beta.3** and a demonstration account. The screenshots show the Chinese interface; older versions may use different labels and layouts.
+::: info Example version and scope
+This section uses **AUTO-MAS v5.8.0-beta.3** and a demonstration account. The screenshots show the Chinese interface; older versions may use different labels and layouts.
 :::
 
 A plan stores stages, sanity medicine limits, and series counts. Create the plan first, then select it in each MAA account that should use it. Creating a plan does not start a task.
@@ -105,7 +105,7 @@ A plan stores stages, sanity medicine limits, and series counts. Create the plan
 
 Open **Plans** (计划管理), then choose **New plan > New MAA plan** (新建计划 > 新建 MAA 计划表).
 
-[![Create an MAA plan in the Chinese interface](/docs/img/codex-20261104/plan-create.png)](/docs/img/codex-20261104/plan-create.png)
+[![Create an MAA plan in the Chinese interface](/docs/img/tutorial-20261104/plan-create.png)](/docs/img/tutorial-20261104/plan-create.png)
 
 Click the pencil beside the plan title, enter a name, and press Enter. The example uses **方舟每周计划**.
 
@@ -113,7 +113,7 @@ Click the pencil beside the plan title, enter a name, and press Enter. The examp
 
 Select **Weekly mode** (周计划模式). Set the values in the Monday-to-Sunday columns. The example uses `R8-11` on Tuesday and `1-7` on the other days; choose stages for your own needs.
 
-[![Configure weekday stages in weekly mode](/docs/img/codex-20261104/plan-weekly.png)](/docs/img/codex-20261104/plan-weekly.png)
+[![Configure weekday stages in weekly mode](/docs/img/tutorial-20261104/plan-weekly.png)](/docs/img/tutorial-20261104/plan-weekly.png)
 
 - Global mode uses the **Every day** (每天) column; weekly mode uses the weekday columns. Grayed-out columns cannot be edited in the current mode.
 - The simplified view is another way to edit the same plan.
@@ -123,7 +123,7 @@ Select **Weekly mode** (周计划模式). Set the values in the Monday-to-Sunday
 
 Open the MAA account under script management (托管管理), enable configuration overrides (覆写配置), and expand **Sanity tasks** (理智任务). Select your plan in **Stage configuration mode** (关卡配置模式).
 
-[![Select the plan in the MAA account's sanity task](/docs/img/codex-20261104/plan-bind.png)](/docs/img/codex-20261104/plan-bind.png)
+[![Select the plan in the MAA account's sanity task](/docs/img/tutorial-20261104/plan-bind.png)](/docs/img/tutorial-20261104/plan-bind.png)
 
 The fields below show today's values with **From plan** (来自计划表) labels. Use **Go to plan** (跳转到计划表) to make changes.
 
