@@ -4,17 +4,33 @@
 
 ## 两级通知：全局和账号
 
-**全局通知** 在 **设置 > 通知设置** 里配，管所有任务。一般配这一个就够了。
-
-![notification-1](../img/advanced-features/notification-1.png)
-
-**账号通知** 在 **账号配置 > 通知设置** 里配，可以给某个账号单独指定收件人。典型场景：你帮朋友代肝，想让他自己也收到自己那个号的结果。
-
-::: tip 账号通知是"额外多发一份"，不是"改收件人"
-配了账号通知之后，全局通知照样会发给你，然后再额外发一份给这个账号指定的地址。它不会覆盖全局设置。
+::: info 示例版本与演示范围
+本节界面基于 **AUTO-MAS v5.8.0-beta.3**。示例账号和收件地址用于演示，未向外部发送通知。
 :::
 
-![notification-2](../img/advanced-features/notification-2.png)
+### 全局通知：先打开渠道，再填写配置
+
+在 **设置 > 通知设置** 中选择需要的渠道。当前页面以渠道卡片或列表项展示入口，点击 **邮件** 等渠道后才会打开配置弹窗。
+
+要接收任务结果，还需在 **通知内容 > 推送任务结果时机** 中选择需要的时机。截图中的 **不推送** 不会发送任务结果通知。
+
+[![从通知设置中打开邮件渠道](/docs/img/tutorial-20261104/notification-channels.png)](/docs/img/tutorial-20261104/notification-channels.png)
+
+以邮件为例，在弹窗中填写 SMTP 服务器地址、发信邮箱、收件人和授权码，再开启渠道。修改会即时保存，完成后点击右上角 **关闭** 返回渠道列表。
+
+[![邮件渠道的配置弹窗](/docs/img/tutorial-20261104/notification-email.png)](/docs/img/tutorial-20261104/notification-email.png)
+
+可以在通知设置页发送测试通知，核对接收端是否实际收到。不要把“配置已保存”当作“消息已经送达”。
+
+### 账号通知：给指定账号额外发送
+
+在 **托管管理** 中打开账号配置，找到 **通知配置**。先打开 **启用通知**，再开启需要的渠道；例如开启 **邮件通知**，填写该账号的收件人。
+
+[![账号通知中的邮件开关和示例收件人](/docs/img/tutorial-20261104/notification-user.png)](/docs/img/tutorial-20261104/notification-user.png)
+
+::: tip 账号通知是额外多发一份
+全局通知仍按全局设置发送，账号通知额外发送该账号的结果。账号收件人不会替代全局的发信邮箱与授权码；使用邮件渠道前，仍需完成全局邮件配置。
+:::
 
 ## 邮件推送
 
@@ -29,10 +45,13 @@
 | **QQ邮箱**          | smtp.qq.com           |
 | **163邮箱**         | smtp.163.com          |
 | **Gmail**           | smtp.gmail.com        |
-| **Outlook/Hotmail** | smtp-mail.outlook.com |
 | **Yahoo Mail**      | smtp.mail.yahoo.com   |
 
 表里没有你的邮箱？去它的帮助中心搜"SMTP 服务器地址"。
+
+::: warning 使用 Outlook.com / Hotmail 发信
+微软要求 Outlook.com SMTP 使用 587 端口、STARTTLS 和 OAuth2。本节版本的内置邮件渠道使用 465 端口的 SSL 连接及密码认证，填写 Outlook 服务器地址和应用密码无法补齐这些要求。请使用兼容的发信邮箱或其他通知渠道，参见 [微软的 SMTP 要求](https://support.microsoft.com/en-us/outlook/pop-imap-and-smtp-settings-for-outlook-com)。
+:::
 
 ### 获取授权码
 
@@ -63,13 +82,7 @@
 - 进入 **用户 > 管理您的 Google 账号 > 安全性 > 两步验证**，按提示开启 **两步验证**。
 - 进入 **两步验证 > 应用专用密码**，按提示创建 **应用专用密码**，该密码便为您的授权码。
 
-4. **Outlook/Hotmail**
-
-- 登录到您的 **Outlook 账户**。
-- 进入 **我的账户 > 安全和隐私 > 更多安全选项**。
-- 在 **应用程序密码** 中创建应用程序密码。
-
-5. **Yahoo Mail**
+4. **Yahoo Mail**
 
 - 登录到您的 **Yahoo 账户**。
 - 前往账户的 **安全设置**。

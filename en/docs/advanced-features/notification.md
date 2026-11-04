@@ -4,17 +4,33 @@ Get told when a run finishes or an account fails. AUTO-MAS can send that news ov
 
 ## Two Levels: Global and Per-User
 
-**Global notifications** are configured in **Settings > Notification Settings** and cover every task. For most people this is the only one you need.
-
-![notification-1](/docs/img/advanced-features/notification-1.png)
-
-**Per-user notifications** are configured in **User Configuration > Notification Settings** and let you name a separate recipient for one account. Typical case: you run accounts for a friend and he wants his own results.
-
-::: tip A Per-User Notification Adds a Copy, It Does Not Change the Recipient
-Once a per-user notification is set, the global notification still goes to you, and an extra copy goes to the address that user specifies. It does not replace the global setting.
+::: info Example version and scope
+This section uses **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface and demonstration data. No external notification was sent.
 :::
 
-![notification-2](/docs/img/advanced-features/notification-2.png)
+### Global notifications: open a channel to configure it
+
+Open **Settings > Notifications** (设置 > 通知设置). Channels are shown as cards or list entries. Click a channel such as **Email** (邮件) to open its configuration dialog.
+
+To receive task results, also choose when to send them under **Notification content > Task result timing** (通知内容 > 推送任务结果时机). The **Do not send** (不推送) value shown in the screenshot disables task-result notifications.
+
+[![Open the email channel from notification settings](/docs/img/tutorial-20261104/notification-channels.png)](/docs/img/tutorial-20261104/notification-channels.png)
+
+For email, enter the SMTP server, sender, recipient, and authorization code, then enable the channel. Changes save immediately. Use **Close** (关闭) in the upper-right corner to return to the list.
+
+[![Email channel configuration dialog](/docs/img/tutorial-20261104/notification-email.png)](/docs/img/tutorial-20261104/notification-email.png)
+
+Use the test-notification action and check the receiving service. Saving configuration does not prove delivery.
+
+### Per-user notifications: send an additional copy
+
+Open the account under script management (托管管理), then find **Notification settings** (通知配置). Turn on **Enable notifications** (启用通知) and the required channel. For email, turn on **Email notification** (邮件通知) and enter that account's recipient.
+
+[![Per-user email notification switch and example recipient](/docs/img/tutorial-20261104/notification-user.png)](/docs/img/tutorial-20261104/notification-user.png)
+
+::: tip An account notification adds a copy
+Global notifications still use the global settings. Per-user notifications send that account's results separately. An account recipient does not replace the global sender and authorization code; configure global email settings first.
+:::
 
 ## Email Notifications
 
@@ -29,16 +45,19 @@ Find the provider of your sending address and copy the matching row.
 | **QQ Mail**            | smtp.qq.com           |
 | **163 Mail**           | smtp.163.com          |
 | **Gmail**              | smtp.gmail.com        |
-| **Outlook/Hotmail**    | smtp-mail.outlook.com |
 | **Yahoo Mail**         | smtp.mail.yahoo.com   |
 
 If your email service is not listed, search its help center for "SMTP server address".
+
+::: warning Outlook.com / Hotmail sender accounts
+Microsoft requires port 587, STARTTLS, and OAuth2 for Outlook.com SMTP. The built-in email channel in the version shown here uses SSL on port 465 with password-based authentication. Entering an Outlook server address and app password is insufficient; use a compatible sender or another notification channel. See [Microsoft's SMTP requirements](https://support.microsoft.com/en-us/outlook/pop-imap-and-smtp-settings-for-outlook-com).
+:::
 
 ### Get an Authorization Code
 
 **An authorization code is not your mailbox login password.** It is a separate code your provider issues for third-party software, and you have to go and generate it yourself. Getting this wrong is the most common reason email notifications fail.
 
-Providers name it differently: QQ Mail and 163 Mail call it an authorization code, while Gmail, Outlook, and Yahoo call it an **app password**. It is the same thing, and it goes in the same field.
+Providers name it differently: QQ Mail and 163 Mail call it an authorization code, while Gmail and Yahoo call it an **app password**. It is the same thing, and it goes in the same field.
 
 Where each provider hides it:
 
@@ -65,13 +84,7 @@ Where each provider hides it:
 - Go to **User > Manage your Google Account > Security > 2-Step Verification** and enable **2-Step Verification**.
 - Go to **2-Step Verification > App passwords** and create an **app password**. That is the code you need.
 
-4. **Outlook/Hotmail**
-
-- Log in to your **Outlook account**.
-- Go to **My Account > Security and privacy > More security options**.
-- Create an app password under **App passwords**.
-
-5. **Yahoo Mail**
+4. **Yahoo Mail**
 
 - Log in to your **Yahoo account**.
 - Go to the account's **Security settings**.
