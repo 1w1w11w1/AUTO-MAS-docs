@@ -19,7 +19,7 @@ MFW reads the project's controllers, resources, and tasks from `interface.json`,
 1. Open **Managed scripts**, choose **New managed script**, then **MFW script**.
 2. Under **Project directory**, pick the folder containing `interface.json`. Wait for import and check the project overview and **Runtime environment** result. Initial preparation may take a few minutes.
 3. Select the control mode and resource. For ADB, configure an emulator first. For Win32, choose how the game is started. Save the script settings.
-4. Add a user and put one simple task in their queue. Test it before adding the rest.
+4. If importing configurations created users, open one of those users for editing. If there are no users yet, add one. For either route, put one simple task in that user's queue and test it before adding the rest.
 
 ### Where the project runs
 
@@ -54,7 +54,7 @@ When source following is off, under **Project update**, choose a source and chan
 
 ## Users and task queues
 
-Add users from the script list. Each user has a separate queue. Select tasks declared by the project, arrange them, and fill in their options. A project's presets may add several tasks at once. Project-specific flavors can manage some tasks automatically; follow the notice on that project's page rather than adding those tasks manually.
+Edit a user created by configuration import, or add one from the script list if there are no users yet. You can add more users from that list as needed. Each user has a separate queue. Select tasks declared by the project, arrange them, and fill in their options. A project's presets may add several tasks at once. Project-specific flavors can manage some tasks automatically; follow the notice on that project's page rather than adding those tasks manually.
 
 ## Troubleshooting
 
