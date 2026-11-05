@@ -56,9 +56,21 @@ Automatic check-in records each account’s daily attempt even if it fails. Rest
 
 Communities without credentials do not appear in the notification.
 
+## Entering credentials
+
+Obtain your community credentials yourself, then enter and save them in the account editor on the check-in page. Add a community account first if you don't have one.
+
+To sign in to a community, you can use the third-party community tool [Better-MAS-Tools (BMT)](https://github.com/Lance0174/Better-MAS-Tools). BMT supports QR login for miyoushe and Skland, phone number and SMS verification for Kuro Community, and one-time account and password login for Tajiduo. See its project instructions for details. BMT manages community accounts and check-ins separately and does not automatically enter credentials into AUTO-MAS. You can copy tokens, cookies, and other credentials obtained from BMT into the corresponding community fields in the AUTO-MAS account editor and save them for use.
+
+::: warning Third-party tool notice
+BMT is maintained independently by a community developer and is not an official AUTO-MAS project. Before using it, verify its source and review its features and credential handling. Using third-party tools involves account and credential security risks; evaluate them yourself.
+:::
+
 ## Skland
 
 Skland check-in automatically looks up the **Arknights** and **Arknights: Endfield** characters under your Hypergryph account. Each character's check-in status is recorded separately.
+
+For QR login, use [BMT](https://github.com/Lance0174/Better-MAS-Tools).
 
 ### Get a Token From the Web
 
@@ -83,6 +95,8 @@ Don't copy the outer JSON, the quotation marks around `content`, or any other fi
 
 miyoushe automatically reads the characters bound to your account across **Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Houkai Gakuen 2, Honkai Impact 3rd, and Tears of Themis**, then checks the check-in status for each one. With a valid miyoushe cookie, AUTO-MAS also attempts to query remaining Cloud Genshin play time; no separate Cloud Genshin credential is needed.
 
+For QR login, use [BMT](https://github.com/Lance0174/Better-MAS-Tools).
+
 ### Filling In a Cookie by Hand
 
 Run `document.cookie` in the developer tools of a logged-in miyoushe web session and paste the cookie string containing the authentication fields into the input. Don't paste page HTML, a full API response, or unrelated cookies. Without authentication fields such as `cookie_token` and `stoken`, the character lookup and check-in that follow may fail.
@@ -90,6 +104,8 @@ Run `document.cookie` in the developer tools of a logged-in miyoushe web session
 ## Kuro Community
 
 Reads the **Punishing: Gray Raven** and **Wuthering Waves** characters you have bound, and checks in for each one.
+
+For phone number and SMS login, use [BMT](https://github.com/Lance0174/Better-MAS-Tools).
 
 ### Get a Token
 
@@ -112,6 +128,8 @@ If the account has no characters bound that can be checked in, no Kuro Community
 Looks up the game characters on your account and checks in.
 
 One thing worth knowing: if you also want to see your remaining Cloud NTE time, that credential **goes in together with the Tajiduo credential**. It isn't a separate login, so don't go looking for its own entry point.
+
+For account and password login, use [BMT](https://github.com/Lance0174/Better-MAS-Tools).
 
 ### Filling In Credentials by Hand
 
@@ -137,9 +155,9 @@ Results are shown as community + game + character name. Communities without a to
 
 ### The token expired, or check-in keeps failing
 
-First confirm the account can still log in normally in the official client or on the web. If even the official login fails, the problem isn't AUTO-MAS.
+First confirm the account can still log in normally in the official client or on the web. If even the official login fails, the problem isn't AUTO-MAS. If it works, get a fresh token:
 
-After obtaining valid replacement credentials, click **Edit** in the check-in page's **Account list**, replace the relevant community's credentials, and save. See the methods above for Skland, miyoushe, and Kuro Community. For Tajiduo, enter a valid `refreshToken` or credential JSON manually.
+Obtain fresh credentials for the community, then enter and save them in the account editor.
 
 ### One of my games isn't in the results
 
