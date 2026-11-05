@@ -88,13 +88,13 @@ Keep OBS open with the correct game source and an active Replay Buffer, then sta
 
 | Run outcome | Video storage |
 | --- | --- |
-| An account still fails after retries | A video attachment is saved with that failed execution record, at most once per account in the same script and run cycle. |
+| An account still fails after retries | A video attachment is saved with that failed execution record, at most once per account in the same managed script and run cycle. |
 | Preflight, launch, or scheduling fails without an account history record | MAS may ask OBS to save a diagnostic original and show its path in the task notice or log. No separate history replay is created. |
 | An attempt fails but a retry succeeds | No failure video attachment is retained for the successful result. |
 | Success, skipping, configuration, updates, or other modes | No automatic failure video is saved. |
 | Manual stop or cancellation | No history video is added for the cancelled result. A request already sent may have created an OBS original. |
 
-After detecting a final failure, MAS asks OBS to save the current buffer and archives a copy with the user's execution record. Writing and copying take time. If the failure is detected only after a timeout or the last retry, increase the OBS buffer length to preserve earlier events.
+After detecting a final failure, MAS asks OBS to save the current buffer and archives a copy with the account's execution record. Writing and copying take time. If the failure is detected only after a timeout or the last retry, increase the OBS buffer length to preserve earlier events.
 
 If OBS is unavailable, the connection fails, or saving fails, task notices and logs describe the capture or save failure. This does not change the original automation result.
 

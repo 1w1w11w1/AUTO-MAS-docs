@@ -2,7 +2,7 @@
 
 Get told when a run finishes or an account fails. Choose a channel in notification settings, including email, ServerChan, a WeCom group bot, or China Mobile 5G SMS.
 
-## Two Levels: Global and Per-User
+## Two Levels: Global and Per-Account
 
 ::: info Example version and scope
 This section uses **AUTO-MAS v5.8.0-beta.3**. The screenshots show the Chinese interface and demonstration data. No external notification was sent.
@@ -22,14 +22,14 @@ For email, enter the SMTP server, sender, recipient, and authorization code, the
 
 Use the test-notification action and check the receiving service. Saving configuration does not prove delivery.
 
-### Per-user notifications: send an additional copy
+### Per-account notifications: send an additional copy
 
-Open the account under script management (托管管理), then find **Notification settings** (通知配置). Turn on **Enable notifications** (启用通知) and the required channel. For email, turn on **Email notification** (邮件通知) and enter that account's recipient.
+Open the account under Managed scripts (托管管理), then find **Notification settings** (通知配置). Turn on **Enable notifications** (启用通知) and the required channel. For email, turn on **Email notification** (邮件通知) and enter that account's recipient.
 
-[![Per-user email notification switch and example recipient](/docs/img/tutorial-20261104/notification-user.png)](/docs/img/tutorial-20261104/notification-user.png)
+[![Per-account email notification switch and example recipient](/docs/img/tutorial-20261104/notification-user.png)](/docs/img/tutorial-20261104/notification-user.png)
 
 ::: tip An account notification adds a copy
-Global notifications still use the global settings. Per-user notifications send that account's results separately. An account recipient does not replace the global sender and authorization code; configure global email settings first.
+Global notifications still use the global settings. Per-account notifications send that account's results separately. An account recipient does not replace the global sender and authorization code; configure global email settings first.
 :::
 
 ## Email Notifications
@@ -154,4 +154,4 @@ This channel requires a China Mobile number, a phone that supports 5G messaging,
 3. Enter the complete Channel API Key and enable the channel. Do not add spaces, line breaks, or other text from the message.
 4. Send a test notification and confirm delivery on your phone.
 
-The current channel supports **global notifications only**; it has no per-user entry. Task-result delivery still follows the global notification timing setting. Keep the API Key private, including in screenshots and diagnostic attachments.
+The current channel supports **global notifications only**; it has no per-account entry. Task-result delivery still follows the global notification timing setting. Keep the API Key private, including in screenshots and diagnostic attachments.

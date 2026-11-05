@@ -23,7 +23,7 @@ export const enThemeConfig: DefaultTheme.Config = {
                 items: [
                     { text: "Getting Started", link: "/en/docs/user-guide" },
                     {
-                        text: "Script Configuration",
+                        text: "Managed Script Configuration",
                         link: "/en/docs/script-guide/",
                         items: [
                             { text: "MAA", link: "/en/docs/script-guide/maa" },

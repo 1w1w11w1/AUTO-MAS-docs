@@ -532,7 +532,7 @@ ctx.logger.info(f"interpreter ok={check.get('ok')}")
 
 ### ctx.runtime.list_scripts
 
-读取宿主暴露的脚本列表能力（若宿主未注册能力，返回空列表）。
+读取宿主暴露的 `list_scripts` 列表（若宿主未注册能力，返回空列表）。此处沿用历史能力名称，列表项的含义以宿主注册的能力为准。
 
 用法：
 
@@ -542,7 +542,7 @@ scripts = ctx.runtime.list_scripts()
 
 ### ctx.runtime.get_script_log
 
-读取指定脚本日志（若宿主未注册能力，返回空字符串）。
+按历史 `script_id` 标识读取执行日志（若宿主未注册能力，返回空字符串）。
 
 用法：
 

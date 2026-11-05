@@ -13,7 +13,7 @@ hero:
       text: Get Started
       link: /en/docs/user-guide
     - theme: alt
-      text: Script Configuration
+      text: Managed Script Configuration
       link: /en/docs/script-guide/
     - theme: alt
       text: Task Scheduler
@@ -27,11 +27,11 @@ hero:
 
 features:
   - title: One window for every account
-    details: Configs for all your scripts and all your accounts live in one place. No more juggling a dozen windows.
+    details: Configs for all your managed scripts and their accounts live in one place. No more juggling a dozen windows.
   - title: It handles the hangs for you
     details: It watches script logs the whole time and retries when a script errors out or freezes. Runs fine while you are away from the computer.
   - title: You decide when it runs
-    details: Put scripts in a scheduling queue, then run them on app startup or at set times.
+    details: Put managed scripts in a scheduling queue, then run them on app startup or at set times.
   - title: You can tell what went wrong
     details: Every run keeps its result and the key log lines, so you can see which account failed at which step.
 ---

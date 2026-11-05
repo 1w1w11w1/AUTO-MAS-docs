@@ -10,7 +10,7 @@ date: 2026-08-27
 
 **BetterGI** is a third-party tool for Genshin Impact. It can run One Dragon (daily commissions, resin clearing, Ley Line Outcrops, domains, world boss kills, etc.) and many advanced features. It works in a **native GUI configuration** mode: accounts are managed natively by BetterGI, and complex settings are configured inside BetterGI's own interface.
 
-The AUTO-MAS specialization manages, for each account independently, the **One Dragon** task configuration, **custom config groups**, account switching records, and notifications. Before a run it loads that user's independent configuration into BetterGI; when the run ends it reads back that user's One Dragon settings and saves them as an independent copy. AUTO-MAS does not keep a full copy of the BetterGI configuration.
+The AUTO-MAS specialization manages, for each account independently, the **One Dragon** task configuration, **custom config groups**, account switching records, and notifications. Before a run it loads that account's independent configuration into BetterGI; when the run ends it reads back that account's One Dragon settings and saves them as an independent copy. AUTO-MAS does not keep a full copy of the BetterGI configuration.
 
 <Box :items="[
 { name: 'BetterGI GitHub', link: 'https://github.com/babalae/better-genshin-impact', image: { light: '/icons/github.svg', dark: '/icons/github-dark.svg', }, },
@@ -19,25 +19,25 @@ The AUTO-MAS specialization manages, for each account independently, the **One D
 ## Quick start
 
 1. Download and extract [BetterGI](https://github.com/babalae/better-genshin-impact) from its official repository. It is recommended to use a path without non-ASCII characters, and complete a basic configuration in BetterGI first.
-2. Open **Managed Management** → **New Managed**, choose the **BetterGI script**, and set the BetterGI `RootPath`.
-3. Add an account, choose **Account-specific config** as the **Configuration Management Mode** on the user edit page, and configure the One Dragon tasks as needed.
+2. Open **Managed scripts** → **New managed script**, choose **BetterGI**, and set the BetterGI `RootPath`.
+3. Add an account, choose **Independent configuration** as the **Configuration Management Mode** on the account edit page, and configure the One Dragon tasks as needed.
 4. Click **Configure BetterGI** in the top-right corner. In the BetterGI native interface, edit the One Dragon named **"MAS Independent Config"** and save it; complex settings are also done here.
-5. Save, then add the script to the scheduling queue.
+5. Save, then add the managed script to the scheduling queue.
 
 ## Configuration management mode
 
-Each user can choose a source for their One Dragon configuration:
+Each account can choose a source for their One Dragon configuration:
 
 | Configuration mode | Best for | What it means |
 | --- | --- | --- |
-| **Account-specific config** | Most users | Saves an independent One Dragon configuration per user, loaded before a run and read back after. Different users under the same script can differ. |
-| **Native configuration** | Letting BetterGI manage the config | Uses the script's current configuration directly, neither loading nor reading back the account's independent configuration; shared by native-configuration users. |
+| **Independent configuration** | Most accounts | Saves an independent One Dragon configuration per account, loaded before a run and read back after. Different accounts under the same managed script can differ. |
+| **Native configuration** | Letting BetterGI manage the config | Uses the script's current configuration directly, neither loading nor reading back the account's independent configuration; shared by native-configuration accounts. |
 
 > When **Native configuration** is chosen, the **Task Configuration** and **Custom Config Groups** sections below are greyed out and not editable; BetterGI's native configuration decides.
 
 ### Where the independent config lives (important)
 
-When **Account-specific config** is enabled, AUTO-MAS does **not rewrite** your original One Dragon config (such as `User/OneDragon/默认配置.json`, "Default Config"). Instead it materializes the account's independent config into a **MAS-owned slot** `{RootPath}/User/OneDragon/MAS独立配置.json`, launches BetterGI with `startOneDragon MAS独立配置`, and deletes the slot when done (idempotent).
+When **Independent configuration** is enabled, AUTO-MAS does **not rewrite** your original One Dragon config (such as `User/OneDragon/默认配置.json`, "Default Config"). Instead it materializes the account's independent config into a **MAS-owned slot** `{RootPath}/User/OneDragon/MAS独立配置.json`, launches BetterGI with `startOneDragon MAS独立配置`, and deletes the slot when done (idempotent).
 
 So the One Dragon you always edit inside BetterGI is the one named **"MAS独立配置"** — not your own original config (that real file is never read or modified).
 
@@ -49,7 +49,7 @@ BetterGI stores each One Dragon configuration as an independent JSON file at `{R
 
 The name of a configuration saved in BetterGI's One Dragon page, **defaulting to 「默认配置」("Default Config")**. Options come from the existing config files under `{RootPath}/User/OneDragon/` (「默认配置」is placed first; the MAS slot "MAS独立配置" is not shown).
 
-This name decides which real BetterGI configuration this user's One Dragon is snapshotted from. Choosing it does **not** mean MAS reads/writes that file at runtime — in independent mode the actual file is the "MAS独立配置" slot, as described under "Where the independent config lives" above.
+This name decides which real BetterGI configuration this account's One Dragon is snapshotted from. Choosing it does **not** mean MAS reads/writes that file at runtime — in independent mode the actual file is the "MAS独立配置" slot, as described under "Where the independent config lives" above.
 
 ### Built-in config groups (8 toggles)
 
@@ -107,23 +107,23 @@ The table lists each custom config group, with "Config group name" and "Enabled"
 
 ## Configure BetterGI (native settings session)
 
-Click the **Configure BetterGI** button in the top-right corner to open a settings session in BetterGI's native interface. A mask appears prompting you to finish configuration in BetterGI. With **Account-specific config** enabled, select and edit the One Dragon named **"MAS独立配置"** (do not touch your original config), then click **Save Settings** to end the session (the session times out automatically after 30 minutes of no interaction). On save, AUTO-MAS **reads back the current "MAS独立配置" slot** and snapshots it as that user's independent copy.
+Click the **Configure BetterGI** button in the top-right corner to open a settings session in BetterGI's native interface. A mask appears prompting you to finish configuration in BetterGI. With **Independent configuration** enabled, select and edit the One Dragon named **"MAS独立配置"** (do not touch your original config), then click **Save Settings** to end the session (the session times out automatically after 30 minutes of no interaction). On save, AUTO-MAS **reads back the current "MAS独立配置" slot** and snapshots it as that account's independent copy.
 
-## Per-user One Dragon copy
+## Per-account One Dragon copy
 
-Each user holds a copy of the One Dragon configuration at `data/{ScriptID}/{UserID}/OneDragon/{Name}.json`. The seed priority when writing is:
+Each account holds a copy of the One Dragon configuration at `data/{ScriptID}/{UserID}/OneDragon/{Name}.json`. The seed priority when writing is:
 
-1. This user's copy (used first if present)
+1. This account's copy (used first if present)
 2. BetterGI's current real One Dragon configuration (by the One Dragon config name)
 3. Built-in template
 
 ## FAQ
 
-### After enabling "Account-specific config", which One Dragon should I edit in BetterGI?
+### After enabling "Independent configuration", which One Dragon should I edit in BetterGI?
 
 The one named **"MAS独立配置"**. In independent mode MAS reads and writes this slot and launches with it at runtime. Your original config (such as 「默认配置」, "Default Config") is not read and is unaffected by edits here.
 
-### Will my "Default Config" created in BetterGI be overwritten into the shape of "Account-specific config"?
+### Will my "Default Config" created in BetterGI be overwritten into the shape of "Independent configuration"?
 
 No. MAS only operates on the "MAS独立配置" slot; your same-named real config (such as 「默认配置」, "Default Config") is never touched — this zero-contact behavior is exactly the design goal of independent mode.
 
@@ -133,7 +133,7 @@ Yes. The buttons are toggles: turning off only disables a group without deleting
 
 ### Why can't I edit task configuration in "Native configuration" mode?
 
-In native-configuration mode, the One Dragon configuration is fully decided by BetterGI's native configuration; AUTO-MAS neither loads nor writes back the account's independent configuration, so the related fields are greyed out. Switch back to "Account-specific config" to have AUTO-MAS manage it.
+In native-configuration mode, the One Dragon configuration is fully decided by BetterGI's native configuration; AUTO-MAS neither loads nor writes back the account's independent configuration, so the related fields are greyed out. Switch back to "Independent configuration" to have AUTO-MAS manage it.
 
 ### Will my groups created in BetterGI be lost if I turn off the custom groups toggle?
 

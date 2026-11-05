@@ -1,7 +1,7 @@
 # M9A Configuration Guide
 
 ::: tip Tip
-M9A is now one kind of [MFW script](/en/docs/script-guide/maafw): pick the M9A directory and AUTO-MAS recognises it and treats it as M9A. The script page, user page, updates and the embedded copy all work like any other MFW project; this page only covers what is specific to M9A.
+M9A is now one kind of [MFW script](/en/docs/script-guide/maafw): pick the M9A directory and AUTO-MAS recognises it and treats it as M9A. The managed-script page, account page, updates and the embedded copy all work like any other MFW project; this page only covers what is specific to M9A.
 :::
 
 ## What is M9A?
@@ -25,22 +25,22 @@ It is powered by [MaaFramework](https://github.com/MaaXYZ/MaaFramework) image re
 You **do not** need to open M9A once by hand first, nor install the .NET runtime — AUTO-MAS never starts M9A's own UI; it prepares the MaaFramework runtime and the Agent's Python environment itself.
 :::
 
-## Configure the script
+## Configure the managed script
 
-1. Go to **Managed scripts**, click **New managed script** and choose **MFW script** (choosing **M9A script** does the same; the two only differ in the default name).
+1. Go to **Managed scripts**, click **New managed script** and choose **MaaFW** (choosing **M9A** does the same; the two only differ in the default name).
 2. Under **Project directory**, click **Pick a local directory** and select the extracted M9A directory. AUTO-MAS imports it as its own copy, recognises it as M9A, and the script type becomes **M9A** automatically.
 3. Pick the server under **Game resource** (official / Bilibili / global…), and choose the emulator and instance under **Emulators**.
 4. Everything else — run configuration, project update (GitHub / MirrorChyan, auto update before a run) — is described in the [MFW Project Configuration Guide](/en/docs/script-guide/maafw).
 
-::: tip The server is per script
-M9A's `interface.json` declares servers as "resources", so in AUTO-MAS the server is chosen on the **script**, and every user under one script is on the same server. To run both the official server and Bilibili, create two managed scripts and select the resource for each. Their user settings and run views are separate, but scripts for the same project and update channel share the project version.
+::: tip The server is per managed script
+M9A's `interface.json` declares servers as "resources", so in AUTO-MAS the server is chosen on the **managed script**, and every account under one managed script is on the same server. To run both the official server and Bilibili, create two managed scripts and select the resource for each. Their account settings and run views are separate, but managed scripts for the same project and update channel share the project version.
 :::
 
-## Configure users
+## Configure accounts
 
-1. Click **Add an account** in the script's row under **Managed scripts**.
+1. Click **Add an account** in the managed script's row under **Managed scripts**.
 2. Fill in a name and a note. The **Account** field is only used on the official server (see automatic account switching below); on other servers it is just a note.
-3. You can add several users; AUTO-MAS runs each user's task queue in list order.
+3. You can add several accounts; AUTO-MAS runs each account's task queue in list order.
 
 ### Task queue
 
@@ -58,22 +58,22 @@ Tasks already in the queue are not added twice, and anything you placed elsewher
 
 **Official server only** — other servers can't do it due to an M9A limitation.
 
-When the script's game resource is the official server and the user's **Account** is filled in, AUTO-MAS inserts a **Switch account** task right after Start game and fills the account in; leave it empty if you don't need to switch. On other servers the account is just a note and no switch is inserted.
+When the managed script's game resource is the official server and an account has its **Account** field filled in, AUTO-MAS inserts a **Switch account** task right after Start game and fills the account in; leave it empty if you don't need to switch. On other servers the account is just a note and no switch is inserted.
 
 ### Once a day / once a month
 
-**Skip once done today** / **Skip once done this month** under **Run configuration** on the script page replace the old M9A script's "Psychube once a day" and "Limbo once a month" switches: add **每日心相（意志解析）** to the daily list and **自动深眠**, **自动醒梦** to the monthly list, and they are skipped automatically after succeeding once that day / month. Any other task can be added as well.
+**Skip once done today** / **Skip once done this month** under **Run configuration** on the managed-script page replace the old M9A script's "Psychube once a day" and "Limbo once a month" switches: add **每日心相（意志解析）** to the daily list and **自动深眠**, **自动醒梦** to the monthly list, and they are skipped automatically after succeeding once that day / month. Any other task can be added as well.
 
 ## Upgrading from the old M9A script
 
 The **M9A script** in older versions of AUTO-MAS was a separate adapter. It is migrated to the setup above automatically the first time the upgraded AUTO-MAS starts; you do not need to rebuild anything:
 
-- Scripts, users, emulator, notification settings and run counters are kept as they were; each user's task queue is converted to the new format and task options are matched by name.
-- The old "server" was per user, the new one is per script: the script takes the server used by most of its enabled users; users on a different server are **disabled** with the reason written in their note — move them to another script (or change the script's resource) and re-enable them.
+- Managed scripts, accounts, emulator, notification settings and run counters are kept as they were; each account's task queue is converted to the new format and task options are matched by name.
+- The old "server" was per account, the new one is per managed script: the managed script takes the server used by most of its enabled accounts; accounts on a different server are **disabled** with the reason written in their note — move them to another managed script (or change the managed script's resource) and re-enable them.
 - Old automatic-update settings migrate to project updates. Current automatic updates run before a task; disabled updates remain **Off**. Check the source and project-specific CDK after migration: routine updates do not fall back to AUTO-MAS's own update credentials.
 - The old "run time limit" was a log-stall threshold; the new one is a hard limit on the whole run, so it is set to 120 minutes across the board.
 - The configuration is backed up before migrating as `config/ScriptConfig.json.m9a-legacy-<timestamp>.bak` (the last three are kept); a notification listing the results pops up after start-up.
-- Config backups made by the old adapter (`data/<script ID>/M9ABackups/`) are left in place and no longer shown under Config restore.
+- Config backups made by the old adapter (`data/<managed script ID>/M9ABackups/`) are left in place and no longer shown under Config restore.
 
 ::: warning The first run after migration
 Imports a copy from the original M9A directory; duration depends on project size and disk performance. Keep the source while source following is enabled, or when it may be needed to rebuild a missing copy.
@@ -83,7 +83,7 @@ Imports a copy from the original M9A directory; duration depends on project size
 
 ### I created a generic MFW script — why did it turn into M9A?
 
-The project decides the type: if the `interface.json` in the directory is M9A's (MirrorChyan rid `M9A`, or GitHub pointing at `MAA1999/M9A`), the script is recognised as M9A and gets automatic start / close game and account switching. After a successful import, the directory is locked. Create a new managed script to use a different project.
+The project decides the type: if the `interface.json` in the directory is M9A's (MirrorChyan rid `M9A`, or GitHub pointing at `MAA1999/M9A`), the managed script is recognised as M9A and gets automatic start / close game and account switching. After a successful import, the directory is locked. Create a new managed script to use a different project.
 
 ### A task failed — how do I look into it?
 
@@ -91,7 +91,7 @@ Check that the emulator connected → read the run-page log (every task's start 
 
 ### Why doesn't the run count go up?
 
-**The day boundary is computed in UTC+4**, which may be a few hours off from your computer's date; the day does not roll over at local midnight. Once the day's count reaches **Runs per day for this user**, the remaining users are skipped.
+**The day boundary is computed in UTC+4**, which may be a few hours off from your computer's date; the day does not roll over at local midnight. Once the day's count reaches **Runs per day for this account**, the remaining accounts are skipped.
 
 ### Support matrix
 

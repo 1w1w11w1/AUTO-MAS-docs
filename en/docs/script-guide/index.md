@@ -1,4 +1,4 @@
-# Script Management
+# Managed Scripts
 
 Find the game you play below, open its guide, and follow along.
 
@@ -39,7 +39,7 @@ Reverse: 1999 - M9A
 Any MaaFramework project that ships an `interface.json`
 
 - Runs the task queue straight from the interface without starting the project's own UI
-- Runs on AUTO-MAS's own copy: the original directory is never touched and can be deleted after import; one project can back several scripts running at the same time
+- Runs on AUTO-MAS's own copy: the original directory is never touched and can be deleted after import; one project can back several managed scripts running at the same time
 - Project updates from GitHub or MirrorChyan, automatically before or after a run
 
 ---
@@ -82,7 +82,7 @@ For scripts that can run tasks on startup and print logs
 
 - Supports most mainstream scripts, including March7thAssistant, SRC, zzzOD, and M9A
 - Ready-made config templates you can use straight away
-- Supports flexible custom managed plans
+- Supports flexible custom managed-script configurations
 
 ---
 

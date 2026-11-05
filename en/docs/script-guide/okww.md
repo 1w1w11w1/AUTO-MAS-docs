@@ -20,22 +20,22 @@ The AUTO-MAS adaptation handles the repetitive parts: starting a task, monitorin
 1. Download [OK-WW from its official repository](https://github.com/ok-oldking/ok-wuthering-waves) and extract it. A path without Chinese characters is recommended. Open OK-WW once and complete its basic setup.
 2. Open **Managed scripts** → **New managed script** and select **ok-ww**.
 3. Set **ok-ww path** to the directory containing `ok-ww.exe`, not the executable itself.
-4. Return to the managed-script list and click **Configure OK-WW** for this script. Save its basic configuration in the native GUI before adding an account. Existing accounts can also open a configuration session from their account page.
+4. Return to the managed-script list and click **Configure OK-WW** for this managed script. Save its basic configuration in the native GUI before adding an account. Existing accounts can also open a configuration session from their account page.
 5. If MAS should manage the game lifecycle, enable **Game Configuration** and select the official Wuthering Waves `launcher.exe`.
 6. Add an account, choose a configuration source, and decide whether to enable **Override standard configuration**.
-7. Save the script and add it to the schedule.
+7. Save the managed script and add it to the schedule.
 
 ## The Three Configuration Sources
 
-The account editor offers **Managed level (shared config)**, **Account level (independent config)**, and **Native**:
+The account editor offers **Shared configuration**, **Independent configuration**, and **Native**:
 
 | Source | Choose it when | Meaning |
 | --- | --- | --- |
-| **Managed level (shared config)** | Most accounts have the same settings | Uses shared MAS high-frequency settings at the Managed level. |
-| **Account level (independent config)** | Accounts need different settings | Stores independent MAS high-frequency settings for this account. |
+| **Shared configuration** | Most accounts have the same settings | Uses shared MAS high-frequency settings for the managed script. |
+| **Independent configuration** | Accounts need different settings | Stores independent MAS high-frequency settings for this account. |
 | **Native** | OK-WW should own the complex settings | Reads the existing OK-WW configuration first; complex settings are edited in the native OK-WW GUI. |
 
-As a shortcut: choose **Managed level (shared config)** for shared settings, **Account level (independent config)** for per-account high-frequency settings, and **Native** when you want to keep the native OK-WW configuration and let MAS mainly schedule it.
+As a shortcut: choose **Shared configuration** for shared settings, **Independent configuration** for per-account high-frequency settings, and **Native** when you want to keep the native OK-WW configuration and let MAS mainly schedule it.
 
 > **Native does not mean that MAS never reads or writes files.** It means that MAS uses the external script's native configuration as its source. When Override Standard Configuration is enabled, MAS still applies a temporary override to the high-frequency fields for that run.
 
@@ -56,7 +56,7 @@ Override Standard Configuration is a **temporary runtime override**. It does not
 2. During the task, MAS may write the selected account or override configuration.
 3. After success, failure, an exception, or a stop, MAS restores the original files from the start of the task.
 
-This prevents one user's quick settings from affecting the next user and prevents quick settings from being saved permanently in OK-WW. Only changes deliberately saved in the **Configure OK-WW** session through the native GUI become the script's original configuration.
+This prevents one account's quick settings from affecting the next account and prevents quick settings from being saved permanently in OK-WW. Only changes deliberately saved in the **Configure OK-WW** session through the native GUI become the script's original configuration.
 
 ## Official Launcher Requirement
 

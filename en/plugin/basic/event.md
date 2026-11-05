@@ -4,6 +4,8 @@ The event system is an important part of the MAS plugin system. Without the even
 
 This document explains the structure and usage of the MAS event system and helps you quickly write a plugin that uses events.
 
+This page retains historical protocol names such as `task.*`, `script.*`, and `script_id`. Here, `script.*` describes an account run. The current interface calls its management entities “managed scripts” and “accounts”; keep event names and payload fields unchanged.
+
 ## Event Model
 
 ### Event Object Structure
@@ -31,7 +33,7 @@ Field layers:
 
 ### Key Differences Between task.* and script.*
 
-`task.*` events usually place task fields inside `data`. `script.*` events promote script context fields to the top level.
+`task.*` events usually place task fields inside `data`. `script.*` events promote account-run context fields to the top level.
 
 `task.start` example, where task fields are mainly inside `data`:
 
@@ -49,7 +51,7 @@ Field layers:
 }
 ```
 
-`script.exit` example, where script fields are promoted to the top level:
+`script.exit` example, where account-run fields are promoted to the top level:
 
 ```json
 {
@@ -87,22 +89,22 @@ Development recommendations:
 
 - `task.start`: task started.
 - `task.progress`: task progress snapshot.
-- `task.log`: current script log snapshot.
+- `task.log`: snapshot of the script log for the current account run.
 - `task.exit`: task ended.
 
 ### Script Events
 
-- `script.start`: script started.
-- `script.success`: script completed successfully.
-- `script.error`: script failed.
-- `script.cancelled`: script was manually cancelled.
-- `script.exit`: script lifecycle ended. Listening to this event first is recommended.
+- `script.start`: account run started.
+- `script.success`: account run completed successfully.
+- `script.error`: account run failed.
+- `script.cancelled`: account run was manually cancelled.
+- `script.exit`: account run ended. Listening to this event first is recommended.
 
 ::: tip What is the difference?
 
-A task is a collection of scripts.
+`task` and `script` are execution levels in the historical event protocol. A task can contain multiple account runs, each of which uses `script.*` events.
 
-For example, if you create one MAA task with two accounts, each account is a script.
+For example, an MAA managed script has two accounts. When a task runs those accounts in turn, each account run produces its own set of `script.*` events.
 
 :::
 

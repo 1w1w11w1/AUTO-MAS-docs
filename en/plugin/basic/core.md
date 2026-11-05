@@ -526,7 +526,7 @@ ctx.logger.info(f"interpreter ok={check.get('ok')}")
 
 ### ctx.runtime.list_scripts
 
-Reads the script list exposed by the host. Returns an empty list if the host has not registered this capability.
+Reads the `list_scripts` list exposed by the host. Returns an empty list if the host has not registered this capability. The method retains its historical name; the host's registered capability defines what each list item represents.
 
 Usage:
 
@@ -536,7 +536,7 @@ scripts = ctx.runtime.list_scripts()
 
 ### ctx.runtime.get_script_log
 
-Reads the log of a specified script. Returns an empty string if the host has not registered this capability.
+Reads an execution log by its historical `script_id` identifier. Returns an empty string if the host has not registered this capability.
 
 Usage:
 

@@ -14,7 +14,7 @@ hero:
       text: 新手上路
       link: /docs/user-guide
     - theme: alt
-      text: 脚本配置
+      text: 托管配置
       link: /docs/script-guide/
     - theme: alt
       text: 任务调度
@@ -28,11 +28,11 @@ hero:
 
 features:
   - title: 多账号统一管理
-    details: 统一管理多脚本、多账号的配置
+    details: 统一管理多个托管及其账号的配置
   - title: 异常自动重试
     details: 持续监看脚本日志，失败自动重试，实现无人值守。
   - title: 灵活的调度队列
-    details: 用调度队列有序运行多个脚本，支持开机自动运行与定时运行。
+    details: 用调度队列有序运行多个托管，支持开机自动运行与定时运行。
   - title: 结果全程留痕
     details: 代理的结果和关键日志都留档，通知渠道丰富可自定义。
 ---

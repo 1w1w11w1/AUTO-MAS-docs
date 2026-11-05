@@ -1,6 +1,6 @@
 # Emulator Management
 
-Register an emulator, then select its configuration and device number in the script settings. AUTO-MAS fills connection information for supported scripts and starts or closes instances as required by the task.
+Register an emulator, then select its configuration and device number in the managed-script settings. AUTO-MAS fills connection information for supported scripts and starts or closes instances as required by the task.
 
 ::: info Version and demonstration scope
 This page follows **dev after v5.8.0-beta.3 (d49cff7c5)**. The automatic-path screenshot marks the search entry only; no installation search or import was performed. The manual path created an isolated configuration, selected MuMu, and checked the saved type after reload. No real executable was selected, and no emulator or game was started. The screenshots show the Chinese interface.
@@ -47,7 +47,7 @@ This example stops at the file-selection entry. No real executable was selected,
 
 ## Bind a device
 
-After completing **Search and import** or **Add manually**, identify the intended instance in the device list, then select its emulator configuration and **device number** in the script settings. A configuration that has already been added does not need to be added again.
+After completing **Search and import** or **Add manually**, identify the intended instance in the device list, then select its emulator configuration and **device number** in the managed-script settings. A configuration that has already been added does not need to be added again.
 
 ## Manage several installation paths with auto-detect (optional)
 
@@ -55,7 +55,7 @@ If you need a single device table for several installation paths, create a separ
 
 **Auto-detect (recommended)** is a configuration type. Search inside its management dialog adds installation paths to the current configuration through a different entry from **Search and import** above. Use this setup only when you need to manage several installation paths together.
 
-One auto-detect configuration can manage several installation paths. **MAS device numbers may differ from the emulator's own instance numbers.** Bind scripts using the MAS device number shown in the table.
+One auto-detect configuration can manage several installation paths. **MAS device numbers may differ from the emulator's own instance numbers.** Bind managed scripts using the MAS device number shown in the table.
 
 ## Filling In the Settings
 

@@ -26,13 +26,17 @@ MaaEnd is a third-party automation tool for Arknights: Endfield. Based on visual
 - **Not inside the AUTO-MAS root directory.** Like other scripts, anything in there risks being deleted by accident.
 :::
 
-## Configure the Script
+## Configure the Managed Script
 
-1. Go to **Script Management**, click **New Script**, and select **MaaEnd Script**.
-![Create MaaEnd script](/docs/img/script-guide/maaend/选择脚本.png)
+::: tip Interface names
+Historical screenshots may show “Script Management”, “New Script”, or “User”. These are now “Managed scripts”, “New managed script”, and “Account”; the steps below use the current names.
+:::
 
-2. In the opened script configuration, click **Select folder** for **MaaEnd path**, then open the directory where MaaEnd is located.
-![Script configuration](/docs/img/script-guide/maaend/脚本配置.png)
+1. Go to **Managed scripts**, click **New managed script**, and select **MaaEnd**.
+![Create MaaEnd managed script](/docs/img/script-guide/maaend/选择脚本.png)
+
+2. In the opened managed-script settings, click **Select folder** for **MaaEnd path**, then open the directory where MaaEnd is located.
+![Managed-script configuration](/docs/img/script-guide/maaend/脚本配置.png)
 
 3. Adjust the following configuration as needed:
 
@@ -42,9 +46,9 @@ MaaEnd is a third-party automation tool for Arknights: Endfield. Based on visual
    | **Game path (PC)** | Pick `Endfield.exe`, **not** the Hypergryph launcher |
    | **Game launch arguments (PC)** | Leave empty |
    | **Wait time after game startup (PC)** | How many seconds to wait after launching the game before automation starts. Default is 60. |
-   | **Close game after task completion** | Whether to close the game automatically once every user has finished |
+   | **Close game after task completion** | Whether to close the game automatically once every account has finished |
    | **Proxy timeout limit** | How many minutes without log activity counts as a hang. Default is 10. |
-   | **Daily proxy count limit** | Maximum runs per user per day. `0` means unlimited. |
+   | **Daily proxy count limit** | Maximum runs per account per day. `0` means unlimited. |
    | **Maximum retry count per run** | How many times to retry after a failure. Default is 3. |
 
 4. Click **Save Configuration**.
@@ -56,26 +60,26 @@ Two prerequisites when you set the controller type to emulator (ADB):
 - **MaaEnd must be v5.4.0 or the public beta.** Upstream MFW changed its naming rules, and older versions won't receive the emulator parameters AUTO-MAS passes them.
 :::
 
-## Configure Users
+## Configure Accounts
 
-1. In the script table under **Script Management**, click **Add user** to add a user.
+1. In the managed-script list under **Managed scripts**, click **Add an account** to add an account.
 
-2. Fill in user information according to the hints on the settings card.
-![User information](/docs/img/script-guide/maaend/用户配置-1.png)
+2. Fill in account information according to the hints on the settings card.
+![Account information](/docs/img/script-guide/maaend/用户配置-1.png)
 
-### User Configuration Fields
+### Account Configuration Fields
 
 #### Basic Information
 
 | Configuration | What to enter |
 | --- | --- |
-| **Username** | A display name you'll recognize |
-| **Enabled status** | Disabled users are skipped |
+| **Account name** | A display name you'll recognize |
+| **Enabled status** | Disabled accounts are skipped |
 | **Account ID** | Endfield login phone number, 11 digits. Leave it empty to skip switching and use whichever account is already logged in. |
 | **Password** | Has no effect right now. You can leave it empty. |
-| **Configuration source** | `Script-level` shares one MaaEnd config across all users; `User-level` gives this user its own |
+| **Configuration source** | **Shared** shares one MaaEnd config across all accounts; **Independent** gives this account its own |
 | **Take over specific game configuration** | Turn this on to use the task configuration below. Leave it off to run purely from the saved config file. |
-| **Remaining days** | How many days of automation are left. `-1` means unlimited. Only the first successful run of each day subtracts a day; further successful runs that day do not. At 0 the user is skipped. |
+| **Remaining days** | How many days of automation are left. `-1` means unlimited. Only the first successful run of each day subtracts a day; further successful runs that day do not. At 0 the account is skipped. |
 | **Notes** | Anything you like |
 
 #### Task Configuration

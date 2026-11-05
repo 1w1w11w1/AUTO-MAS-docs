@@ -1,6 +1,6 @@
 # Flavor Development
 
-MFW is the shared engine for MaaFramework projects. If your project has an `interface.json` and only needs its existing tasks, controllers, resources, and options, use the [MFW project guide](/en/docs/script-guide/maafw). Add a **flavor** only when the project needs its own script identity, wording, or small project-specific rules before a run.
+MFW is the shared engine for MaaFramework projects. If your project has an `interface.json` and only needs its existing tasks, controllers, resources, and options, use the [MFW project guide](/en/docs/script-guide/maafw). Add a **flavor** only when the project needs its own managed-script identity, wording, or small project-specific rules before a run.
 
 M9A and MSS are examples. They reuse MFW's import, runtime environment, project updates, execution, notifications, and periodic tasks. Before implementing a flavor, read the main repository's [`app/task/MaaFW/AGENTS.md`](https://github.com/AUTO-MAS-Project/AUTO-MAS/blob/dev/app/task/MaaFW/AGENTS.md) and [`MaaFWFlavor` contract](https://github.com/AUTO-MAS-Project/AUTO-MAS/blob/dev/app/task/MaaFW/tools/embedded/flavor.py).
 
@@ -13,11 +13,11 @@ M9A and MSS are examples. They reuse MFW's import, runtime environment, project 
 | Identity, help text, or queue rules specific to one project | A flavor |
 | In-game actions and the meaning of task results | The project itself |
 
-A flavor is a script type built into AUTO-MAS, not a plugin added to the project's release package. After an import, the engine identifies the project and can change a generic MFW script to the matching flavor, or back to generic MFW when another project is imported. The script ID stays the same; users should review the queue after changing projects.
+A flavor is a managed-script type built into AUTO-MAS, not a plugin added to the project's release package. After an import, the engine identifies the project and can change a generic MFW managed script to the matching flavor, or back to generic MFW when another project is imported. The managed-script ID stays the same; users should review the queue after changing projects.
 
 ## Backend registration
 
-1. In `app/models/config.py`, define `XConfig(MaaFWConfig)` with `DEFAULT_SCRIPT_NAME`, `USER_CONFIG_CLASS`, and `FLAVOR = "app.task.X.flavor:FLAVOR"`. The user class can be an empty `MaaFWUserConfig` subclass if no extra fields are needed. Keep `FLAVOR` as an import string so loading config does not eagerly load task code.
+1. In `app/models/config.py`, define `XConfig(MaaFWConfig)` with `DEFAULT_SCRIPT_NAME`, `USER_CONFIG_CLASS`, and `FLAVOR = "app.task.X.flavor:FLAVOR"`. The account class can be an empty `MaaFWUserConfig` subclass if no extra fields are needed. Keep `FLAVOR` as an import string so loading config does not eagerly load task code.
 2. Register the class in `CLASS_BOOK`, and map it to `MaaFWEmbeddedManager` in `app/core/task_manager.py`'s `_MANAGER_BOOK`. Add the config and API schema types in `app/models/schema.py`, then regenerate the frontend OpenAPI client from the development backend. Do not edit `frontend/src/api/` by hand.
 3. Export `FLAVOR` from `app/task/X/flavor.py`. The required `MaaFWFlavor` members are `type_key`, `matches_project(interface_model)`, and `decorate_selection(...)`.
 
@@ -44,18 +44,18 @@ FLAVOR = XFlavor()
 
 ### Optional hooks
 
-- `sanitize_task_snapshot` normalizes a user's saved queue before it is written and can return related `Info` updates. Use the same rules during run planning, because older snapshots may still exist. See the signature and return contract in [`flavor.py`](https://github.com/AUTO-MAS-Project/AUTO-MAS/blob/dev/app/task/MaaFW/tools/embedded/flavor.py); M9A provides an example.
-- `ensure_game_updated` is an async hook for updating the **game client**. It is called only for ADB when the script enables game updates, after emulator startup and before the first task. It returns `GameUpdateResult`. Updating the MaaFramework **project package** remains MFW's shared responsibility.
+- `sanitize_task_snapshot` normalizes an account's saved queue before it is written and can return related `Info` updates. Use the same rules during run planning, because older snapshots may still exist. See the signature and return contract in [`flavor.py`](https://github.com/AUTO-MAS-Project/AUTO-MAS/blob/dev/app/task/MaaFW/tools/embedded/flavor.py); M9A provides an example.
+- `ensure_game_updated` is an async hook for updating the **game client**. It is called only for ADB when the managed script enables game updates, after emulator startup and before the first task. It returns `GameUpdateResult`. Updating the MaaFramework **project package** remains MFW's shared responsibility.
 
 Do not add optional hooks to the required `MaaFWFlavor` protocol: flavors without them must still load.
 
 ## Frontend registration
 
-MFW's script page, user page, creation flow, and routes are shared. Export a `MaaFWFlavor` descriptor from `frontend/src/views/EditView/MaaFWFlavor/x/index.ts` and register it in `frontend/src/composables/useMaaFWFlavor.ts`. The descriptor holds the identity, config type names, icon, default name, creation card, translation keys, managed tasks, and optional custom UI.
+MFW's managed-script page, account page, creation flow, and routes are shared. Export a `MaaFWFlavor` descriptor from `frontend/src/views/EditView/MaaFWFlavor/x/index.ts` and register it in `frontend/src/composables/useMaaFWFlavor.ts`. The descriptor holds the identity, config type names, icon, default name, creation card, translation keys, managed tasks, and optional custom UI.
 
 Also update `frontend/src/types/script.ts`, `frontend/src/utils/scriptLogos.ts`, the creation mapping in `frontend/src/composables/useScriptApi.ts`, translations, and `MaaFWFlavorType` in `maafwFlavorTypes.ts`. The complete registration checklist is at the top of [`useMaaFWFlavor.ts`](https://github.com/AUTO-MAS-Project/AUTO-MAS/blob/dev/frontend/src/composables/useMaaFWFlavor.ts).
 
-Use `slots` only for project-specific controls. The existing `userBeforeTaskQueue` slot can place fields before the user's task queue; MSS demonstrates this with its plan selector and activity setting. Use `slots: {}` when no custom controls are needed. Do not copy MFW's whole script or user page.
+Use `slots` only for project-specific controls. The existing `userBeforeTaskQueue` slot can place fields before the account's task queue; MSS demonstrates this with its plan selector and activity setting. Use `slots: {}` when no custom controls are needed. Do not copy MFW's whole managed-script or account page.
 
 ## Verify
 

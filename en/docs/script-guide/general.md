@@ -7,7 +7,7 @@ date: 2025-07-16
 # General Scheduling
 
 ::: tip Start here: most people never configure this by hand
-AUTO-MAS ships with a set of ready-made templates. Go to **New general script > Create from template**, pick a template, fill in one script path, and you are done.
+AUTO-MAS ships with a set of ready-made templates. Go to **New managed script > General > Create from template**, pick a template, fill in one script path, and you are done.
 
 March7thAssistant, SRC, zzzOD, M9A and other common scripts all have mature templates. Check the list before you build anything yourself.
 :::
@@ -26,7 +26,7 @@ Understand these two things and you can diagnose most problems yourself.
 
 AUTO-MAS does not parse the script's config format. It keeps the whole config instead. Before a task starts, it copies your saved config into the script's directory as-is. After the task ends, it puts the script's original config back.
 
-So every user runs with its own config, and nothing you set by hand inside the script gets polluted.
+So every account runs with its own config, and nothing you set by hand inside the script gets polluted.
 
 ### Success and Failure: Watching the Log
 
@@ -145,7 +145,7 @@ Pick something that only shows up on success. Do not pick a generic message the 
 
 ## Sharing and Importing Configs
 
-Once you have a script configured, you can export it as a JSON file and share it. You can import someone else's JSON the same way. To get it in front of more people, submit it to the **AUTO-MAS config sharing centre**; once it passes review, every user can import your config with one click.
+Once you have a general managed script configured, you can export it as a JSON file and share it. You can import someone else's JSON the same way. To get it in front of more people, submit it to the **AUTO-MAS config sharing centre**; once it passes review, every user can import your config with one click.
 
 ::: warning Check your paths yourself before sharing
 Exporting and uploading both scrub the config, but **only some of the paths**. You have to check the rest.
@@ -163,7 +163,7 @@ You have to check these yourself:
 So open the exported JSON and skim it before sharing. If you see a path with your real name in it, such as `C:/Users/YourName/...`, edit it out first.
 :::
 
-## Subordinate Users
+## Accounts Under a Managed Script
 
-One general script can hold several users. Each user stores its own copy of the script config, and AUTO-MAS swaps them in one at a time as it runs tasks. It works the same way as users under a MAA script, and each user has to be configured separately.
+One general managed script can hold several accounts. Each account stores its own copy of the script config, and AUTO-MAS swaps them in one at a time as it runs tasks. It works the same way as accounts under an MAA managed script, and each account has to be configured separately.
 

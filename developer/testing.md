@@ -58,7 +58,7 @@ yarn playwright install chromium
 | `AUTO_MAS_E2E_DATA_ROOT=<目录>` | 就地运行时改用别的数据根 |
 | `AUTO_MAS_E2E_TEMPLATE_ROOT=<目录>` | 真实模式的配置种子源，默认是当前检出 |
 
-要断言某个设置或脚本配置项时，不要依赖检出里的现状。三种定位办法：在隔离运行根用 UI 修改控件，比较修改前后保存的配置副本或 API 响应；从组件字段反查后端模型，例如 `frontend/src/views/setting/TabBasic.vue` 的 `UI.IfHideCloseButton` 定义在 `app/models/config/setting.py`；查运行根里的 `debug/app.log`。主仓忽略整个 `config/`，不能用普通 Git 工作区差异定位字段；比较配置文件副本时可用 `git diff --no-index <修改前副本> <修改后副本>`，发现差异时退出码为 1。种子按优先级选：用例里用 UI 或 API 自己造出来 > 在入口启动后端之前写配置文件 > 提交最小 profile。最后用 `AUTO_MAS_E2E_KEEP_ROOT=1` 保留运行根，确认测试真的写进去了，再把观察到的变化写进断言和清理步骤；配置副本留在本地，不提交账号或凭据。
+要断言某个设置或托管配置项时，不要依赖检出里的现状。三种定位办法：在隔离运行根用 UI 修改控件，比较修改前后保存的配置副本或 API 响应；从组件字段反查后端模型，例如 `frontend/src/views/setting/TabBasic.vue` 的 `UI.IfHideCloseButton` 定义在 `app/models/config/setting.py`；查运行根里的 `debug/app.log`。主仓忽略整个 `config/`，不能用普通 Git 工作区差异定位字段；比较配置文件副本时可用 `git diff --no-index <修改前副本> <修改后副本>`，发现差异时退出码为 1。种子按优先级选：用例里用 UI 或 API 自己造出来 > 在入口启动后端之前写配置文件 > 提交最小 profile。最后用 `AUTO_MAS_E2E_KEEP_ROOT=1` 保留运行根，确认测试真的写进去了，再把观察到的变化写进断言和清理步骤；配置副本留在本地，不提交账号或凭据。
 
 ### 用例准入：改坏必须变红
 
@@ -77,23 +77,23 @@ Set-Location frontend
 yarn e2e:real --grep '@real'
 ```
 
-**默认自动选目标**：入口优先读当前检出的 `config/scripts.yaml`，仅对尚未完成配置迁移的数据根兼容旧 `config/ScriptConfig.json`；取第一个「用户已启用」的脚本与用户，并在启动日志打印选中目标。已完成迁移却缺少 YAML 文件时会报错，需要先在应用中恢复配置。在 worktree 中运行时，用 `AUTO_MAS_E2E_TEMPLATE_ROOT` 指向存有真实配置的主检出目录。仓库里只有代码和用例，不提供游戏资源、脚本安装包或测试账号——真实运行用的是你本机已装的脚本和 MAS 里已配好的用户。想指定账号时才需要 `AUTO_MAS_E2E_SCRIPT_ID`、`AUTO_MAS_E2E_USER_ID`、`AUTO_MAS_E2E_ACCOUNT_NAME`；目标不存在会直接报错，不会静默换成别的账号。
+**默认自动选目标**：入口优先读当前检出的 `config/scripts.yaml`，仅对尚未完成配置迁移的数据根兼容旧 `config/ScriptConfig.json`；取第一个包含已启用账号的托管及该账号，并在启动日志打印选中目标。已完成迁移却缺少 YAML 文件时会报错，需要先在应用中恢复配置。在 worktree 中运行时，用 `AUTO_MAS_E2E_TEMPLATE_ROOT` 指向存有真实配置的主检出目录。仓库里只有代码和用例，不提供游戏资源、脚本安装包或测试账号——真实运行用的是你本机已装的脚本和 MAS 里已配好的账号。想指定账号时才需要 `AUTO_MAS_E2E_SCRIPT_ID`、`AUTO_MAS_E2E_USER_ID`、`AUTO_MAS_E2E_ACCOUNT_NAME`；目标不存在会直接报错，不会静默换成别的账号。
 
-- 真实运行同样使用隔离运行根：只把被选中的脚本、用户与计划复制进去，并剥掉用户配置里的通知字段，所以不会推真实通知；对队列、设置、历史和数据库的改动随运行根删除。
+- 真实运行同样使用隔离运行根：只把被选中的托管、账号与计划复制进去，并剥掉账号配置里的通知字段，所以不会推真实通知；对队列、设置、历史和数据库的改动随运行根删除。
 - 机器级原子锁在 `%SystemRoot%\Temp\AUTO-MAS`，同一台电脑同时只允许一个真实运行。强杀进程后残留的锁文件，确认没有测试在跑再手动删除。
-- 脚本安装目录与模拟器仍指向本机真实环境，配置注入和恢复可能改变游戏状态或消耗资源，选合适的脚本与用户再跑。
-- 它验证 MAS 公开上报的任务终态与用户结果，不等于游戏内结果全部成功；失败不可重放，报告和终端输出可能含本机信息，分享前人工检查，不要上传整个结果目录。
+- 脚本安装目录与模拟器仍指向本机真实环境，配置注入和恢复可能改变游戏状态或消耗资源，选合适的托管与账号再跑。
+- 它验证 MAS 公开上报的任务终态与账号结果，不等于游戏内结果全部成功；失败不可重放，报告和终端输出可能含本机信息，分享前人工检查，不要上传整个结果目录。
 - 单次真实运行的截图与 `real-e2e-summary.json` 在 `frontend/test-results/real/`，HTML 报告在 `frontend/playwright-report/real/`；从 `frontend/` 执行 `yarn playwright show-report playwright-report/real` 打开。
 
 ### 批量跑全部专项
 
 ```powershell
-yarn e2e:real:all --list                       # 只列本机已启用用户目标，不跑
+yarn e2e:real:all --list                       # 只列本机已启用账号目标，不跑
 yarn e2e:real:all                              # 逐个串行跑全部目标
-yarn e2e:real:all --only MaaConfig,SrcConfig   # 只跑指定专项的已启用用户
+yarn e2e:real:all --only MaaConfig,SrcConfig   # 只跑指定专项的已启用账号
 ```
 
-每个已启用用户都是一个目标，同一专项有多个用户时会逐个运行。每个目标各起一套隔离运行根、各自加锁，一份结果写到 `test-results/real-batch/<序号>-<专项>-<账号>/`，某个失败不中断其余。固定开销是每个目标重启一套服务，约 20-30 秒；不支持 `--in-place`，模拟器由各目标自己的脚本绑定决定。HTML 报告仅保留最后一个目标的运行。
+每个已启用账号都是一个目标，同一专项有多个账号时会逐个运行。每个目标各起一套隔离运行根、各自加锁，一份结果写到 `test-results/real-batch/<序号>-<专项>-<账号>/`，某个失败不中断其余。固定开销是每个目标重启一套服务，约 20-30 秒；不支持 `--in-place`，模拟器由各目标自己的托管绑定决定。HTML 报告仅保留最后一个目标的运行。
 
 ## 让 AI 助手跑测试
 

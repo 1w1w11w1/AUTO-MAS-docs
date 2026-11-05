@@ -142,8 +142,8 @@ async def send_finished_notification():
 | 入口 | 用途与注意点 |
 | --- | --- |
 | `global_target()` | 根据全局配置选渠道；默认不包含系统通知 |
-| `user_target(user_config)` | 根据用户配置构造独立目标；调用方仍需负责业务通知时机 |
-| `statistic_targets(user_config)` | 根据全局与用户统计开关选择目标；`compact_summary=True` 为 Webhook 选择紧凑摘要策略 |
+| `user_target(user_config)` | 根据账号配置构造独立目标；调用方仍需负责业务通知时机 |
+| `statistic_targets(user_config)` | 根据全局与账号统计开关选择目标；`compact_summary=True` 为 Webhook 选择紧凑摘要策略 |
 | `push_proxy_result()` | 专项代理结果优先复用，统一处理结果推送条件及社区摘要 |
 | `dispatch_task_report()` | 已构造报告时使用，维护社区摘要的逐目标投递状态 |
 | `dispatch()` | 通用投递入口，不替业务判断“仅失败时推送”等条件 |
@@ -260,7 +260,7 @@ def build_image_notification(image_bytes: bytes) -> NotifyPayload:
 3. 目标构造器只读取宿主提供的 `ChannelConfig`，按显式启用配置生成稳定 ID、收件配置与 `ChannelTarget.capabilities`。能力只保存在具体目标上，重试复用同一份目标快照。
 4. 在 `transport.py` 的发送器中实现协议编码、发送和业务结果判断，通过 `ChannelDependencies` 使用宿主注入的传输能力。发送适配器接收 `RenderedNotification`，只执行一次发送；新增发送方法时同步测试注入使用的 `Notifier` 协议。
 5. 若增加持久配置或公开 API 字段，按[配置管理](/developer/config)和 [API 开发](/developer/API)完成全链路接入，不手改生成的前端 API 文件。
-6. 验证全局/用户作用域、启用开关、空收件人、失败统计与既有渠道输出。
+6. 验证全局/账号作用域、启用开关、空收件人、失败统计与既有渠道输出。
 
 仅新增渠道时，已有业务消息通常无需修改。确有新内容需求时，先定义与渠道无关的内容语义；不要提前增加没有消费方的能力开关或通用插件框架。
 
@@ -280,7 +280,7 @@ def build_image_notification(image_bytes: bytes) -> NotifyPayload:
 
 - 纯文本与富文本选择、原有社区 HTML 展示、标题和签名不重复。
 - 多图引用、相同前缀资源 ID、无图与缺少来源时的文字降级。
-- 自定义 Webhook 图片模板、Claw QQ 和全局/用户开关。
+- 自定义 Webhook 图片模板、Claw QQ 和全局/账号开关。
 - 单目标渲染失败、发送重试、零目标与社区摘要部分送达。
 - 正文字节预算、紧凑摘要与超限备用文字的差异。
 

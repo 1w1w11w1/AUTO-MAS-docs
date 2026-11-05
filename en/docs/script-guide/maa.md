@@ -15,12 +15,16 @@ MAA is a third-party Arknights tool that can handle repetitive tasks such as dai
 1. Download the archive from <Pill name="MAA Website" image="https://maa.plus/favicon.ico" link="https://maa.plus"/>, <Pill name="MAA Repository" :image="{ light: '/icons/github.svg', dark: '/icons/github-dark.svg', }" link="https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/latest"/>, or <Pill name="MirrorChyan" image="https://mirrorchyan.com/favicon.ico" link="https://mirrorchyan.com/zh/projects?rid=MAA&scouce=AUTO-MAS-Web"/>.
 2. Extract the MAA archive to any folder.
 
-## Configure the Script
+## Configure the Managed Script
 
-1. Go to **Managed scripts**, click **New managed script**, and select **MAA Script** to add a script instance management page.
+::: tip Interface names
+Historical screenshots may show “Script Management”, “New Script”, or “User”. These are now “Managed scripts”, “New managed script”, and “Account”; the steps below use the current names.
+:::
+
+1. Go to **Managed scripts**, click **New managed script**, and select **MAA** to add a managed-script configuration page.
 ![AUTO-MAS configuration 1](/docs/img/script-guide/maa/AUTO-MAA-1.png)
 
-2. In the opened script configuration, click **Select folder** for **MAA path**, then open the directory where MAA is located.
+2. In the opened managed-script settings, click **Select folder** for **MAA path**, then open the directory where MAA is located.
 ![AUTO-MAS configuration 2](/docs/img/script-guide/maa/AUTO-MAA-2.png)
 
 3. In **Emulator Management**, select the emulator and emulator instance.
@@ -35,16 +39,16 @@ MAA is a third-party Arknights tool that can handle repetitive tasks such as dai
 6. After configuration, close **MAA** and click **Save Configuration** in AUTO-MAS.
 ![AUTO-MAS configuration 6](/docs/img/script-guide/maa/AUTO-MAA-6.png)
 
-## Configure Users
+## Configure Accounts
 
-1. In the script table under **Managed scripts**, click **Add an account** to add a user.
+1. In the managed-script list under **Managed scripts**, click **Add an account** to add an account.
 ![AUTO-MAS configuration 7](/docs/img/script-guide/maa/AUTO-MAA-7.png)
 
-2. Fill in user information according to the hints on the settings card.
+2. Fill in account information according to the hints on the settings card.
 ![AUTO-MAS configuration 8](/docs/img/script-guide/maa/AUTO-MAA-8.png)
 
 ::: info Note
-In **user** configuration mode, do not forget to **set specific configuration**.
+In **Independent** configuration mode, do not forget to **set specific configuration**.
 :::
 
 ::: tip Account ID Tips
@@ -82,12 +86,12 @@ With these changes, account switching should become more stable.
 
 During an auto-proxy run, AUTO-MAS takes over some MAA settings, so whatever you set in MAA is overwritten. Knowing which ones saves you a lot of "but I definitely set that" confusion:
 
-- **Options shown on the user configuration page always win.**
-- **Annihilation task**: only **Start wakeup** and **Use sanity** are enabled, only annihilation stages are farmed, and the details are generated automatically from your user settings.
+- **Options shown on the account configuration page always win.**
+- **Annihilation task**: only **Start wakeup** and **Use sanity** are enabled, only annihilation stages are farmed, and the details are generated automatically from your account settings.
 - **Daily task**: runs whatever you ticked in **Task configuration**. **The order is fixed and cannot be changed.**
 - **Scheduled execution** is force-disabled, because scheduling belongs to the AUTO-MAS queue. Behavior after task completion, behavior after MAA startup, minimization, and update settings are also adjusted automatically.
 
-Anything not taken over follows your configuration mode: **script** mode uses MAA's global settings, **user** mode uses that user's own configuration.
+Anything not taken over follows your configuration mode: **Shared** mode uses the managed script's shared MAA configuration; **Independent** mode uses the account's own configuration.
 
 ::: tip Only the First Task of Each Type Is Used
 If you queued two tasks of the same type in MAA, for example two **Use sanity** tasks, AUTO-MAS uses only the first one. If there are none, defaults apply.
@@ -121,7 +125,7 @@ Select **Weekly mode** (周计划模式). Set the values in the Monday-to-Sunday
 
 ### 3. Select the plan in an account
 
-Open the MAA account under script management (托管管理), enable configuration overrides (覆写配置), and expand **Sanity tasks** (理智任务). Select your plan in **Stage configuration mode** (关卡配置模式).
+Open the MAA account under Managed scripts (托管管理), enable **Override standard configuration** (覆写常规配置), and expand **Sanity tasks** (理智任务). Select your plan in **Stage configuration mode** (关卡配置模式).
 
 [![Select the plan in the MAA account's sanity task](/docs/img/tutorial-20261104/plan-bind.png)](/docs/img/tutorial-20261104/plan-bind.png)
 

@@ -4,7 +4,7 @@ Specialized script adaptation must connect configuration, schema, API, task sche
 
 ## Black-Box Premise
 
-Decide capability ownership first: **work the script owns** (in-game actions, task execution and verdicts, script config semantics) may only be reused through upstream entry points; **MAS-owned domains** (accounts, multi-script scheduling, plans, notifications, statistics, emulator lifecycle, cross-script orchestration) may be implemented in MAS; **upstream private formats** (config internals, plans/queues/run records, resource files) may only be passed through. The adapter depends only on upstream outward contracts, which limits breakage when upstream changes.
+Decide capability ownership first: **work the script owns** (in-game actions, task execution and verdicts, script config semantics) may only be reused through upstream entry points; **MAS-owned domains** (managed scripts and accounts, multi-script scheduling, plans, notifications, statistics, emulator lifecycle, cross-script orchestration) may be implemented in MAS; **upstream private formats** (config internals, plans/queues/run records, resource files) may only be passed through. The adapter depends only on upstream outward contracts, which limits breakage when upstream changes.
 
 - **Order of work**: lower the configuration barrier first (remove manual install/import, path picking, first-run setup, and high-frequency task arrangement steps; cut the number of options users must adjust), and only then fill a gap in the script itself (the gap must belong to a MAS-owned domain and upstream must offer no equivalent entry point). Before starting, state which manual step the change removes; moving an upstream configuration panel into MAS does not count as lowering the barrier.
 - **Allowed dependencies**: CLI arguments and exit codes, upstream-documented JS/API, the native GUI and configuration sessions, process and directory structure, logs and run reports.
@@ -43,8 +43,8 @@ Specialized adaptation should follow the order "frontend surface first, then bac
    - `Scripts.vue` and `ScriptTable.vue`: Hub entry, cards, icons, and action buttons.
    - `router/index.ts`: add a route segment consistent with the Hub.
    - `frontend/src/types/script.ts`: add `ScriptType` and default structure.
-   - `frontend/src/composables/useScriptApi.ts`: complete script type branches and `UserConfig -> users[]` branch.
-   - `EditView/Script/`, `EditView/User/`: add or adjust script edit pages, user edit pages, and sections.
+   - `frontend/src/composables/useScriptApi.ts`: complete managed-script type branches and `UserConfig -> users[]` branch.
+   - `EditView/Script/`, `EditView/User/`: add or adjust managed-script edit pages, account edit pages, and sections.
 
 3. **Backend registration**
    - `app/models/config.py`: add `XxxConfig` / `XxxUserConfig` and register them to the corresponding configuration collections.

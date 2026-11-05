@@ -2,12 +2,12 @@
 
 ## Scheduling Queues
 
-A **scheduling queue** is a to-do list: you put the scripts you want to run into it in order, and AUTO-MAS works down the list one script at a time. You can also have it start running when the app launches, or at set times.
+A **scheduling queue** is a to-do list: you put the managed scripts you want to run into it in order, and AUTO-MAS works down the list one managed script at a time. You can also have it start running when the app launches, or at set times.
 
 ::: warning Two things to get straight first
-**Scripts in a queue run one after another.** The next one starts only after the previous one finishes. If you see several scripts running at the same time, check your general script settings.
+**Managed scripts in a queue run one after another.** The next one starts only after the previous one finishes. If you see several managed scripts running at the same time, check your general script settings.
 
-**A queue can have several scheduled times, but those times don't belong to individual scripts.** At each scheduled time, the whole queue runs from the top. They are not "run script A at this time, script B at that time".
+**A queue can have several scheduled times, but those times don't belong to individual managed scripts.** At each scheduled time, the whole queue runs from the top. They are not "run managed script A at this time, managed script B at that time".
 :::
 
 ::: info Example version and scope
@@ -46,9 +46,9 @@ The queue's scheduled-run setting must be Yes and the individual schedule row mu
 
 A cycle queue (循环队列) repeats according to each task's cycle settings. Choose it when you need repeated task cycles rather than scheduled runs of the whole queue.
 
-### 3. Add configured scripts
+### 3. Add configured managed scripts
 
-Click **Add task** (添加任务) and select a configured script. If there are no scripts to select, complete [Script Configuration](/en/docs/script-guide/) first.
+Click **Add task** (添加任务) and select a configured managed script. If there are no managed scripts to select, complete [Managed Script Configuration](/en/docs/script-guide/) first.
 
 ::: tip Common setups
 - To run after boot, start AUTO-MAS with Windows and select Run every time or First startup each day.
@@ -60,9 +60,9 @@ Click **Add task** (添加任务) and select a configured script. If there are n
 
 In **auto-proxy** mode, tasks are nested like this:
 
-- **One user** = all the tasks that user has selected. For MAA scripts, a user's tasks split into **Annihilation** and **Daily**, with Annihilation first; script mode has Daily on by default.
-- **One script** = the tasks of all users under it, run in the order the users appear in the list. The same script can't run twice at once. If it's already running, starting it again is skipped.
-- **One queue** = the tasks of all scripts in the queue, run in queue order. The same queue can be started more than once.
+- **One account** = all the tasks that account has selected. For MAA managed scripts, an account's tasks split into **Annihilation** and **Daily**, with Annihilation first; when configuration overrides are off, the Daily task is run.
+- **One managed script** = the tasks of all accounts under it, run in the order the accounts appear in the list. The same managed script can't run twice at once. If it's already running, starting it again is skipped.
+- **One queue** = the tasks of all managed scripts in the queue, run in queue order. The same queue can be started more than once.
 - **One scheduler console** runs one queue at a time. To run several queues in parallel, open more consoles.
 
 ## Manual Review
@@ -76,4 +76,4 @@ Other scripts aren't supported yet.
 1. Select **Manual review mode** and click **Start task**.
 2. The app starts MAA and logs in to each account in order.
 3. **After each PRTS login finishes**, check that account's run yourself and manually confirm anything that didn't get done.
-4. When the review ends, the results are recorded in the status information on the **User Management** page.
+4. When the review ends, the results are recorded in the status information on the **Account Management** page.

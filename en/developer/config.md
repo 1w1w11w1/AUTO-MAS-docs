@@ -5,7 +5,7 @@ with Pydantic models and supports staging, transactional workspaces, signals,
 business locks, and YAML persistence. The application entry point is
 `Config`, exported by `app/core/config.py`.
 
-This page documents the framework itself. Shared script configuration, account
+This page documents the framework itself. Shared managed-script configuration, account
 overrides, and runtime restoration are business semantics; see
 [Configuration Semantics](./config-semantics.md). Business overlays organize
 values for different accounts, while a transaction workspace holds pending
@@ -619,7 +619,7 @@ conversion, dependency-ordered activation, and verified saving:
 - `GameSignAccounts.json` -> `game_sign_accounts.yaml`
 
 The upgrade preserves UUIDs, types, order, references, credentials, and nested
-users, webhooks, queues, and time fields. Historical naive date/time values
+accounts, webhooks, queues, and time fields. Historical naive date/time values
 are interpreted using their original business timezone before conversion to
 UTC; runtime naive values are interpreted as UTC.
 

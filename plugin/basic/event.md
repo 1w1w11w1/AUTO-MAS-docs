@@ -4,6 +4,8 @@
 
 本文将带你了解MAS事件系统的构造和使用，帮助你快速编写一个使用事件系统的插件。
 
+本文保留历史事件协议中的 `task.*`、`script.*` 和 `script_id` 等名称。这里的 `script.*` 描述账号执行过程；当前界面的管理对象称为“托管”和“账号”，不要按界面用词改写事件名或载荷字段。
+
 ## 事件模型
 
 ### 事件对象结构
@@ -31,7 +33,7 @@
 
 ### task.* 与 script.* 的关键差异
 
-task.* 事件通常把任务字段放在 data 内；script.* 事件会把脚本上下文字段提升到顶层。
+task.* 事件通常把任务字段放在 data 内；script.* 事件会把账号执行上下文字段提升到顶层。
 
 task.start 示例（任务字段主要在 data 内）：
 
@@ -49,7 +51,7 @@ task.start 示例（任务字段主要在 data 内）：
 }
 ```
 
-script.exit 示例（脚本字段提升到顶层）：
+script.exit 示例（账号执行字段提升到顶层）：
 
 ```json
 {
@@ -87,22 +89,22 @@ script.exit 示例（脚本字段提升到顶层）：
 
 - task.start：任务启动。
 - task.progress：任务进度快照。
-- task.log：当前脚本日志快照。
+- task.log：当前账号执行时的脚本日志快照。
 - task.exit：任务结束。
 
 ### Script事件
 
-- script.start：脚本开始。
-- script.success：脚本成功完成。
-- script.error：脚本失败。
-- script.cancelled：脚本被人工取消。
-- script.exit：脚本生命周期结束（推荐优先监听）。
+- script.start：账号执行开始。
+- script.success：账号执行成功完成。
+- script.error：账号执行失败。
+- script.cancelled：账号执行被人工取消。
+- script.exit：账号执行生命周期结束（推荐优先监听）。
 
 ::: tip 有什么区别？
 
-task是script的集合，一个task任务中可以包含多个script。
+`task` 和 `script` 是历史事件协议中的执行层级：一个任务可以包含多次账号执行，每次账号执行使用 `script.*` 事件。
 
-比如说我创建一个MAA任务（task），有两个账号，每个账号都是一个script
+例如，一个 MAA 托管有两个账号；任务依次运行这两个账号时，各自会产生一组 `script.*` 事件。
 
 :::
 

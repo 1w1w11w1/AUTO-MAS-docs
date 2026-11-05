@@ -13,7 +13,7 @@ Honkai: Star Rail has two widely used third-party scripts, and each is better at
 - **March7th Assistant (M7A)**: better at Trailblaze Power stages and weekly tasks.
 - **StarRailAssistant (SRA)**: better at collecting daily rewards and at Divergent Universe.
 
-That is the point of the HSR script type: **you do not have to choose one**. Run both under a single script and decide task by task which one handles it. AUTO-MAS starts the game, calls the scripts in order, retries failures, and remembers whether this week's weekly tasks are already done.
+That is the point of the HSR script type: **you do not have to choose one**. Run both under a single managed script and decide task by task which one handles it. AUTO-MAS starts the game, calls the scripts in order, retries failures, and remembers whether this week's weekly tasks are already done.
 
 **What it can run** (exact coverage depends on the script versions you install):
 
@@ -51,17 +51,17 @@ When you save, AUTO-MAS checks that the folder you picked contains the matching 
 | Game path | `StarRail.exe` |
 :::
 
-## Create an HSR Script
+## Create an HSR Managed Script
 
-### 1. Create the script
+### 1. Create the managed script
 
-Go to **Script Management** → **New Script** → pick **HSR Script** → confirm. The app jumps to the script configuration page.
+Go to **Managed scripts** → **New managed script** → pick **HSR** → confirm. The app jumps to the managed-script configuration page.
 
-### 2. Script and game configuration
+### 2. Managed script and game configuration
 
 | Field | What to enter |
 |---|---|
-| **Script name** | Any name you will recognize, such as "Main Star Rail account" |
+| **Managed script name** | Any name you will recognize, such as "Main Star Rail account" |
 | **March7th path** | The **folder** M7A lives in |
 | **SRA path** | The **folder** SRA lives in |
 | **SRA config profile** | SRA can keep several configuration profiles; this picks which one to use. Defaults to "auto", see below |
@@ -72,13 +72,13 @@ Go to **Script Management** → **New Script** → pick **HSR Script** → confi
 | **Redeem codes run only when they change** | On by default. Skips the redemption code step when the codes have not changed, so it does not run pointlessly every day |
 
 ::: tip One script is enough
-Fill in only M7A or only SRA and leave the other empty. The empty one will not appear as an engine choice on the user page.
+Fill in only M7A or only SRA and leave the other empty. The empty one will not appear as an engine choice on the account page.
 :::
 
 ::: tip About SRA configuration profiles
 SRA stores its settings as one or more profiles under `%APPDATA%\SRA\configs`. Which one you pick decides two things: what the options under "Tasks managed by MAS" show, which profile Native configuration runs.
 
-Leaving it on "auto" prefers `Default` and otherwise takes the first profile in filename order — which is exactly what AUTO-MAS always did before. If the profile you picked is later deleted or renamed, AUTO-MAS falls back to auto and says so on both the script page and the user page, rather than switching silently.
+Leaving it on "auto" prefers `Default` and otherwise takes the first profile in filename order — which is exactly what AUTO-MAS always did before. If the profile you picked is later deleted or renamed, AUTO-MAS falls back to auto and says so on both the managed-script page and the account page, rather than switching silently.
 :::
 
 ::: warning Change the resolution while the game is closed
@@ -97,7 +97,7 @@ These control timeout and retry behavior. The defaults suit most setups; adjust 
 | **Enable low-performance compatibility mode** | Only affects M7A running Divergent Universe. Turn it on if M7A runs it unreliably | Off |
 
 ::: tip Task assignment is not on this page
-Which script runs which task is decided **per user**, on the user page, not here. Two users under the same script can use different engines.
+Which script runs which task is decided **per account**, on the account page, not here. Two accounts under the same managed script can use different engines.
 :::
 
 ### 4. External script updates
@@ -109,31 +109,31 @@ Which script runs which task is decided **per user**, on the user page, not here
 - MirrorChyan requires the HSR-specific CDK entered here. It does not fall back to the CDK in AUTO-MAS's own update settings.
 - Each engine has separate **Check for updates** and **Update now** actions. Confirm the target version and result before starting tasks.
 
-## Create an HSR User
+## Create an HSR Account
 
-In the **Script Management** table, click **Add a user**, then fill in the basics:
+In the **Managed scripts** table, click **Add an account**, then fill in the basics:
 
 | Field | What to enter |
 |---|---|
-| **User name** | Display name. It is also sent to the script as the "Trailblazer name" for Currency Wars |
-| **Enabled** | Disabled users are skipped |
+| **Account name** | Display name. It is also sent to the script as the "Trailblazer name" for Currency Wars |
+| **Enabled** | Disabled accounts are skipped |
 | **Account** | Phone number or similar login. Only needed when SRA has to switch accounts for you |
 | **Password** | Login password, same condition |
 | **Server** | CN official only for now |
-| **Days remaining** | How many more days to run this user. `-1` means no limit. It **drops by at most one per day**, and only once at least one module has succeeded in that day's daily phase. The user is skipped at 0. Direct-control users never count down, but they are still skipped at 0 |
+| **Days remaining** | How many more days to run this account. `-1` means no limit. It **drops by at most one per day**, and only once at least one module has succeeded in that day's daily phase. The account is skipped at 0. Direct-control accounts never count down, but they are still skipped at 0 |
 | **Note** | Anything you want |
 
 ::: warning About the account and password
 They are stored locally and encrypted automatically. Nothing is uploaded.
 
-**They only appear when the script page has an SRA path and this user is in MAS-managed mode.** Whether they are actually used for login or account switching further depends on one of your enabled modules being assigned to SRA; otherwise they sit unused.
+**They only appear when the managed-script page has an SRA path and this account is in MAS-managed mode.** Whether they are actually used for login or account switching further depends on one of your enabled modules being assigned to SRA; otherwise they sit unused.
 
-Also, do not share your `data/` directory or script configuration JSON with anyone. They contain your encrypted credentials.
+Also, do not share your `data/` directory or managed-script configuration JSON with anyone. They contain your encrypted credentials.
 :::
 
 ## Run Mode: MAS Managed or Native Configuration
 
-Every user picks a **run mode**, which decides who is in charge:
+Every account picks a **run mode**, which decides who is in charge:
 
 | Mode | Who decides what runs | Who it suits |
 |---|---|---|
@@ -211,7 +211,7 @@ This only affects the run AUTO-MAS performs in managed mode — your own setting
 
 ### Reset to the source configuration
 
-**Reset to the source configuration**, at the top right of the module list, **deletes every override this user has in AUTO-MAS** (all modules, all fields). Everything then displays and runs according to the script's current configuration. The source configuration file itself is not touched.
+**Reset to the source configuration**, at the top right of the module list, **deletes every override this account has in AUTO-MAS** (all modules, all fields). Everything then displays and runs according to the script's current configuration. The source configuration file itself is not touched.
 
 The action cannot be undone, so it asks for confirmation first.
 
@@ -221,7 +221,7 @@ After a script update, or after switching SRA configuration profiles, a field yo
 
 - **It is ignored at run time and the source value is used instead.** It never causes an error or interrupts the task.
 - The detail panel lists which ones, why they became invalid, and the value you had saved.
-- **Remove stale overrides** takes them out of this user's configuration. That too only touches the AUTO-MAS side, never the source file.
+- **Remove stale overrides** takes them out of this account's configuration. That too only touches the AUTO-MAS side, never the source file.
 
 ## AUTO-MAS Handles Weekly Progress for You
 
@@ -234,7 +234,7 @@ They reset at Monday 04:00 on the CN server, equivalent to Monday 00:00 in UTC+4
 
 ### Changing progress by hand
 
-The **Progress and reset** area at the bottom of the user page (managed mode only) shows whether Echo of War and the weekly tasks are done this week, with **Mark as done** and **Reset** for each.
+The **Progress and reset** area at the bottom of the account page (managed mode only) shows whether Echo of War and the weekly tasks are done this week, with **Mark as done** and **Reset** for each.
 
 Two uses: you already did it yourself in game and want AUTO-MAS to stop trying, or you want to force a re-run.
 
@@ -244,9 +244,9 @@ They only touch AUTO-MAS's own bookkeeping. They **do not make the scripts run a
 
 ## Running and Logs
 
-Once configured, add the script to a [task queue](/en/docs/task-scheduler) and it runs automatically. Three things worth knowing:
+Once configured, add the managed script to a [task queue](/en/docs/task-scheduler) and it runs automatically. Three things worth knowing:
 
-- **The game may restart repeatedly**: three things trigger it — switching between the two scripts for one user, that user moving from the daily phase into the weekly phase (regardless of which script), and each retry round. All deliberate, to keep script state from interfering. All three only happen while "MAS manages the game" is on.
+- **The game may restart repeatedly**: three things trigger it — switching between the two scripts for one account, that account moving from the daily phase into the weekly phase (regardless of which script), and each retry round. All deliberate, to keep script state from interfering. All three only happen while "MAS manages the game" is on.
 - **Your M7A / SRA configuration is safe**: AUTO-MAS backs it up before running and restores it afterwards.
 - **Retryable failures are retried** up to the configured maximum, restarting the game first when game management is enabled. Configuration errors and cloud login, queue, or play-time failures that retries cannot resolve are not repeatedly retried.
 
@@ -265,7 +265,7 @@ Also note that with March7th's log level set to DEBUG the forwarded volume gets 
 
 ## FAQ
 
-### There is no HSR option when creating a script
+### There is no HSR option when creating a managed script
 
 Your AUTO-MAS is too old to have the HSR script type. Update from the [download page](/en/download/auto-mas) and restart the app afterwards.
 
@@ -279,14 +279,14 @@ Stage options are read from the lists shipped inside the scripts themselves (`as
 
 ### Task status is wrong, things run that shouldn't or don't run that should
 
-- Check the task switches on the user page first.
+- Check the task switches on the account page first.
 - Weekly tasks reset weekly; crossing into a new week clears them automatically.
 - **Progress and reset** lets you mark or reset a task to fix the state immediately.
 - If it is still wrong, check `debug/app.log` for how the script exited.
 
 ### M7A runs Divergent Universe unreliably
 
-Turn on **Enable low-performance compatibility mode** on the script page. Team, blessings and simulation strategy are outside AUTO-MAS's control — set those up in M7A beforehand.
+Turn on **Enable low-performance compatibility mode** on the managed-script page. Team, blessings and simulation strategy are outside AUTO-MAS's control — set those up in M7A beforehand.
 
 ### SRA finished Currency Wars but there are no points
 
@@ -296,7 +296,7 @@ Check the points and unclaimed rewards in the game, then consult the installed S
 
 Three sources: switching between scripts, finishing the daily phase and moving into the weekly one, and each retry round. All deliberate, to prevent script state from interfering.
 
-Assigning everything to one script removes the first, but as long as Divergent Universe or Currency Wars is enabled, the restart after the daily phase is unavoidable. To keep AUTO-MAS away from the game entirely, turn off "MAS manages the game" on the script page — at the cost of handling launching, switching and process monitoring yourself.
+Assigning everything to one script removes the first, but as long as Divergent Universe or Currency Wars is enabled, the restart after the daily phase is unavoidable. To keep AUTO-MAS away from the game entirely, turn off "MAS manages the game" on the managed-script page — at the cost of handling launching, switching and process monitoring yourself.
 
 ### A task failed, but there is no script output in the log
 

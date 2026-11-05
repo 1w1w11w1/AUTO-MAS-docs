@@ -23,7 +23,7 @@ export const zhThemeConfig: DefaultTheme.Config = {
                 items: [
                     { text: "开始使用", link: "/docs/user-guide" },
                     {
-                        text: "脚本配置",
+                        text: "托管配置",
                         link: "/docs/script-guide/",
                         items: [
                             { text: "MAA", link: "/docs/script-guide/maa" },
