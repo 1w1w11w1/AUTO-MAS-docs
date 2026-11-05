@@ -138,7 +138,7 @@
 
 | 资源名称                   | 路径                                                             | 原始许可引用（未公布相关许可协议的，给出原始仓库链接）                                                                                                                                   |
 | :------------------------- | :--------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 空状态占位图               | `frontend/src/assets/NoData.png`                                 |                                                                                                                                                                                          |
+| 空状态占位图（历史资源，当前 dev 已移除） | `frontend/src/assets/NoData.png`                                 |                                                                                                                                                                                          |
 | MAA 脚本类型标识图         | `frontend/src/assets/MAA.png`                                    | [MAA关于LOGO的声明](https://github.com/MaaAssistantArknights/MaaAssistantArknights#%E5%A3%B0%E6%98%8E)                                                                                   |
 | SRC 脚本类型标识图         | `frontend/src/assets/SRC.png`                                    | [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot)                                                                                                                           |
 | MaaEnd 脚本类型标识图      | `frontend/src/assets/MaaEnd.png`                                 | [MaaEnd](https://github.com/MaaEnd/MaaEnd)                                                                                                                                               |
@@ -151,6 +151,8 @@
 ### 4.3 权利状态待核实的资源
 
 对于仓库内存在但**尚未列入第 4.1 节或第 4.2 节**的任何图像、二进制或视觉文件：
+
+当前空状态组件使用 `frontend/src/assets/NoData.svg`，自提交 `bc5e8d808` 起替代旧 PNG。该 SVG 的作者与许可仍待核实，不沿用旧 PNG 的权属分类。
 
 1.  **不得推定可自由使用**。未列入清单不等于放弃权利，亦不等于默认授权。
 2.  使用者应联系商业权利联系人核实权利状态；经核实并补全授权后，方可移入第 4.1 节。

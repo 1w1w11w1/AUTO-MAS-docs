@@ -10,7 +10,7 @@ date: 2026-08-27
 
 **BetterGI** 是原神的第三方辅助工具，能执行一条龙（每日委托、清体力、地脉花、秘境、首领讨伐等）与多种进阶功能。它是**原生 GUI 配置**模式：账号由 BetterGI 原生管理，复杂设置在 BetterGI 自己的界面里完成。
 
-AUTO-MAS 的专项适配为每个账号单独管理其**「一条龙」任务配置、自定义配置组、账号切换归档与通知**。运行前按该账号的独立配置加载到 BetterGI，结束后回读该账号的一条龙设置并保存为独立副本。BetterGI 不需要在 MAS 里保留一份完整配置。
+AUTO-MAS 的专项适配为每个账号单独管理其 **「一条龙」任务配置、自定义配置组、账号切换归档与通知**。运行前按该账号的独立配置加载到 BetterGI，结束后回读该账号的一条龙设置并保存为独立副本。BetterGI 不需要在 MAS 里保留一份完整配置。
 
 <Box :items="[
 { name: 'BetterGI GitHub', link: 'https://github.com/babalae/better-genshin-impact', image: { light: '/icons/github.svg', dark: '/icons/github-dark.svg', }, },

@@ -1,5 +1,9 @@
 # MFW Project Guide
 
+::: info Version and screenshots
+Text was checked against **the dev version following v5.8.0-beta.3**. Older screenshots may differ. After import, the project directory is locked; the old embedded-copy status table and change-directory workflow are no longer part of the current page.
+:::
+
 ::: tip
 A [MaaFramework](https://github.com/MaaXYZ/MaaFramework) project with an `interface.json` can be added to AUTO-MAS as an **MFW script**. AUTO-MAS does not launch the project's own UI. Some projects, including [M9A](/en/docs/script-guide/m9a), are recognized as a project-specific flavor after import.
 :::
@@ -12,21 +16,26 @@ MFW reads the project's controllers, resources, and tasks from `interface.json`,
 
 ## Add the script
 
-1. Open **Scripts**, choose **New script**, then **MFW script**.
+1. Open **Managed scripts**, choose **New managed script**, then **MFW script**.
 2. Under **Project directory**, pick the folder containing `interface.json`. Wait for import and check the project overview and **Runtime environment** result. Initial preparation may take a few minutes.
 3. Select the control mode and resource. For ADB, configure an emulator first. For Win32, choose how the game is started. Save the script settings.
 4. Add a user and put one simple task in their queue. Test it before adding the rest.
 
 ### Where the project runs
 
-AUTO-MAS imports the parts needed for execution into a managed copy. Runs and project updates use that copy; they do not modify the source directory. After a successful import and test run, the script can keep running if the source directory disappears. **Re-importing or rebuilding a missing copy still requires the source.** Keep the source if you use the project's own UI.
+AUTO-MAS imports the parts needed for execution into a managed copy. Runs and project updates use that copy without modifying the source directory. After import, **Project directory** shows the managed copy and its selection button is locked. **Create a new managed script to use a different project.**
 
-The **Embedded copy** panel shows its status and the source version recorded at import. The copy may later be newer than the source because AUTO-MAS updates it independently. **Re-import** reads the current source again. Changing the selected directory imports that source instead; inspect the task queue afterward, especially if it is a different project.
+The basic information section offers **Follow source directory (developer mode)**:
 
-Several scripts can use the same project, each with its own run view and user settings. Scripts for the same project and update channel share the managed project version. AUTO-MAS may share unchanged files on disk; do not treat these scripts as independent version copies.
+- Normally leave it off and use **Project update**. A healthy copy can run and update without the source; rebuilding a missing copy can still require it.
+- When enabled, MAS checks and syncs source changes before each run. **Sync now** requests a sync immediately. Project updates are disabled in this mode, so keep the source directory.
+- Source-form projects always follow their source, with the switch locked on. Keep the local source and its dependencies.
+- If synchronization or preparation fails, read the **Runtime environment** log and use **Retry** or **Sync now** after fixing the cause. These actions do not change the project.
+
+Several scripts can use the same project with separate run views and user settings. Ordinary scripts for the same project and update channel share the managed project version. Scripts following their source use their own source instead. Deleting a managed script removes its run view without deleting the source; preserve any runtime data you still need first.
 
 ::: warning
-The managed copy can contain runtime state. Do not edit or delete `data/mfw/` by hand. If the copy appears damaged, check its status and logs and use the page's re-import action.
+Do not edit or delete `data/mfw/` by hand. If the copy appears damaged, read the runtime logs and use the available preparation or source-sync action.
 :::
 
 ## Settings
@@ -41,7 +50,7 @@ The managed copy can contain runtime state. Do not edit or delete `data/mfw/` by
 | Retry and time limit | Limit failed-task retries and the duration of one user's run. |
 | Daily, weekly, monthly skip | Skip tasks already completed in the chosen period. |
 
-Under **Project update**, choose a source and channel provided by the project, then choose whether to update before runs, after runs, or manually. The page also offers a manual check and update with progress. Project updates affect the managed copy, not your source folder. A running script cannot be updated until that run ends.
+When source following is off, under **Project update**, choose a source and channel provided by the project, then choose updates before runs or manual updates only. The old after-run setting is treated as before-run. MirrorChyan requires this project's own CDK; it does not fall back to the CDK used for AUTO-MAS itself. The page also offers a manual check and update with progress. Project updates affect the managed copy, not your source folder. A running script cannot be updated until that run ends.
 
 ## Users and task queues
 
@@ -51,8 +60,8 @@ Add users from the script list. Each user has a separate queue. Select tasks dec
 
 - **Runtime preparation fails:** Check the **Runtime environment** panel, your connection, and whether you selected the folder containing `interface.json`. Retry after fixing the issue.
 - **Pre-run check fails:** Confirm that the resource supports the selected controller and that an ADB script has an emulator instance.
-- **Agent exits or times out:** Read the run log and check the project's dependency and first-run instructions. If you initialized the original project afterward, re-import it.
-- **Source folder is gone:** A healthy managed copy can continue to run and update. To re-import or rebuild a missing copy, restore the source or select a new project folder.
+- **Agent exits or times out:** Read the run log and check the project's dependency and first-run instructions. If the original project needed initialization, complete it there and use source following to synchronize those changes before preparing the runtime again.
+- **Source folder is gone:** A healthy copy can run and update while source following is off. If source following is enabled, or the copy must be rebuilt, restore the source. If the page allows directory selection for a missing copy, select a complete project package again.
 
 ## For developers
 

@@ -129,21 +129,22 @@ yarn install
 
 :::
 
-If the Electron binary download is slow or fails, use npmmirror for a one-shot install:
+If the Electron binary download is slow or fails, select the npmmirror source before installing:
 
 ::: code-group
 
 ```powershell [PowerShell]
-yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
+$env:ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/"
+yarn install
 ```
 
 ```bash [Bash]
-yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
+ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
 ```
 
 :::
 
-This command sets the download source only for this `yarn install` run and does not change global configuration.
+The PowerShell setting lasts for the current terminal session; the Bash setting affects only this command. Neither option requires `cross-env` to have been installed or changes global configuration.
 
 ### 4. Start the App
 
@@ -311,8 +312,7 @@ AUTO-MAS/
 1. Clear cache: `yarn cache clean`
 2. Delete `node_modules`, keeping the repository's `yarn.lock`
 3. Install again: `yarn install`
-4. If the Electron binary download is slow or fails, install once through the mirror:
-   `yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install`
+4. If the Electron binary download is slow or fails, select the mirror as shown in [Frontend Environment Setup](#_3-frontend-environment-setup), then retry.
 
 ### Q: Backend startup fails due to insufficient permissions
 

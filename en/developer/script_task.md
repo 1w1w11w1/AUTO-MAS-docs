@@ -64,7 +64,7 @@ Specialized adaptation should follow the order "frontend surface first, then bac
 
 ## Code Quality Baseline
 
-- Do not copy `app/task/general` and globally replace variable names. Align with the closest architecture line and existing surface template.
+- Do not copy `app/task/General` and globally replace variable names. Align with the closest architecture line and existing surface template.
 - Configuration writes and restores should use an atomic mindset to avoid corrupting configuration after task interruption.
 - Recovery logic shared by `final_task` and `on_crash` should be extracted and reused.
 - Side effects such as process cleanup and file cleanup should catch exceptions separately, preventing one failure from blocking later cleanup.

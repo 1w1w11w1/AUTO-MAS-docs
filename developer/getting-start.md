@@ -130,21 +130,22 @@ yarn install
 
 :::
 
-如果 Electron 二进制下载缓慢或失败，可以使用 npmmirror 镜像执行一次性安装：
+如果 Electron 二进制下载缓慢或失败，可以在安装前指定 npmmirror 镜像：
 
 ::: code-group
 
 ```powershell [PowerShell]
-yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
+$env:ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/"
+yarn install
 ```
 
 ```bash [Bash]
-yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
+ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install
 ```
 
 :::
 
-该命令只为本次 `yarn install` 设置下载源，不会修改全局配置。
+PowerShell 的设置在当前终端内生效，关闭终端后失效；Bash 的设置只影响本次命令。两种方式都不依赖尚未安装的 `cross-env`，也不修改全局配置。
 
 
 ### 4. 启动软件
@@ -315,8 +316,7 @@ AUTO-MAS/
 1. 清理缓存: `yarn cache clean`
 2. 删除 `node_modules`，保留仓库中的 `yarn.lock`
 3. 重新安装: `yarn install`
-4. Electron 二进制下载缓慢或失败时，使用镜像执行一次性安装:
-   `yarn cross-env ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" yarn install`
+4. Electron 二进制下载缓慢或失败时，按上文[前端环境搭建](#_3-前端环境搭建)设置镜像后重试。
 
 ### Q: 后端启动失败提示权限不足
 

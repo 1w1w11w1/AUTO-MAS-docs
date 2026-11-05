@@ -1,6 +1,6 @@
 # Notifications
 
-Get told when a run finishes or an account fails. AUTO-MAS can send that news over email, ServerChan, or a WeCom group bot.
+Get told when a run finishes or an account fails. Choose a channel in notification settings, including email, ServerChan, a WeCom group bot, or China Mobile 5G SMS.
 
 ## Two Levels: Global and Per-User
 
@@ -116,7 +116,7 @@ ServerChan released a new version in 2024, and the two are separate products:
 - **SCT** = ServerChan Turbo, the older version. It supports many channels, including WeChat, DingTalk, and Feishu.
 - **SC3** = ServerChan³, the newer version. **It only pushes to its own app.**
 
-Some of the settings below apply to just one version, so check before you fill them in.
+AUTO-MAS uses the same configuration entry for both products. Enter the SendKey from the platform you use.
 :::
 
 ### SendKey (Required)
@@ -126,42 +126,7 @@ The SendKey is how ServerChan identifies you, and messages have nowhere to go wi
 - SCT users: <Pill name="SCT SendKey" image="https://the7.ft07.com/sct/images/favicon.png" link="https://sct.ftqq.com/sendkey"/>
 - SC3 users: <Pill name="SC3 SendKey" image="https://the7.ft07.com/sct/images/favicon.png" link="https://sc3.ft07.com/sendkey"/>
 
-### Channel Code (SCT Only)
-
-To push messages to WeChat, DingTalk, and similar destinations, enter the matching numeric code. **SC3 users skip this** — SC3 only has app push.
-
-| Channel                   | Code |
-| ------------------------- | ---- |
-| Official Android app beta | 98   |
-| WeCom app message         | 66   |
-| WeCom group bot           | 1    |
-| DingTalk group bot        | 2    |
-| Feishu group bot          | 3    |
-| Bark iOS                  | 8    |
-| Test account              | 0    |
-| Custom                    | 88   |
-| PushDeer                  | 18   |
-| Fangtang service account  | 9    |
-
-::: tip No Spaces When You List Several Channels
-
-- Correct: `1|0|9`
-- Incorrect: `1 | 0 | 9`
-
-A wrong format does not raise an error. It silently falls back to the **default channel**, so you may think your setting took effect when it did not.
-:::
-
-### Tag (SC3 Only)
-
-Tags label your push messages so you can sort them in the app. **SCT users skip this.**
-
-::: tip No Spaces Here Either
-
-- Correct: `AUTO-MAS|Status`
-- Incorrect: `AUTO-MAS | Status`
-
-Left empty or formatted wrong, messages simply arrive without tags. Pushing itself still works.
-:::
+Open **ServerChan** in AUTO-MAS notification settings, enter the SendKey, enable the channel, and send a test notification. Current versions have no channel-code or Tag fields. Configure SCT receiving channels on the ServerChan platform.
 
 ## WeCom Group Bot (Push to WeChat)
 
@@ -179,3 +144,14 @@ You do have to register WeCom, but that is a one-time step just to obtain a bot 
    - Mobile: group chat, **...** menu in the upper-right corner, **Group bot**, then tap the bot.
 
 4. **Enter it in AUTO-MAS**: paste the Webhook URL into **Push WeCom bot notification**. Done.
+
+## China Mobile 5G SMS
+
+This channel requires a China Mobile number, a phone that supports 5G messaging, and an activated 5G messaging service.
+
+1. Obtain the Channel API Key from the **新消息ClawBot** service in your phone’s messaging app. Phone-side examples and the SMS authorization method are in the [Chinese guide](/docs/advanced-features/notification#中国移动新消息).
+2. Open **Settings → Notifications → China Mobile 5G SMS**.
+3. Enter the complete Channel API Key and enable the channel. Do not add spaces, line breaks, or other text from the message.
+4. Send a test notification and confirm delivery on your phone.
+
+The current channel supports **global notifications only**; it has no per-user entry. Task-result delivery still follows the global notification timing setting. Keep the API Key private, including in screenshots and diagnostic attachments.

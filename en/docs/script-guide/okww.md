@@ -18,9 +18,9 @@ The AUTO-MAS adaptation handles the repetitive parts: starting a task, monitorin
 ## Quick Start
 
 1. Download [OK-WW from its official repository](https://github.com/ok-oldking/ok-wuthering-waves) and extract it. A path without Chinese characters is recommended. Open OK-WW once and complete its basic setup.
-2. Open **Managed Management** → **New Managed** and select **ok-ww Managed**.
+2. Open **Managed scripts** → **New managed script** and select **ok-ww**.
 3. Set **ok-ww path** to the directory containing `ok-ww.exe`, not the executable itself.
-4. On the account page, click **Configure OK-WW** to open the native OK-WW GUI and save its basic configuration once. Complex settings are also edited there.
+4. Return to the managed-script list and click **Configure OK-WW** for this script. Save its basic configuration in the native GUI before adding an account. Existing accounts can also open a configuration session from their account page.
 5. If MAS should manage the game lifecycle, enable **Game Configuration** and select the official Wuthering Waves `launcher.exe`.
 6. Add an account, choose a configuration source, and decide whether to enable **Override standard configuration**.
 7. Save the script and add it to the schedule.
@@ -37,11 +37,11 @@ The account editor offers **Managed level (shared config)**, **Account level (in
 
 As a shortcut: choose **Managed level (shared config)** for shared settings, **Account level (independent config)** for per-account high-frequency settings, and **Native** when you want to keep the native OK-WW configuration and let MAS mainly schedule it.
 
-> **Native does not mean that MAS never reads or writes files.** It means that MAS prefers the external Managed configuration. When Override Standard Configuration is enabled, MAS still applies a temporary override to the high-frequency fields for that run.
+> **Native does not mean that MAS never reads or writes files.** It means that MAS uses the external script's native configuration as its source. When Override Standard Configuration is enabled, MAS still applies a temporary override to the high-frequency fields for that run.
 
 ## Override Standard Configuration
 
-The **Take over task configuration** switch controls the high-frequency task panel shown below it:
+The **Override standard configuration** switch controls the high-frequency task panel shown below it:
 
 - **Enabled**: regardless of the selected source, the panel overrides the high-frequency fields for the next run.
 - **Disabled**: the task uses the complete settings from the selected source. Native keeps the full native OK-WW configuration.

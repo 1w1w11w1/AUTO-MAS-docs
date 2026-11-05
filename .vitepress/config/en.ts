@@ -48,6 +48,7 @@ export const enThemeConfig: DefaultTheme.Config = {
                             { text: "Notifications", link: "/en/docs/advanced-features/notification" },
                             { text: "Failure Replays", link: "/en/docs/advanced-features/failure-replay" },
                             { text: "MCP Service", link: "/en/docs/advanced-features/mcp" },
+                            { text: "China Mobile 5G SMS", link: "/en/docs/advanced-features/notification#china-mobile-5g-sms" },
                         ],
                     },
                     { text: "FAQ", link: "/en/docs/FAQ" },

@@ -11,10 +11,10 @@ export const zhThemeConfig: DefaultTheme.Config = {
                 { text: "风味专项开发", link: "/developer/maafw-flavor" },
                 { text: "插件开发", link: "/plugin/start/start" },
             ],
-            activeMatch: "^/developer/",
+            activeMatch: "^/(developer|plugin)/",
         },
         { text: "下载", link: "/download/auto-mas" },
-        { text: "公示", link: "/disclosure" },
+        { text: "公示", link: "/disclosure/" },
     ],
     sidebar: {
         "/docs/": [
@@ -50,7 +50,7 @@ export const zhThemeConfig: DefaultTheme.Config = {
                             { text: "MCP 服务", link: "/docs/advanced-features/mcp" },
                             { text: "自定义外观包", link: "/docs/advanced-features/appearance" },
                             { text: "桌宠包制作与导入", link: "/docs/advanced-features/mascot" },
-                            { text: "中国移动新消息（5G 消息）", link: "/docs/advanced-features/cmcc-newmsg" },
+                            { text: "中国移动新消息（5G 消息）", link: "/docs/advanced-features/notification#中国移动新消息" },
                             { text: "让电脑定时开机", link: "/docs/advanced-features/Timed-Startup" },
                             { text: "免密开机直达桌面", link: "/docs/advanced-features/skip-password" },
                             { text: "定时/延迟自启软件", link: "/docs/advanced-features/Timed-app-start" },
