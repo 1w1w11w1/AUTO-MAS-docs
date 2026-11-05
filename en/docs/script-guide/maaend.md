@@ -75,7 +75,7 @@ Two prerequisites when you set the controller type to emulator (ADB):
 | **Password** | Has no effect right now. You can leave it empty. |
 | **Configuration source** | `Script-level` shares one MaaEnd config across all users; `User-level` gives this user its own |
 | **Take over specific game configuration** | Turn this on to use the task configuration below. Leave it off to run purely from the saved config file. |
-| **Remaining days** | How many days of automation are left. `-1` means unlimited. Each successful run subtracts a day; at 0 the user is skipped. |
+| **Remaining days** | How many days of automation are left. `-1` means unlimited. Only the first successful run of each day subtracts a day; further successful runs that day do not. At 0 the user is skipped. |
 | **Notes** | Anything you like |
 
 #### Task Configuration

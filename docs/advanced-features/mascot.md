@@ -319,7 +319,7 @@ id：<小写字母、数字、下划线、短横线，以字母或数字开头�
 
 要求：formatVersion 为1；name 最多80字符；有 description 时最多300字符。
 mascot.path 必填；animation.path 和 columns 在配置动画时必填。
-columns 为2至16的整数；idleFps、workingFps 为1至24，建议先用6和10。
+columns 为2至120的整数；idleFps、workingFps 为1至120，建议先用6和10。
 所有角色与动画素材路径以 assets/ 开头，动画素材必须是 PNG。
 有主动画时，才在 animation 中填写实际存在的 lookPath、resultPath、dragPath。
 没有的素材整段省略；不生成主题配色或背景字段，不添加 stoppedPath。

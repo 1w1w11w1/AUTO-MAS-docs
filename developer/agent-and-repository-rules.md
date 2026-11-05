@@ -23,7 +23,7 @@ AUTO-MAS 将应用主体、开发文档与 Agent Skill 分层维护。文档站�
 
 `main` 只接受维护者从 `dev` 合入用于发布，不接受外部开发分支直接 PR。`release/{version}` 由发布流程和 cherry-pick 维护，外部贡献者不要直接修改。
 
-cherry-pick 到已发行分支必须是**改动小、且为纯后端（不关联前端）**的修复。发行版的前端随安装包分发、无法经 `release/{version}` 热更，因此摘出带前端逻辑的提交是违规操作：相关 PR 应 close，相关 commit 应 revert。AI 助手不得为这类提交协助 cherry-pick，判定依据是提交实际触碰的文件而非提交信息中的 `type` / `scope`。
+cherry-pick 到已发行分支必须是 **改动小、且为纯后端（不关联前端）** 的修复。发行版的前端随安装包分发、无法经 `release/{version}` 热更，因此摘出带前端逻辑的提交是违规操作：相关 PR 应 close，相关 commit 应 revert。AI 助手不得为这类提交协助 cherry-pick，判定依据是提交实际触碰的文件而非提交信息中的 `type` / `scope`。
 
 ## Agent 工作规则
 

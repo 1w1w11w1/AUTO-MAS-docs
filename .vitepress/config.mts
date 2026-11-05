@@ -13,6 +13,7 @@ export default defineConfig({
         ["link", { rel: "icon", href: "/icons/AUTO-MAS.ico" }],
     ],
     description: "AUTO-MAS",
+    srcExclude: ["README.md", "public/**"],
     vite: {
         ssr: {
             noExternal: ["@theojs/lumen", "dayjs"],

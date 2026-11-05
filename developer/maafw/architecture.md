@@ -48,7 +48,7 @@ MaaFW/tools/core/（interface / runner / runtime_pool / agent_env / project_upda
 
 | 位置 | 职责 |
 | --- | --- |
-| `MaaFW/embedded_manager.py` | 运行前检查（导入、组同步、投影补齐、锁配置）、运行前 / 运行后更新、运行环境确认、用户配置副本整表写回 |
+| `MaaFW/embedded_manager.py` | 运行前检查（导入、组同步、投影补齐、锁配置）、运行前更新、运行环境确认、X 锁内提交用户运行状态、收尾保存并解锁 |
 | `MaaFW/api_service/embedded.py` | 视图状态、导入、克隆、候选来源、立即同步 |
 | `MaaFW/api_service/interface.py` | 预览、游戏包名、图片资源、不可选任务原因 |
 | `MaaFW/api_service/update.py` | 手动检查与更新 |
@@ -77,10 +77,10 @@ MaaFW/tools/core/（interface / runner / runtime_pool / agent_env / project_upda
 ## 一次运行
 
 1. 调度器为脚本创建 `MaaFWEmbeddedManager`，`main_task` 先调 `check()`。
-2. 运行前检查：拿视图预约 → `ensure_embedded_copy`（视图不在或来源换了就导入；开发者模式按签名重导）→ 组同步（视图挂的载荷不是组的最新版就切过去）→ 投影补齐 → 锁定脚本配置 → 深拷贝用户配置副本。拿不到预约且正在切换版本时整个脚本跳过一次。
+2. 运行前检查：拿视图预约 → `ensure_embedded_copy`（视图不在或来源换了就导入；开发者模式按签名重导）→ 组同步（视图挂的载荷不是组的最新版就切过去）→ 投影补齐 → 对脚本及用户集合加 X 锁 → 持票上下文直接使用 live 用户配置。拿不到预约且正在切换版本时整个脚本跳过一次。
 3. 运行前更新（见 [项目更新](./update.md)）；本轮切换过版本、或视图还欠一次运行环境确认时，在用户任务前补确认。
 4. 逐用户运行：建运行计划（风味装饰、预检拦截）→ 启动模拟器或游戏 → 风味的游戏更新钩子 → 写 job 文件、起 worker → worker 连控制器、先截一张图、等启动画面、逐任务投递，按单任务时限、打转检测、信号收尾 → 结果回传 → 重试或结束 → 原生日志与项目日志落 history，截图进通知。
-5. `final_task`：解锁、把用户配置副本整表写回 → 用户全部正常跑完时再做一次组同步 → 运行后更新。
+5. `final_task`：兜底完成最后一位用户的收尾 → `flush()` 保存已提交的运行状态并在 `finally` 解锁 → 维护视图、按运行结果汇总报告。用户全部正常跑完时可同步到同组版本，报告发出后补环境确认；收尾不再启动新一轮下载更新。
 
 ## 一次导入
 

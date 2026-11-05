@@ -142,7 +142,7 @@ Even with a non-commercial license, brand-mark assets must not be used in a mann
 
 | Resource name | Path | Original license reference (if no specific license is published, the upstream repository link is given) |
 | :------------ | :--- | :------------------------------------------------------------------------------------------------------ |
-| Empty-state placeholder | `frontend/src/assets/NoData.png` | |
+| Empty-state placeholder (historical resource, removed from current dev) | `frontend/src/assets/NoData.png` | |
 | MAA script-type logo | `frontend/src/assets/MAA.png` | [MAA statement regarding the LOGO](https://github.com/MaaAssistantArknights/MaaAssistantArknights#%E5%A3%B0%E6%98%8E) |
 | SRC script-type logo | `frontend/src/assets/SRC.png` | [StarRailCopilot](https://github.com/LmeSzinc/StarRailCopilot) |
 | MaaEnd script-type logo | `frontend/src/assets/MaaEnd.png` | [MaaEnd](https://github.com/MaaEnd/MaaEnd) |
@@ -155,6 +155,8 @@ Even with a non-commercial license, brand-mark assets must not be used in a mann
 ### 4.3 Resources with rights status pending verification
 
 For any image, binary, or visual file present in a repository but **not yet listed in Section 4.1 or 4.2**:
+
+The current empty-state component uses `frontend/src/assets/NoData.svg`, which replaced the old PNG in commit `bc5e8d808`. Its author and license still need verification; it does not inherit the old PNG's ownership classification.
 
 1. **Do not presume free use.** Omission from the inventory is not a waiver of rights and is not a default license.
 2. Contact the commercial rights contact to verify status; only after verification and completed authorization may an asset be moved into Section 4.1.

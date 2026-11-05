@@ -17,7 +17,7 @@ MAA is a third-party Arknights tool that can handle repetitive tasks such as dai
 
 ## Configure the Script
 
-1. Go to **Script Management**, click **New Script**, and select **MAA Script** to add a script instance management page.
+1. Go to **Managed scripts**, click **New managed script**, and select **MAA Script** to add a script instance management page.
 ![AUTO-MAS configuration 1](/docs/img/script-guide/maa/AUTO-MAA-1.png)
 
 2. In the opened script configuration, click **Select folder** for **MAA path**, then open the directory where MAA is located.
@@ -37,7 +37,7 @@ MAA is a third-party Arknights tool that can handle repetitive tasks such as dai
 
 ## Configure Users
 
-1. In the script table under **Script Management**, click **Add user** to add a user.
+1. In the script table under **Managed scripts**, click **Add an account** to add a user.
 ![AUTO-MAS configuration 7](/docs/img/script-guide/maa/AUTO-MAA-7.png)
 
 2. Fill in user information according to the hints on the settings card.

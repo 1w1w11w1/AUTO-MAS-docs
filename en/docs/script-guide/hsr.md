@@ -38,7 +38,7 @@ Get these out of the way first. It removes about half the problems people run in
 1. **Install the scripts you want to use.** At least one of M7A and SRA. Install both if you want to mix them.
 2. **Open each script manually once.** A script only writes its own configuration file on first launch (`config.yaml` for March7th, a profile under `%APPDATA%\SRA\configs` for SRA). AUTO-MAS reads it to fill in the options on the right side of "Tasks managed by MAS", and Native configuration cannot even pass the pre-run check without it. If SRA has not written one after you open it, just save any setting inside SRA.
 3. **Install the Honkai: Star Rail PC client**, the CN official client.
-4. **Add everything to your antivirus allowlist**: AUTO-MAS, M7A, SRA, and the game directory. Otherwise the scripts get blocked and tasks fail for no visible reason.
+4. Download scripts from their official sources. If security software blocks a file, check the source and detection details first. Add an exclusion only for a trusted installation directory after confirming a false positive.
 5. **Keep paths free of non-English characters and spaces**, for example `D:\M7A` and `D:\SRA`. Such paths have a long history of breaking image recognition and path parsing.
 
 ::: warning Pick the folder, not the exe
@@ -76,7 +76,7 @@ Fill in only M7A or only SRA and leave the other empty. The empty one will not a
 :::
 
 ::: tip About SRA configuration profiles
-SRA stores its settings as one or more profiles under `%APPDATA%\SRA\configs`. Which one you pick decides three things: what the options under "Tasks managed by MAS" show, which profile Native configuration runs, and which one gets copied when you pin a snapshot.
+SRA stores its settings as one or more profiles under `%APPDATA%\SRA\configs`. Which one you pick decides two things: what the options under "Tasks managed by MAS" show, which profile Native configuration runs.
 
 Leaving it on "auto" prefers `Default` and otherwise takes the first profile in filename order — which is exactly what AUTO-MAS always did before. If the profile you picked is later deleted or renamed, AUTO-MAS falls back to auto and says so on both the script page and the user page, rather than switching silently.
 :::
@@ -99,6 +99,15 @@ These control timeout and retry behavior. The defaults suit most setups; adjust 
 ::: tip Task assignment is not on this page
 Which script runs which task is decided **per user**, on the user page, not here. Two users under the same script can use different engines.
 :::
+
+### 4. External script updates
+
+**External script updates** on the managed-script page covers the M7A / SRA paths you configured:
+
+- Updates are checked before a run by default. Select **Off** for manual updates only. The old after-run setting is treated as before-run.
+- March7thAssistant defaults to GitHub and also offers MirrorChyan. SRA defaults to the AUTO-MAS download site; other sources can be selected on the page.
+- MirrorChyan requires the HSR-specific CDK entered here. It does not fall back to the CDK in AUTO-MAS's own update settings.
+- Each engine has separate **Check for updates** and **Update now** actions. Confirm the target version and result before starting tasks.
 
 ## Create an HSR User
 
@@ -143,18 +152,6 @@ Task switches, account and password, stages, and the options under "Tasks manage
 Native configuration also has no automatic retry (whatever the script does is the result), a fixed two-hour cap per run, and works only through the automatic proxy — you cannot run a single native-configuration account on its own from the scheduler.
 :::
 
-#### When you actually need "pin as a snapshot"
-
-Exactly one situation: **several game accounts under the same HSR script, and you want each to run a different plan**.
-
-Native configuration runs whichever configuration the script currently has in effect, so multiple native-configuration accounts share it. In that case, open one account and click **Pin the current configuration as a snapshot (optional)**. AUTO-MAS copies the script's configuration as it is right now and stores it under that account, which then runs that copy independently of the others.
-
-::: warning A snapshot is frozen
-Once pinned, a snapshot **does not follow later changes in the script**. Change a setting in SRA and the pinned user still runs the old copy. Click **Re-pin to the current configuration** to refresh it, or **Switch back to the script's current configuration** to drop it.
-
-With only one user, skip snapshots — the default live configuration is simpler.
-:::
-
 ## Configure Trailblaze Power Stages
 
 The **Trailblaze Power** area has four dropdowns, one per stage type. Leave a dropdown empty for stages you do not want to farm:
@@ -190,7 +187,7 @@ This is the main area of managed mode: the four task modules on the left, and th
 | **Divergent Universe** | Divergent Universe | Off |
 | **Currency Wars** | Currency Wars | Off |
 
-Divergent Universe and Currency Wars are two independent switches. Turn both on if you want both.
+Divergent Universe and Currency Wars have separate switches but share the weekly completion record. If that record is incomplete when a run starts, both enabled tasks can enter that run's queue. Completing either makes later runs that week skip the weekly phase.
 
 Each module picks its own **engine** (SRA or March7th Assistant). With only one script path filled in, that is the only choice.
 
@@ -231,9 +228,9 @@ After a script update, or after switching SRA configuration profiles, a field yo
 AUTO-MAS keeps its own records for these:
 
 - **Echo of War**: tracked on its own, per week.
-- **Divergent Universe and Currency Wars**: these two **share a single "weekly" record**. Once either one is confirmed complete in the log, the whole weekly slot counts as done and the other will not run that week — worth knowing if you enable both.
+- **Divergent Universe and Currency Wars**: these two **share a single "weekly" record**. If the weekly record is incomplete at the start, both enabled tasks enter that run's queue. Once either is confirmed complete in the log, the shared record is marked complete and later runs that week skip both.
 
-Both reset by ISO week and unlock again on Monday (midnight in the game server's timezone, not the in-game 4 a.m. rollover).
+They reset at Monday 04:00 on the CN server, equivalent to Monday 00:00 in UTC+4, not local Monday midnight.
 
 ### Changing progress by hand
 
@@ -251,7 +248,7 @@ Once configured, add the script to a [task queue](/en/docs/task-scheduler) and i
 
 - **The game may restart repeatedly**: three things trigger it — switching between the two scripts for one user, that user moving from the daily phase into the weekly phase (regardless of which script), and each retry round. All deliberate, to keep script state from interfering. All three only happen while "MAS manages the game" is on.
 - **Your M7A / SRA configuration is safe**: AUTO-MAS backs it up before running and restores it afterwards.
-- **Failures are retried**: according to your "maximum attempts for a failed task", restarting the game before each retry.
+- **Retryable failures are retried** up to the configured maximum, restarting the game first when game management is enabled. Configuration errors and cloud login, queue, or play-time failures that retries cannot resolve are not repeatedly retried.
 
 ### Which logs to attach when reporting a problem
 
@@ -293,7 +290,7 @@ Turn on **Enable low-performance compatibility mode** on the script page. Team, 
 
 ### SRA finished Currency Wars but there are no points
 
-Known behavior: SRA does not collect them automatically, so collect them in game. Hand Currency Wars to M7A instead if you want to skip that step.
+Check the points and unclaimed rewards in the game, then consult the installed SRA version's task instructions and logs. A MAS completion record does not prove that all game rewards were collected; reward collection belongs to the upstream script.
 
 ### The game keeps restarting
 
@@ -303,7 +300,7 @@ Assigning everything to one script removes the first, but as long as Divergent U
 
 ### A task failed, but there is no script output in the log
 
-That means the script never started, which is almost always antivirus. Add the M7A, SRA and game directories to your antivirus allowlist and try again. Also confirm the paths contain no non-English characters, spaces or symbolic links.
+Check `debug/app.log` for the launch error, then verify the installation directory, executable, and script dependencies. Missing output alone does not identify the cause. If security software recorded a block, verify the download source before treating it as a false positive.
 
 ## Feedback and Help
 

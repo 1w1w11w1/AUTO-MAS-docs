@@ -27,18 +27,18 @@ You **do not** need to open M9A once by hand first, nor install the .NET runtime
 
 ## Configure the script
 
-1. Go to **Scripts**, click **New script** and choose **MFW script** (choosing **M9A script** does the same; the two only differ in the default name).
+1. Go to **Managed scripts**, click **New managed script** and choose **MFW script** (choosing **M9A script** does the same; the two only differ in the default name).
 2. Under **Project directory**, click **Pick a local directory** and select the extracted M9A directory. AUTO-MAS imports it as its own copy, recognises it as M9A, and the script type becomes **M9A** automatically.
 3. Pick the server under **Game resource** (official / Bilibili / global…), and choose the emulator and instance under **Emulators**.
-4. Everything else — run configuration, project update (GitHub / MirrorChyan, auto update before / after run) — is described in the [MFW Project Configuration Guide](/en/docs/script-guide/maafw).
+4. Everything else — run configuration, project update (GitHub / MirrorChyan, auto update before a run) — is described in the [MFW Project Configuration Guide](/en/docs/script-guide/maafw).
 
 ::: tip The server is per script
-M9A's `interface.json` declares servers as "resources", so in AUTO-MAS the server is chosen on the **script**, and every user under one script is on the same server. To run both the official server and Bilibili, create two scripts pointing at the same directory (each gets its own copy; they don't interfere).
+M9A's `interface.json` declares servers as "resources", so in AUTO-MAS the server is chosen on the **script**, and every user under one script is on the same server. To run both the official server and Bilibili, create two managed scripts and select the resource for each. Their user settings and run views are separate, but scripts for the same project and update channel share the project version.
 :::
 
 ## Configure users
 
-1. Click **Add a user** in the script's row under **Scripts**.
+1. Click **Add an account** in the script's row under **Managed scripts**.
 2. Fill in a name and a note. The **Account** field is only used on the official server (see automatic account switching below); on other servers it is just a note.
 3. You can add several users; AUTO-MAS runs each user's task queue in list order.
 
@@ -70,24 +70,24 @@ The **M9A script** in older versions of AUTO-MAS was a separate adapter. It is m
 
 - Scripts, users, emulator, notification settings and run counters are kept as they were; each user's task queue is converted to the new format and task options are matched by name.
 - The old "server" was per user, the new one is per script: the script takes the server used by most of its enabled users; users on a different server are **disabled** with the reason written in their note — move them to another script (or change the script's resource) and re-enable them.
-- "Auto update after the queue" becomes **Project update → After run**; if it was off it becomes **Off**. The update source is decided like this: the MirrorChyan CDK configured in the M9A directory if there was one, otherwise the CDK from AUTO-MAS's own update settings, otherwise GitHub.
+- Old automatic-update settings migrate to project updates. Current automatic updates run before a task; disabled updates remain **Off**. Check the source and project-specific CDK after migration: routine updates do not fall back to AUTO-MAS's own update credentials.
 - The old "run time limit" was a log-stall threshold; the new one is a hard limit on the whole run, so it is set to 120 minutes across the board.
 - The configuration is backed up before migrating as `config/ScriptConfig.json.m9a-legacy-<timestamp>.bak` (the last three are kept); a notification listing the results pops up after start-up.
 - Config backups made by the old adapter (`data/<script ID>/M9ABackups/`) are left in place and no longer shown under Config restore.
 
 ::: warning The first run after migration
-imports a copy from the original M9A directory (ten-odd seconds to a minute). After that it runs on the copy, the original directory is never modified again, and you may delete it.
+Imports a copy from the original M9A directory; duration depends on project size and disk performance. Keep the source while source following is enabled, or when it may be needed to rebuild a missing copy.
 :::
 
 ## FAQ
 
 ### I created a generic MFW script — why did it turn into M9A?
 
-The project decides the type: if the `interface.json` in the directory is M9A's (MirrorChyan rid `M9A`, or GitHub pointing at `MAA1999/M9A`), the script is recognised as M9A and gets automatic start / close game and account switching. The other way round, an M9A script pointed at a different project's directory becomes a generic MFW script again. Users and settings are kept.
+The project decides the type: if the `interface.json` in the directory is M9A's (MirrorChyan rid `M9A`, or GitHub pointing at `MAA1999/M9A`), the script is recognised as M9A and gets automatic start / close game and account switching. After a successful import, the directory is locked. Create a new managed script to use a different project.
 
 ### A task failed — how do I look into it?
 
-Check that the emulator connected → read the run-page log (every task's start / success / failure and the last node it stopped at are there) → a screenshot is taken automatically on failure and shown in the history → if still unclear, look at that run's `.maafw.log` under `history/<date>/<user name>/`.
+Check that the emulator connected → read the run-page log (every task's start / success / failure and the last node it stopped at are there) → a screenshot is taken automatically on failure and shown in the history → if still unclear, open that history record and download its MaaFramework native log from the attachments.
 
 ### Why doesn't the run count go up?
 

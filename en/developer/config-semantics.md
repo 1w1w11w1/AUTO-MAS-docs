@@ -1,11 +1,13 @@
 # Configuration Semantics
 
-AUTO-MAS configuration has two layers: the **base** and the **overlay**. During a task, the overlay overrides base fields to produce the effective configuration:
+Adapters that manage a script's native configuration describe task configuration in two layers: the **base** and the **overlay**. During a task, the overlay overrides base fields to produce the effective configuration:
 
 
 task_config = base ⊕ overlay
 
 The `overlay` has higher precedence than `base`. Without an overlay, the task uses the base directly. The overlay exists only for the task run and does not change the base source. This page is the semantic contract for developers and documentation maintainers.
+
+Availability of the three base sources and the regular-configuration override depends on each adapter's UI and implementation. MFW and its flavors use the user page's task snapshot directly and do not consume `Info.Base` or `Info.IfQuickConfig`; the configuration-switching workflow below does not apply to them. The configuration framework's transaction workspace is also distinct from this business overlay; see [Configuration Management](./config.md).
 
 ## Core Entities
 

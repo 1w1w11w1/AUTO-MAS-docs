@@ -8,7 +8,7 @@ Four communities are supported: **Skland**, **miyoushe**, **Kuro Community**, an
 
 - Check-in requests are made locally by AUTO-MAS. Tokens are only used to reach the official API of the matching community, and are not sent to third-party services unrelated to check-in.
 - A token is a login credential. Don't send it to anyone, and don't put it in public logs, screenshots, or config repositories.
-- **Get token with account and password** uses your account and password only inside that one login request. Neither is saved: the input is cleared when the request finishes or fails, and nothing is written to config, logs, or notifications.
+- Tajiduo **Get token with account and password** uses your account and password only inside that one login request. Neither is saved: the input is cleared when the request finishes or fails, and nothing is written to config, logs, or notifications.
 - AUTO-MAS does not offer SMS-code login. When you use a password to obtain credentials, make sure your network and your account are in a safe state.
 - Automatic check-in carries risks: account risk control, API changes, and failed check-ins. Evaluate that yourself and accept the consequences of using it.
 
@@ -16,27 +16,53 @@ Four communities are supported: **Skland**, **miyoushe**, **Kuro Community**, an
 
 ## Basic Usage
 
-1. Open the **Game Community Check-in** tool in AUTO-MAS.
-2. Set **Enable check-in** to **Enabled** at the top.
-3. Edit the community credentials for each user. One user can have several communities configured at once.
-4. Turn on **Notify after check-in** and **Check in on startup** if you want them.
-5. Click **Check in all** to run a check-in immediately by hand.
+::: info Version and demonstration scope
+This page follows **dev after v5.8.0-beta.3 (3c9448bdf)**. The Chinese screenshots use an account named “教程演示账号” (tutorial demo account), with all community credentials blank. They demonstrate account configuration only, without login, check-in, or notifications.
+:::
 
-The community tags in the user list show which communities are configured and the most recent result. Hover over a tag for details such as character, game, status, and rewards.
+1. Select **Community sign-in** in the left navigation, then open the **Check-ins** tab at the top of the page. In **Community settings**, turn on the switch at the right of the **Enable community tools** row, marked ①.
+
+[![Step 1: enable community tools](/docs/img/tutorial-context-20261105-3c9448bdf/community-enable.png)](/docs/img/tutorial-context-20261105-3c9448bdf/community-enable.png)
+
+2. Scroll down to **Accounts** and click **Add an account** on the right of its heading, marked ②. For an existing account, use **Edit** on its row.
+
+[![Step 2: add a community account](/docs/img/tutorial-context-20261105-3c9448bdf/community-add.png)](/docs/img/tutorial-context-20261105-3c9448bdf/community-add.png)
+
+3. In the account editor that opens in the center of the page, enter the account name and the credentials for the communities you use, marked ③. This example enters only the demo name, leaving credentials blank. Real check-in requires valid credentials for the relevant community.
+4. Click **Save** in the lower-right corner of the editor, marked ④.
+
+[![Steps 3 and 4: account fields and the save button](/docs/img/tutorial-context-20261105-3c9448bdf/community-account-edit.png)](/docs/img/tutorial-context-20261105-3c9448bdf/community-account-edit.png)
+
+5. After the editor closes, check the account name in **Accounts** on the same page; reload to check it again. Mark ⑤ is a **viewing item** showing the demo name, not proof of valid credentials or successful check-in.
+
+[![Step 5: check the demo account name](/docs/img/tutorial-context-20261105-3c9448bdf/community-account-saved.png)](/docs/img/tutorial-context-20261105-3c9448bdf/community-account-saved.png)
+
+6. Turn on **Result notifications** and **Check in on startup** if needed.
+7. After configuring valid credentials, click **Check in all** to run a check-in immediately by hand.
+
+Community accounts are managed separately from the game accounts in managed scripts. One community account can hold credentials for several communities. Tags in the account list show configured communities and the latest result; hover over a tag for character, game, status, and reward details.
 
 ### Three Ways It Triggers
 
 | When it runs | How often per day | How the notification is sent |
 | --- | --- | --- |
 | **Along with an automation task** | One attempt per account per day; once done, no repeat requests | Folded into the task completion notification |
-| **When the app starts** | Once per startup | Sent as its own notification |
+| **When the app starts** | Shares the once-per-day automatic attempt limit with automation tasks | A separate notification when there are new results |
 | **When you click Check in all** | Any time, not limited by "already checked in today" | Sent as its own notification |
 
 ::: tip You clicked Check in all and it told you to retry later
 An automatic check-in is running right now. Wait for it to finish, then click again.
 :::
 
-Communities you haven't given credentials to won't appear in the notification, so you won't see a pile of empty entries.
+Automatic check-in records each account’s daily attempt even if it fails. Restarting the app does not retry it; click **Check in all** to retry manually. The day is calculated in Beijing time (UTC+8).
+
+Communities without credentials do not appear in the notification.
+
+## Credential tools
+
+The account editor accepts credentials entered manually. **QR login for miyoushe and Skland** and **password login for Tajiduo** are under **Settings → Features → Mystery entrance → Token tools**. Follow the page's unlock instructions, select the target community account, and then log in. Add an account on the check-in page first if the selector is empty.
+
+After login, return to the check-in page and check the selected account. A QR code alone does not prove that credentials were saved. Restart login if the dialog was closed, expired, or failed.
 
 ## Skland
 
@@ -61,17 +87,17 @@ Skland check-in automatically looks up the **Arknights** and **Arknights: Endfie
 
 Don't copy the outer JSON, the quotation marks around `content`, or any other field. To switch accounts, clear your browser cookies and log in again — logging out on the web page directly can invalidate the original credential.
 
-### Get a Token With Your Password
+### Get a token with QR login
 
-1. Click **Get token with account and password** in the **Skland** section of the user edit window.
-2. Enter your Hypergryph account phone number and password in the separate popup window.
-3. On success, AUTO-MAS validates the returned credential and saves it automatically. A failed login does not overwrite an existing token.
-
-Your account and password only exist in memory for that one request. The input is cleared when the window closes and on both success and failure. This feature does not offer SMS-code login.
+In **Token tools**, select the target community account, click QR login on the **Skland** card, and scan and confirm with the official app. Wait for a successful save before returning to check-in. The account editor no longer has a Skland password-login button.
 
 ## miyoushe
 
-miyoushe automatically reads the characters bound to your account across **Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Houkai Gakuen 2, Honkai Impact 3rd, and Tears of Themis**, then checks the check-in status for each one.
+miyoushe automatically reads the characters bound to your account across **Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Houkai Gakuen 2, Honkai Impact 3rd, and Tears of Themis**, then checks the check-in status for each one. With a valid miyoushe cookie, AUTO-MAS also attempts to query remaining Cloud Genshin play time; no separate Cloud Genshin credential is needed.
+
+### Get a cookie with QR login
+
+Select the target community account in **Token tools**, click QR login on the **miyoushe** card, and scan and confirm in the miyoushe app. Wait for the save confirmation before returning to check-in.
 
 ### Filling In a Cookie by Hand
 
@@ -105,7 +131,7 @@ One thing worth knowing: if you also want to see your remaining Cloud NTE time, 
 
 ### Get a Token With Your Password
 
-1. Click **Get token with account and password** in the **Tajiduo / Cloud NTE** section of the user edit window.
+1. In **Settings → Features → Mystery entrance → Token tools**, select the target community account, then click **Get token with account and password** on the **Tajiduo** card.
 2. Enter your Tajiduo account or phone number and password in the separate popup window.
 3. On success, AUTO-MAS validates `accessToken`, `refreshToken`, and the user ID, then saves the credential automatically.
 
@@ -137,9 +163,9 @@ Results are shown as community + game + character name. Communities without a to
 
 First confirm the account can still log in normally in the official client or on the web. If even the official login fails, the problem isn't AUTO-MAS. If it works, get a fresh token:
 
-- **miyoushe**: get a fresh cookie from the web and enter it by hand.
-- **Skland, Tajiduo**: reopen their respective password windows.
-- **Kuro Community**: dig it out of the client again.
+- **miyoushe and Skland**: repeat QR login in Token tools, or enter credentials manually as described above.
+- **Tajiduo**: repeat password login in Token tools.
+- **Kuro Community**: obtain fresh credentials using the method above.
 
 ### One of my games isn't in the results
 

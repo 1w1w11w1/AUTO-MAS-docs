@@ -18,9 +18,9 @@
 
 ### 原理
 
-AUTO-MAS 开启开机自启后，会在系统里注册一个计划任务 `AUTO-MAS_AutoStart`：**你一登录它就立刻启动**。开机瞬间网卡、DNS 都还没就绪，这时候去拉镜像源、拉 Runtime 就会撞上 `getaddrinfo ENOTFOUND`，初始化中止报错。
+AUTO-MAS 开启开机自启后，会在系统里注册一个计划任务 `AUTO-MAS_AutoStart`：**你一登录它就立刻启动**。如果此时网络或 DNS 还未就绪，获取镜像源或 Runtime 信息可能失败，例如出现 `getaddrinfo ENOTFOUND`。
 
-给这个登录触发器加一个 **Delay（延迟）**，等网络通了再启动，就绕过去了。
+给登录触发器加一个 **Delay（延迟）**，可减少这类开机时网络未就绪造成的失败。延迟只适用于稍后联网或重试即可恢复的情况；持续出现 `RUNTIME_PIN_UNAVAILABLE` 时，请按 [常见问题](../FAQ) 检查具体错误。
 
 ### 方法 1：图形界面（只能选固定档位）
 
