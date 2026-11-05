@@ -100,7 +100,7 @@
 
 ## MSS（星塔旅人 / MaaStellaSora）
 
-后端 `app/task/MSS/flavor.py`（另有只读的 `api_service.py` 给用户页取灾变防线状态），前端 `MaaFWFlavor/mss/`。
+后端 `app/task/MSS/flavor.py`，前端 `MaaFWFlavor/mss/`。
 
 | 项 | 设计 | 为什么 |
 | --- | --- | --- |
@@ -109,10 +109,9 @@
 | 计划表 | 用户 `Info.PlanMode` 引用了 MSS 计划表时，按当天的槽位改写 entry `战斗_入口`（悬赏试炼快速战斗）的五个选项；队列里没有这个任务就补上；关卡名不在 interface 的 case 里就整条跳过；选「固定」时不动（[#959][959]） | 保留原专项的计划表能力 |
 | 活动 | 队列里有 `活动快速战斗_入口` 时查一次官网排期（`app/tools/stella_official.py`）：有活动就挪到悬赏试炼前，确实没有就摘掉，取不到数据就原样跑；队列里只剩活动任务时不摘空。`Info.IfActivityFirst`（默认开）开着且确认在活动期时，队列里没加也会自动补上 | 摘空会让引擎判「无法构建运行计划」；取不到数据时乱加会多跑一个不该跑的任务 |
 | 周常 | `星塔_入口_agent`（新版爬塔）挪到队尾；每周一次靠通用的 `Run.WeeklyOnceTasks` | 不在风味里记周 |
-| 个人版灾变防线 | 全局的个人版开关（`Function.IfPersonalMss`，默认关，入口在设置页的「神秘入口」）打开、且项目是个人版时生效：按官网那一期公告的开始时刻记账（`Data.PersonalMssDefense`），这一期没打过就补进队列（爬塔之前），整轮成功才算打过；失败按天记一笔，攒够三天放弃这一期；记录写不进去就不编排（[#1166][1166]） | 一期只能打一次，游戏里没有可读的状态，脚本自己也不幂等 |
 | 只适配桌面端 | 脚本页控制方式一步顶部写明原因；引擎不拦 ADB | 模拟器端启动不了游戏 |
-| 配置 | `MSSConfig` 与 `MaaFWConfig` 同形；`MSSUserConfig` 多 `Info.PlanMode`、`Info.IfActivityFirst`、`Data.PersonalMssDefense` | — |
-| 前端 | 脚本页 `beforeControl` 挂「只支持桌面端」提示；用户页 `beforeTaskQueue` 挂计划表下拉、活动优先开关、灾变防线区块；`prepare` 预取计划表选项。灾变防线整块只在个人版开关打开后才渲染，开关值与本期记账一起由只读接口 `app/task/MSS/api_service.py` 的 `defense_status` 返回（[#1309][1309]） | 独有区块按需加载；普通用户看不到与自己无关的控件；「这一期」只有后端一处算法，前端不复刻 |
+| 配置 | `MSSConfig` 与 `MaaFWConfig` 同形；`MSSUserConfig` 多 `Info.PlanMode`、`Info.IfActivityFirst` | — |
+| 前端 | 脚本页 `beforeControl` 挂「只支持桌面端」提示；用户页 `beforeTaskQueue` 挂计划表下拉、活动优先开关；`prepare` 预取计划表选项 | 独有区块按需加载 |
 | 管理员权限 | 不需要原专项的「以管理员启动」：安装包本身要求管理员权限，Runtime、后端、worker、游戏一路继承 | 内置运行不再拉起外壳 |
 
 ## 检查清单（审查风味相关改动时）
@@ -131,8 +130,6 @@
 [1023]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1023
 [1141]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1141
 [1163]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1163
-[1166]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1166
 [1197]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1197
 [1238]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1238
 [1296]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1296
-[1309]: https://github.com/AUTO-MAS-Project/AUTO-MAS/pull/1309

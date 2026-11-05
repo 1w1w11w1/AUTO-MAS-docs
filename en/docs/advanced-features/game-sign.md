@@ -8,8 +8,6 @@ Four communities are supported: **Skland**, **miyoushe**, **Kuro Community**, an
 
 - Check-in requests are made locally by AUTO-MAS. Tokens are only used to reach the official API of the matching community, and are not sent to third-party services unrelated to check-in.
 - A token is a login credential. Don't send it to anyone, and don't put it in public logs, screenshots, or config repositories.
-- Tajiduo **Get token with account and password** uses your account and password only inside that one login request. Neither is saved: the input is cleared when the request finishes or fails, and nothing is written to config, logs, or notifications.
-- AUTO-MAS does not offer SMS-code login. When you use a password to obtain credentials, make sure your network and your account are in a safe state.
 - Automatic check-in carries risks: account risk control, API changes, and failed check-ins. Evaluate that yourself and accept the consequences of using it.
 
 :::
@@ -58,11 +56,9 @@ Automatic check-in records each account’s daily attempt even if it fails. Rest
 
 Communities without credentials do not appear in the notification.
 
-## Credential tools
+## Entering credentials
 
-The account editor accepts credentials entered manually. **QR login for miyoushe and Skland** and **password login for Tajiduo** are under **Settings → Features → Mystery entrance → Token tools**. Follow the page's unlock instructions, select the target community account, and then log in. Add an account on the check-in page first if the selector is empty.
-
-After login, return to the check-in page and check the selected account. A QR code alone does not prove that credentials were saved. Restart login if the dialog was closed, expired, or failed.
+Obtain your community credentials yourself, then enter and save them in the account editor on the check-in page. Add a community account first if you don't have one.
 
 ## Skland
 
@@ -87,17 +83,9 @@ Skland check-in automatically looks up the **Arknights** and **Arknights: Endfie
 
 Don't copy the outer JSON, the quotation marks around `content`, or any other field. To switch accounts, clear your browser cookies and log in again — logging out on the web page directly can invalidate the original credential.
 
-### Get a token with QR login
-
-In **Token tools**, select the target community account, click QR login on the **Skland** card, and scan and confirm with the official app. Wait for a successful save before returning to check-in. The account editor no longer has a Skland password-login button.
-
 ## miyoushe
 
 miyoushe automatically reads the characters bound to your account across **Genshin Impact, Honkai: Star Rail, Zenless Zone Zero, Houkai Gakuen 2, Honkai Impact 3rd, and Tears of Themis**, then checks the check-in status for each one. With a valid miyoushe cookie, AUTO-MAS also attempts to query remaining Cloud Genshin play time; no separate Cloud Genshin credential is needed.
-
-### Get a cookie with QR login
-
-Select the target community account in **Token tools**, click QR login on the **miyoushe** card, and scan and confirm in the miyoushe app. Wait for the save confirmation before returning to check-in.
 
 ### Filling In a Cookie by Hand
 
@@ -129,14 +117,6 @@ Looks up the game characters on your account and checks in.
 
 One thing worth knowing: if you also want to see your remaining Cloud NTE time, that credential **goes in together with the Tajiduo credential**. It isn't a separate login, so don't go looking for its own entry point.
 
-### Get a Token With Your Password
-
-1. In **Settings → Features → Mystery entrance → Token tools**, select the target community account, then click **Get token with account and password** on the **Tajiduo** card.
-2. Enter your Tajiduo account or phone number and password in the separate popup window.
-3. On success, AUTO-MAS validates `accessToken`, `refreshToken`, and the user ID, then saves the credential automatically.
-
-If the login fails, the returned fields are incomplete, or risk control kicks in, you won't get a "token saved" confirmation and your existing credential won't be overwritten. Your account and password only exist inside that one login request and are cleared afterwards. This feature does not offer SMS-code login.
-
 ### Filling In Credentials by Hand
 
 The input accepts either of these:
@@ -163,17 +143,11 @@ Results are shown as community + game + character name. Communities without a to
 
 First confirm the account can still log in normally in the official client or on the web. If even the official login fails, the problem isn't AUTO-MAS. If it works, get a fresh token:
 
-- **miyoushe and Skland**: repeat QR login in Token tools, or enter credentials manually as described above.
-- **Tajiduo**: repeat password login in Token tools.
-- **Kuro Community**: obtain fresh credentials using the method above.
+Obtain fresh credentials for the community, then enter and save them in the account editor.
 
 ### One of my games isn't in the results
 
 The tool only handles the **bound characters** the community API reports. Confirm that game really is bound to this community account, then click **Check in all** again.
-
-### The login failed but it says the token was saved
-
-That shouldn't happen — a password login has to pass validation before anything is written to config, and a failure saves nothing. If you do hit it, look at the error shown in the interface and report it to the developers.
 
 ::: warning Don't Post Your Credentials With a Report
 Redact any account, password, cookie, or token from the error message before sharing it.
